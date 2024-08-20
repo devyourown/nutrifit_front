@@ -10,10 +10,8 @@ export default function ProductCard() {
             />
             <h3 className="text-xl font-bold mb-2">Sample Product</h3>
             <p className="text-gray-700 mb-4">$20.00</p>
-            <Link href="/products/1">
-                <a className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors">
-                    View Details
-                </a>
+            <Link href="/products/1" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors">
+                View Details
             </Link>
         </div>
     );

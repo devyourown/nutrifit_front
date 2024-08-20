@@ -3,18 +3,18 @@ import Link from "next/link";
 export default function Navbar() {
     return (
         <nav className="flex justify-between items-center py-4">
-            <Link href="/">
-                <a className="text-2xl font-bold">CoalandCanary</a>
+            <Link href="/" className="text-2xl font-bold">
+                NutriFit
             </Link>
             <div>
-                <Link href="/products">
-                    <a className="mx-4">Shop</a>
+                <Link href="/products" className="mx-4">
+                    Shop
                 </Link>
-                <Link href="/cart">
-                    <a className="mx-4">Cart</a>
+                <Link href="/cart" className="mx-4">
+                    Cart
                 </Link>
-                <Link href="/checkout">
-                    <a className="mx-4">Checkout</a>
+                <Link href="/login" className="mx-4">
+                    login
                 </Link>
             </div>
         </nav>
