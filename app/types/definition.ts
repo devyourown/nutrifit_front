@@ -49,12 +49,15 @@ export type ShippingStatusDto = {
     shippingId: number;
     status: ShippingStatus;
     time: string;
-}
+};
 
-type ShippingStatus = 
-            "ORDERED" | "PENDING"
-            | "SHIPPED" | "DELIVERED" 
-            | "CANCELED" | "REFUNDED";
+type ShippingStatus =
+    | "ORDERED"
+    | "PENDING"
+    | "SHIPPED"
+    | "DELIVERED"
+    | "CANCELED"
+    | "REFUNDED";
 
 export type SignDto = {
     username: string;
@@ -67,8 +70,8 @@ export type UserDto = {
     email: string;
     username: string;
     token: string;
-    role: 'USER' | 'ADMIN';
-}
+    role: "USER" | "ADMIN";
+};
 
 export type CartItemDto = {
     name: string;
@@ -76,7 +79,7 @@ export type CartItemDto = {
     price: number;
     imageUrl: string;
     quantity: number;
-}
+};
 
 export type CouponDto = {
     code: string;
@@ -88,7 +91,7 @@ export type CouponDto = {
     minimumOrderAmount: number;
     maxDiscountAmount: number;
     remainingQuantity: number;
-}
+};
 
 export type ReviewDto = {
     id: number;
@@ -97,4 +100,31 @@ export type ReviewDto = {
     rating: number;
     comment: string;
     createdAt: string;
-}
+};
+
+export type Cart = {
+    items: Array<{
+        id: string;
+        name: string;
+        price: number;
+        quantity: number;
+        imageUrl: string;
+    }>;
+    checkoutStep: number;
+    address?: {
+        recipientName: string;
+        address: string;
+        postalCode: string;
+        phoneNumber: string;
+    };
+    payment?: {
+        method: string;
+        cardNumber: string;
+    };
+    order: {
+        subtotal: number;
+        delivery: number;
+        vat: number;
+        total: number;
+    };
+};

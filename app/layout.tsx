@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/ui/header";
-import Footer from "./components/ui/footer";
+import Header from "./components/ui/lib/header";
+import Footer from "./components/ui/lib/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "뉴트리핏",
-  description: "뉴트리핏 쇼핑몰",
+    title: "뉴트리핏",
+    description: "뉴트리핏 쇼핑몰",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Header/>
-        {children}
-        <Footer/>  
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={inter.className}>
+                <Header />
+                {children}
+                <Footer />
+            </body>
+        </html>
+    );
 }
