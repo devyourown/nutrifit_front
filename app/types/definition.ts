@@ -6,8 +6,21 @@ export type ProductDto = {
     category: string;
     imageUrl: string;
     stockQuantity: number;
-    lowStockThreshold: number;
+    lowStockThreshold?: number;
 };
+
+export type ProductDetailDto = {
+    name: string;
+    description: string;
+    imageUrls: string[];
+    options: Option[];
+}
+
+type Option = {
+    price: number;
+    quantity: number;
+    description: string;
+}
 
 export type OrderItemDto = {
     productId: number;
@@ -103,13 +116,7 @@ export type ReviewDto = {
 };
 
 export type Cart = {
-    items: Array<{
-        id: string;
-        name: string;
-        price: number;
-        quantity: number;
-        imageUrl: string;
-    }>;
+    items: CartItem[];
     checkoutStep: number;
     address?: {
         recipientName: string;
@@ -121,10 +128,18 @@ export type Cart = {
         method: string;
         cardNumber: string;
     };
-    order: {
+    order?: {
         subtotal: number;
         delivery: number;
         vat: number;
         total: number;
     };
 };
+
+export type CartItem = {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    imageUrl: string;
+}

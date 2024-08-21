@@ -36,7 +36,7 @@ export default function CartSidebar({
             ></div>
             <div className="fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-xl z-50">
                 <div className="flex justify-between items-center p-4 border-b">
-                    <h2 className="text-lg font-semibold">Cart</h2>
+                    <h2 className="text-lg font-semibold">장바구니</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-500 hover:text-gray-700"
@@ -60,7 +60,7 @@ export default function CartSidebar({
                                     {item.name}
                                 </h3>
                                 <p className="text-sm text-gray-500">
-                                    €{item.price.toFixed(2)}
+                                    {item.price.toLocaleString("ko-KR")}원
                                 </p>
                                 <div className="flex items-center mt-2">
                                     <button
@@ -96,15 +96,17 @@ export default function CartSidebar({
 
                 <div className="p-4 border-t">
                     <div className="flex justify-between text-sm font-medium">
-                        <span>Subtotal</span>
-                        <span>€{calculateSubtotal().toFixed(2)}</span>
+                        <span>총 상품 비용</span>
+                        <span>{calculateSubtotal().toLocaleString("ko-KR")}원</span>
                     </div>
+                    <Link href="/cart">
                     <button
                         className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg"
                         onClick={onClose}
                     >
-                        <Link href="/cart">View Cart</Link>
+                        장바구니 보기
                     </button>
+                    </Link>
                 </div>
             </div>
         </Transition>

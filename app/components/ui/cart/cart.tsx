@@ -7,19 +7,19 @@ import CartList, { CartItem } from "./cart-list";
 const initialCartItems: CartItem[] = [
     {
         id: 1,
-        name: "Vintage Denim Jacket",
-        image: "/images/denim-jacket.jpg",
+        name: "수비드 닭가슴살",
+        image: "/sample2.jfif",
         price: 75000,
         quantity: 1,
-        options: "Size: M",
+        options: "매운 커리맛",
     },
     {
         id: 2,
-        name: "Classic Leather Boots",
-        image: "/images/leather-boots.jpg",
+        name: "뉴트리핏 엽떡 닭가슴살",
+        image: "/sample1.jfif",
         price: 120000,
         quantity: 2,
-        options: "Color: Black, Size: 42",
+        options: "땡초맛",
     },
 ];
 

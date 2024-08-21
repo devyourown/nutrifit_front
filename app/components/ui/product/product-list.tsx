@@ -70,7 +70,7 @@ export default function ProductList() {
             </div>
             <div className="mt-4">
               <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-pink-700 transition">
-                Add to Cart
+                장바구니 추가
               </button>
             </div>
           </div>

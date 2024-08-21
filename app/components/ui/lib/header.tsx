@@ -9,8 +9,8 @@ import CartSidebar from "../cart/cart-sidebar";
 const items = [
     {
         id: 1,
-        name: "sporty knee high socks | better together",
-        price: 14.95,
+        name: "수비드 닭가슴살",
+        price: 2100,
         quantity: 1,
         imageUrl: "/sample1.jfif",
     },
