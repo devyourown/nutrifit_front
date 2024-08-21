@@ -47,7 +47,7 @@ const CartItem: React.FC<CartItemProps> = ({
                         <p className="text-sm text-gray-500">{options}</p>
                     )}
                     <p className="text-sm text-gray-500 mt-1">
-                        Unit Price: ₩{price.toLocaleString()}
+                        상품 가격: ₩{price.toLocaleString()}
                     </p>
                 </div>
             </div>

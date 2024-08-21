@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import ProductImageCarousel from "./product-carousel";
 import ProductOptions from "./product-options";
+import { ProductDetailDto, ProductDto } from "@/app/types/definition";
 
 const productData = {
   name: "수비드 뉴트리핏 닭가슴살",
@@ -15,7 +16,11 @@ const productData = {
   ],
 };
 
-export default function ProductDetail() {
+interface ProductDetailProps {
+  product: ProductDetailDto[];
+}
+
+export default function ProductDetail({product}: ProductDetailProps) {
   const [selectedOption, setSelectedOption] = useState(productData.options[0]);
 
   const handleOptionChange = (option: any) => {
@@ -45,11 +50,8 @@ export default function ProductDetail() {
           </p>
 
           <div className="mt-6 flex space-x-4">
-            <button className="bg-pink-600 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-pink-700 transition">
-              Add to Cart
-            </button>
-            <button className="bg-gray-700 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-gray-800 transition">
-              Buy Now
+            <button className="bg-blue-600 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-pink-700 transition">
+              장바구니 추가하기
             </button>
           </div>
         </div>
