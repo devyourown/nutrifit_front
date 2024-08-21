@@ -1,26 +1,24 @@
 export type ProductDto = {
     id: number;
     name: string;
-    description: string;
-    price: number;
-    category: string;
-    imageUrl: string;
-    stockQuantity: number;
-    lowStockThreshold?: number;
-};
-
-export type ProductDetailDto = {
-    name: string;
-    description: string;
+    description?: string;
+    category?: string;
     imageUrls: string[];
-    options: Option[];
-}
+    stockQuantity?: number;
+    lowStockThreshold?: number;
+    badgeTexts?: string[];
+    originalPrice: number;
+    discountedPrice: number;
+    reviewRating: number;
+    reviewCount: number;
+    options?: Option[];
+};
 
 type Option = {
     price: number;
     quantity: number;
     description: string;
-}
+};
 
 export type OrderItemDto = {
     productId: number;
@@ -142,4 +140,4 @@ export type CartItem = {
     price: number;
     quantity: number;
     imageUrl: string;
-}
+};

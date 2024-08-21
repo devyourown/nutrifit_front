@@ -52,9 +52,7 @@ export default function Cart() {
 
     return (
         <div className="container mx-auto py-10 px-4">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">
-                Shopping Cart
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-8">장바구니</h1>
             <div className="flex flex-col lg:flex-row lg:space-x-8">
                 <div className="flex-1 mb-8 lg:mb-0">
                     <CartList

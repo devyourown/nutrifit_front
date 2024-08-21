@@ -1,4 +1,4 @@
-import { Cart } from "@/app/types/definition";
+import { Cart } from "@/app/lib/types/definition";
 
 export default function CheckoutSummary() {
     return (
