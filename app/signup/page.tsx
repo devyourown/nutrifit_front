@@ -13,14 +13,16 @@ export default function SignupPage() {
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-                <h2 className="text-3xl font-bold text-center mb-6">로그인</h2>
+                <h2 className="text-3xl font-bold text-center mb-6">
+                    회원가입
+                </h2>
                 <p className="text-center text-gray-600 mb-4">
-                    아직 회원이 아니신가요?{" "}
+                    이미 회원이신가요?{" "}
                     <Link
-                        href="/signup"
+                        href="/login"
                         className="text-blue-600 hover:underline"
                     >
-                        회원가입
+                        로그인하기
                     </Link>
                 </p>
 
@@ -32,7 +34,7 @@ export default function SignupPage() {
                                 alt="Google Logo"
                                 className="w-5 h-5 mr-2"
                             />
-                            구글 로그인
+                            구글로 회원가입
                         </button>
 
                         <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-blue-600 rounded-md hover:bg-blue-700">
@@ -41,7 +43,7 @@ export default function SignupPage() {
                                 alt="Facebook Logo"
                                 className="w-5 h-5 mr-2"
                             />
-                            페이스북 로그인
+                            페이스북으로 회원가입
                         </button>
 
                         <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-green-500 rounded-md hover:bg-green-600">
@@ -50,7 +52,7 @@ export default function SignupPage() {
                                 alt="Naver Logo"
                                 className="w-5 h-5 mr-2"
                             />
-                            네이버 로그인
+                            네이버로 회원가입
                         </button>
 
                         <div className="flex items-center justify-center my-4">
@@ -65,7 +67,7 @@ export default function SignupPage() {
                             onClick={handleEmailSignup}
                             className="w-full bg-gray-800 text-white py-2 rounded-lg font-semibold hover:bg-gray-900"
                         >
-                            이메일로 로그인
+                            이메일로 회원가입
                         </button>
                     </>
                 )}
@@ -100,7 +102,7 @@ export default function SignupPage() {
                             ></div>
                         </div>
                         <button className="w-full bg-gray-800 text-white py-2 rounded-lg font-semibold hover:bg-gray-900">
-                            로그인
+                            회원가입
                         </button>
                     </>
                 )}
