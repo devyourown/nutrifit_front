@@ -3,8 +3,10 @@
 import Link from "next/link";
 import Navbar from "./navbar";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartSidebar from "../cart/cart-sidebar";
+import { CiLogout } from "react-icons/ci";
+import { useRouter } from "next/navigation";
 
 const items = [
     {
@@ -18,6 +20,15 @@ const items = [
 ];
 
 export default function Header() {
+    const [username, setUsername] = useState('');
+    const router = useRouter();
+    useEffect(() => {
+        const tempUser = localStorage.getItem('username');
+        if (tempUser) {
+            setUsername(tempUser);
+        }
+    }, []);
+
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState(items);
 
@@ -32,6 +43,12 @@ export default function Header() {
             )
         );
     };
+
+    const logout = () => {
+        localStorage.clear();
+        setUsername('');
+        router.push('/');
+    }
     return (
         <header className="w-full">
             {/* Top Bar */}
@@ -50,10 +67,23 @@ export default function Header() {
                         <FaShoppingCart />
                         <span>cart</span>
                     </button>
-                    <Link href="/login" className="flex items-center space-x-2">
-                        <FaUser />
-                        <span>login</span>
-                    </Link>
+                    {username ? 
+                    <>
+                    <Link href="/user" className="flex items-center space-x-2">
+                    <FaUser />
+                    {<span>{username}님 안녕하세요!</span>}
+                </Link> 
+                <button 
+                onClick={() => logout()} 
+            >
+                로그아웃
+            </button>
+            <CiLogout/>
+            </>:
+                <Link href="/login" className="flex items-center space-x-2">
+                <FaUser />
+                <span>login</span>
+            </Link>}
                 </div>
             </div>
 
