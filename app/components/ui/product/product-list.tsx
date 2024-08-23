@@ -69,11 +69,11 @@ export default function ProductList({ products }: ProductListProps) {
                                             ★{" "}
                                         </i>
                                         <span className="text-sm">
-                                            {product.reviewRating /
-                                                product.reviewCount}
+                                            {(product.reviewRating /
+                                                product.reviewCount).toFixed(1)}
                                         </span>
                                         <span className="text-gray-700 ml-2">
-                                            ({product.reviewCount})
+                                            ({(product.reviewCount).toLocaleString("ko-KR")})
                                         </span>
                                     </div>
                                 </div>
