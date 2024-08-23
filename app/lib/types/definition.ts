@@ -14,7 +14,7 @@ export type ProductDto = {
     options?: Option[];
 };
 
-type Option = {
+export type Option = {
     price: number;
     quantity: number;
     description: string;
