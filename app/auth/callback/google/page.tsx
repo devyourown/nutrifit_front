@@ -17,7 +17,8 @@ export default function Page() {
 
         // 부모 창으로 데이터를 전송
         if (!window.opener && jwt) {
-            router.push('/');
+            window.dispatchEvent(new Event('usernameUpdated'));
+            router.replace('/');
         } else if (window.opener && jwt) {
             window.opener.postMessage({ jwt }, "*");
             window.close();
@@ -83,7 +84,8 @@ export default function Page() {
                 const data = await response.json();
                 localStorage.setItem('jwt', data.token);
                 localStorage.setItem('username', data.username);
-                router.push('/');  // 닉네임 설정 후 대시보드로 이동
+                window.dispatchEvent(new Event('usernameUpdated'));
+                router.replace('/');  // 닉네임 설정 후 대시보드로 이동
             } else {
                 console.error('Failed to set nickname');
             }
