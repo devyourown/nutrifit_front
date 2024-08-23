@@ -22,11 +22,18 @@ const items = [
 export default function Header() {
     const [username, setUsername] = useState('');
     const router = useRouter();
-    useEffect(() => {
+    const updateUsername = () => {
         const tempUser = localStorage.getItem('username');
-        if (tempUser) {
-            setUsername(tempUser);
-        }
+        setUsername(tempUser || '');
+    };
+
+    useEffect(() => {
+        updateUsername();
+        window.addEventListener('usernameUpdated', updateUsername);
+
+        return () => {
+            window.removeEventListener('usernameUpdated', updateUsername);
+        };
     }, []);
 
     const [isCartOpen, setIsCartOpen] = useState(false);
@@ -75,6 +82,7 @@ export default function Header() {
                 </Link> 
                 <button 
                 onClick={() => logout()} 
+                className="px-2"
             >
                 로그아웃
             </button>
