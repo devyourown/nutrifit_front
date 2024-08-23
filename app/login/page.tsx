@@ -1,12 +1,63 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+    const router = useRouter();
+
+    useEffect(() => {
+        // 팝업 창에서 오는 메시지 처리
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data.jwt) {
+                router.push("/");
+            } else if (event.data && event.data.code) {
+                // 받은 code를 사용해 콜백 페이지로 리디렉션
+                router.push(`/auth/callback/${event.data.provider}?code=${event.data.code}`);
+            }
+        };
+
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        };
+    }, [router]);
+
+    const handleOAuthLogin = (provider: string) => {
+        let oauthUrl = "";
+    
+        switch (provider) {
+          case "google":
+            oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=http://localhost:3000/auth/callback/google&response_type=code&scope=email profile`;
+            break;
+          case "facebook":
+            oauthUrl = `https://www.facebook.com/v11.0/dialog/oauth?client_id=YOUR_FACEBOOK_CLIENT_ID&redirect_uri=http://localhost:3000/auth/callback/facebook&response_type=code&scope=email`;
+            break;
+          case "naver":
+            oauthUrl = `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&redirect_uri=http://localhost:3000/auth/callback/naver&response_type=code&scope=email profile`;
+            break;
+          default:
+            break;
+        }
+    
+        // 팝업으로 OAuth 인증 요청
+        const popup = window.open(
+          oauthUrl,
+          "_blank",
+          "width=500,height=600"
+        );
+
+        const checkPopup = setInterval(() => {
+            if (!popup || popup.closed) {
+                clearInterval(checkPopup);
+            }
+        }, 500);
+      };
     const [showEmailForm, setShowEmailForm] = useState(false);
 
-    const handleEmailSignup = () => {
+    const handleEmailSignin = () => {
         setShowEmailForm(true);
     };
 
@@ -26,7 +77,8 @@ export default function SignupPage() {
 
                 {!showEmailForm && (
                     <>
-                        <button className="flex items-center justify-center w-full p-2 mb-4 border border-gray-300 rounded-md hover:bg-gray-100">
+                        <button className="flex items-center justify-center w-full p-2 mb-4 border border-gray-300 rounded-md hover:bg-gray-100"
+                        onClick={() => handleOAuthLogin('google')}>
                             <img
                                 src="/google_logo.svg"
                                 alt="Google Logo"
@@ -44,7 +96,8 @@ export default function SignupPage() {
                             페이스북 로그인
                         </button>
 
-                        <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-green-500 rounded-md hover:bg-green-600">
+                        <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-green-500 rounded-md hover:bg-green-600"
+                        onClick={() => handleOAuthLogin("naver")}>
                             <img
                                 src="/naver_logo.png"
                                 alt="Naver Logo"
@@ -62,7 +115,7 @@ export default function SignupPage() {
                         </div>
 
                         <button
-                            onClick={handleEmailSignup}
+                            onClick={handleEmailSignin}
                             className="w-full bg-gray-800 text-white py-2 rounded-lg font-semibold hover:bg-gray-900"
                         >
                             이메일로 로그인
