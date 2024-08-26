@@ -1,6 +1,6 @@
 "use client";
 
-import { triggerCartOpen } from "@/app/lib/trigger";
+import { changeItemQuantity, triggerCartOpen } from "@/app/lib/trigger";
 import { ProductDto } from "@/app/lib/types/definition";
 import Link from "next/link";
 import { useState } from "react";
@@ -11,36 +11,15 @@ interface ProductListProps {
 
 export default function ProductList({ products }: ProductListProps) {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
 
     const addToCart = async (productId: number) => {
         setLoading(true);
-        setError(null);
-        setSuccess(null);
-
-        try {
-            const id = localStorage.getItem('id');
-            const response = await fetch('/api/cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ productId, quantity: 1, userId:  id}), // userId는 실제 사용자 ID로 대체해야 합니다.
-            });
-
-            if (response.ok) {
-                triggerCartOpen();
-                setSuccess("장바구니에 추가되었습니다!");
-            } else {
-                const data = await response.json();
-                setError(data.error || "장바구니에 추가하는 데 실패했습니다.");
-            }
-        } catch (error) {
-            setError("네트워크 오류가 발생했습니다. 다시 시도해 주세요.");
-        } finally {
-            setLoading(false);
+        const id = localStorage.getItem("id");
+        const response = await changeItemQuantity(id!, productId.toString(), 1);
+        if (response.ok) {
+            triggerCartOpen();
         }
+        setLoading(false);
     };
 
     return (
@@ -53,28 +32,31 @@ export default function ProductList({ products }: ProductListProps) {
                 );
 
                 return (
-                        <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col m-2 transform transition-transform hover:scale-105 cursor-pointer">
-                            <div className="relative">
-                                <div className="absolute top-2 left-2 flex flex-wrap space-x-2 z-10">
-                                    {product.badgeTexts &&
-                                        product.badgeTexts.map((text) => (
-                                            <span
-                                                key={text}
-                                                className="bg-blue-500 text-white text-xs font-bold rounded-full px-2 py-1"
-                                            >
-                                                {text}
-                                            </span>
-                                        ))}
-                                </div>
-
-                                <img
-                                    src={product.imageUrls[0]}
-                                    alt={product.name}
-                                    className="w-full h-60 object-cover"
-                                />
+                    <div
+                        key={product.id}
+                        className="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col m-2 transform transition-transform hover:scale-105 cursor-pointer"
+                    >
+                        <div className="relative">
+                            <div className="absolute top-2 left-2 flex flex-wrap space-x-2 z-10">
+                                {product.badgeTexts &&
+                                    product.badgeTexts.map((text) => (
+                                        <span
+                                            key={text}
+                                            className="bg-blue-500 text-white text-xs font-bold rounded-full px-2 py-1"
+                                        >
+                                            {text}
+                                        </span>
+                                    ))}
                             </div>
-                            <div className="flex flex-col justify-between flex-grow p-4">
-                                <Link href={`/product/${product.id}`}>
+
+                            <img
+                                src={product.imageUrls[0]}
+                                alt={product.name}
+                                className="w-full h-60 object-cover"
+                            />
+                        </div>
+                        <div className="flex flex-col justify-between flex-grow p-4">
+                            <Link href={`/product/${product.id}`}>
                                 <div>
                                     <h3 className="text-lg font-semibold">
                                         {product.name}
@@ -106,24 +88,32 @@ export default function ProductList({ products }: ProductListProps) {
                                             ★{" "}
                                         </i>
                                         <span className="text-sm">
-                                            {(product.reviewRating /
-                                                product.reviewCount).toFixed(1)}
+                                            {(
+                                                product.reviewRating /
+                                                product.reviewCount
+                                            ).toFixed(1)}
                                         </span>
                                         <span className="text-gray-700 ml-2">
-                                            ({(product.reviewCount).toLocaleString("ko-KR")})
+                                            (
+                                            {product.reviewCount.toLocaleString(
+                                                "ko-KR"
+                                            )}
+                                            )
                                         </span>
                                     </div>
                                 </div>
-                                </Link>
-                                <div className="mt-4">
-                                    <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-pink-700 transition"
+                            </Link>
+                            <div className="mt-4">
+                                <button
+                                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-pink-700 transition"
                                     onClick={() => addToCart(product.id)}
-                                    disabled={loading}>
-                                        {loading ? "추가 중..." : "장바구니 추가"}
-                                    </button>
-                                </div>
+                                    disabled={loading}
+                                >
+                                    {loading ? "추가 중..." : "장바구니 추가"}
+                                </button>
                             </div>
                         </div>
+                    </div>
                 );
             })}
         </div>

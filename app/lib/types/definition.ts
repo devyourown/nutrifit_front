@@ -116,22 +116,12 @@ export type ReviewDto = {
 export type Cart = {
     items: CartItem[];
     checkoutStep: number;
-    address?: {
-        recipientName: string;
-        address: string;
-        postalCode: string;
-        phoneNumber: string;
-    };
+    orderer?: Orderer;
     payment?: {
         method: string;
         cardNumber: string;
     };
-    order?: {
-        subtotal: number;
-        delivery: number;
-        vat: number;
-        total: number;
-    };
+    order?: Order;
 };
 
 export type CartItem = {
@@ -140,4 +130,22 @@ export type CartItem = {
     price: number;
     quantity: number;
     imageUrl: string;
+};
+
+export type Order = {
+    id: string;
+    subtotal: number;
+    delivery: number;
+    vat?: number;
+    total: number;
+};
+
+export type Orderer = {
+    ordererName: string;
+    recipientName: string;
+    address: string;
+    postalCode: string;
+    phone: string;
+    recipientPhone: string;
+    cautions: string;
 };

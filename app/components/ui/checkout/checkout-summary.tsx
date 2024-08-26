@@ -1,44 +1,61 @@
-import { Cart } from "@/app/lib/types/definition";
+import { Cart, CartItem, Order } from "@/app/lib/types/definition";
 
-export default function CheckoutSummary() {
+interface CheckoutSummaryProps {
+    items: CartItem[];
+    order: Order;
+}
+
+export default function CheckoutSummary({
+    items,
+    order,
+}: CheckoutSummaryProps) {
     return (
-        <div className="w-full md:w-1/2 px-4 py-6 bg-gray-100 rounded-md">
-            <h2 className="text-lg font-semibold mb-4">Order summary</h2>
-            <div className="mb-4">
-                <div className="flex justify-between">
-                    <div>
-                        <img
-                            src="/path-to-image.jpg"
-                            alt="Product Image"
-                            className="w-16 h-16 rounded-md"
-                        />
-                        <p>
-                            backpack large | better together | colourblocking |
-                            badminton blue
-                        </p>
-                        <p>Qty: 1</p>
+        <div className="bg-gray-50 p-6 rounded-lg shadow-lg sticky top-4">
+            <h3 className="text-xl font-semibold mb-4">
+                주문 요약 ({items.length})
+            </h3>
+            {items.map((item) => {
+                return (
+                    <div key={item.id} className="flex justify-between mb-2">
+                        <div>
+                            <img
+                                src={item.imageUrl}
+                                alt="Moonlit Scenic Snowshoe"
+                                className="w-16 h-16 object-cover mr-2 inline-block"
+                            />
+                            <div>
+                                <span>{item.name}</span>
+                                <br />
+                                <span>{item.quantity}개</span>
+                            </div>
+                        </div>
+                        <div className="flex items-center">₩{item.price}</div>
                     </div>
-                    <p className="text-gray-900">€64.95</p>
-                </div>
+                );
+            })}
+            <hr className="my-4" />
+            <div className="mb-2">
+                <a href="#" className="text-blue-600">
+                    쿠폰 코드 입력하기
+                </a>
             </div>
             <div className="mb-4">
-                <input
-                    type="text"
-                    placeholder="Enter a promo code"
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                />
+                <a href="#" className="text-blue-600">
+                    적립금 사용하기
+                </a>
             </div>
             <div className="flex justify-between mb-2">
-                <p>Items</p>
-                <p>€64.95</p>
+                <span>상품 가격</span>
+                <span>₩{order.subtotal}</span>
             </div>
             <div className="flex justify-between mb-2">
-                <p>Delivery</p>
-                <p>€45.00</p>
+                <span>배송비</span>
+                <span>₩{order.delivery}</span>
             </div>
-            <div className="flex justify-between font-semibold text-lg">
-                <p>Total</p>
-                <p>€109.95</p>
+            <hr className="my-4" />
+            <div className="flex justify-between font-bold text-lg">
+                <span>총 비용</span>
+                <span>₩{order.total}</span>
             </div>
         </div>
     );
