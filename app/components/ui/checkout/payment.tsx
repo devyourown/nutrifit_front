@@ -1,12 +1,114 @@
-export default function Payment() {
-    return (
-        <div className="w-full md:w-1/2 px-4 py-6">
-            <h2 className="text-lg font-semibold mb-4">Payment</h2>
-            <div>
-                <button className="w-full bg-yellow-500 text-white p-3 rounded-md">
-                    PayPal 체크 아웃
-                </button>
+import { CartItem, Order } from "@/app/lib/types/definition";
+import PortOne from "@portone/browser-sdk/v2";
+import { useState } from "react";
+import { BsCreditCardFill } from "react-icons/bs";
+import { FaMoneyCheckAlt } from "react-icons/fa";
+import { TbPigMoney } from "react-icons/tb";
+
+interface PaymentProps {
+    order: Order;
+    steps: number;
+    items: CartItem[];
+}
+
+export default function Payment({ steps, order, items }: PaymentProps) {
+    const [selectedPayment, setSelectedPayment] = useState("creditCard");
+
+    const handlePaymentChange = (event: any) => {
+        setSelectedPayment(event.target.value);
+    };
+
+    const handleCreditPayment = async () => {
+        const response = await PortOne.requestPayment({
+            storeId: "store-e4038486-8d83-41a5-acf1-844a009e0d94",
+            paymentId: order.id,
+            orderName: items.reduce((acc, cur, index) => {
+                if (index === 0) return cur.name;
+                return acc + ", " + cur.name;
+            }, " ")!,
+            totalAmount: order.total,
+            currency: "CURRENCY_KRW",
+            channelKey: "channel-key-4ca6a942-3ee0-48fb-93ef-f4294b876d28",
+            payMethod: "CARD",
+            card: {},
+            redirectUrl: "https://sdk-playground.portone.io/",
+        });
+        if (response?.code != null) {
+            return alert(response.message);
+        }
+    };
+    return steps === 2 ? (
+        <h3 className="text-gray text-xl font-semibold mt-6 mb-4">결제 방법</h3>
+    ) : (
+        <>
+            <h3 className="text-xl font-semibold mb-4 mt-6">결제 방법</h3>
+            <div className="p-4 bg-white shadow-md rounded-lg">
+                <div className="space-y-4">
+                    <label
+                        className={`flex items-center p-4 border rounded-md cursor-pointer ${
+                            selectedPayment === "creditCard"
+                                ? "border-blue-500 bg-blue-50"
+                                : "border-gray-300"
+                        }`}
+                    >
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="creditCard"
+                            checked={selectedPayment === "creditCard"}
+                            onChange={handlePaymentChange}
+                            onClick={handleCreditPayment}
+                            className="form-radio text-blue-500"
+                        />
+                        <span className="ml-2 text-gray-700">신용카드</span>
+                        <i className="ml-auto text-3xl">
+                            <BsCreditCardFill />
+                        </i>
+                    </label>
+
+                    <label
+                        className={`flex items-center p-4 border rounded-md cursor-pointer ${
+                            selectedPayment === "bankTransfer"
+                                ? "border-blue-500 bg-blue-50"
+                                : "border-gray-300"
+                        }`}
+                    >
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="bankTransfer"
+                            checked={selectedPayment === "bankTransfer"}
+                            onChange={handlePaymentChange}
+                            className="form-radio text-blue-500"
+                        />
+                        <span className="ml-2 text-gray-700">계좌 이체</span>
+                        <span className="ml-auto text-green-700 rounded-lg text-3xl">
+                            <FaMoneyCheckAlt />
+                        </span>
+                    </label>
+
+                    <label
+                        className={`flex items-center p-4 border rounded-md cursor-pointer ${
+                            selectedPayment === "directDeposit"
+                                ? "border-blue-500 bg-blue-50"
+                                : "border-gray-300"
+                        }`}
+                    >
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="directDeposit"
+                            checked={selectedPayment === "directDeposit"}
+                            onChange={handlePaymentChange}
+                            className="form-radio text-blue-500"
+                        />
+                        <span className="ml-2 text-gray-700">무통장 입금</span>
+                        <span className="ml-auto text-4xl">
+                            <TbPigMoney />
+                        </span>
+                    </label>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
