@@ -46,6 +46,7 @@ export default function Page() {
                         localStorage.setItem('email', data.email);
                     } else {
                         setJwt(data.token);
+                        localStorage.setItem('id', data.token);
                         localStorage.setItem('jwt', data.token);
                         localStorage.setItem('email', data.email);
                         localStorage.setItem('username', data.username);

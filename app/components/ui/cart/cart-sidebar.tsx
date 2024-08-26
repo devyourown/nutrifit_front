@@ -2,20 +2,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import Link from "next/link";
+import { CartItem } from "@/app/lib/types/definition";
 
-type CartItem = {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-    imageUrl: string;
-};
 
 type CartSidebarProps = {
     items: CartItem[];
     isOpen: boolean;
     onClose: () => void;
-    onQuantityChange: (itemId: number, quantity: number) => void;
+    onQuantityChange: (itemId: string, quantity: number) => void;
 };
 
 export default function CartSidebar({

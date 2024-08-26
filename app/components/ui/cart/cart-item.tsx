@@ -5,20 +5,20 @@ import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 type CartItemProps = {
-    id: number;
+    id: string;
     name: string;
-    image: string;
+    imageUrl: string;
     price: number;
     quantity: number;
     options?: string;
-    onQuantityChange: (id: number, quantity: number) => void;
-    onRemove: (id: number) => void;
+    onQuantityChange: (id: string, quantity: number) => void;
+    onRemove: (id: string) => void;
 };
 
 const CartItem: React.FC<CartItemProps> = ({
     id,
     name,
-    image,
+    imageUrl,
     price,
     quantity,
     options,
@@ -33,7 +33,7 @@ const CartItem: React.FC<CartItemProps> = ({
         <div className="flex items-center justify-between border-b py-4">
             <div className="flex items-center">
                 <Image
-                    src={image}
+                    src={imageUrl}
                     alt={name}
                     width={80}
                     height={80}

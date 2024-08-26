@@ -1,19 +1,12 @@
 import React from "react";
 import CartItem from "./cart-item";
+import { CartItem as Item } from "@/app/lib/types/definition";
 
-export type CartItem = {
-    id: number;
-    name: string;
-    image: string;
-    price: number;
-    quantity: number;
-    options?: string;
-};
 
 type CartListProps = {
-    items: CartItem[];
-    onQuantityChange: (id: number, quantity: number) => void;
-    onRemove: (id: number) => void;
+    items: Item[];
+    onQuantityChange: (id: string, quantity: number) => void;
+    onRemove: (id: string) => void;
 };
 
 const CartList: React.FC<CartListProps> = ({
