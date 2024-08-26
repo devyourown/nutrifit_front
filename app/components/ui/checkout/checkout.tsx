@@ -5,6 +5,7 @@ import CheckoutSummary from "./checkout-summary";
 import CustomerDetails from "./customer-details";
 import Payment from "./payment";
 import { Cart } from "@/app/lib/types/definition";
+import CartItem from "../cart/cart-item";
 
 const initialCart: Cart = {
     items: [
@@ -33,7 +34,11 @@ const initialCart: Cart = {
     },
 };
 
-export default function Checkout() {
+interface CheckoutProps {
+    cart: Cart;
+}
+
+export default function Checkout({ cart }: CheckoutProps) {
     return (
         <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row gap-6">
@@ -42,20 +47,17 @@ export default function Checkout() {
                         결제
                     </h2>
                     <CustomerDetails
-                        steps={initialCart.checkoutStep}
-                        orderer={initialCart.orderer!}
+                        steps={cart.checkoutStep}
+                        orderer={cart.orderer!}
                     />
                     <Payment
-                        steps={initialCart.checkoutStep}
-                        order={initialCart.order!}
-                        items={initialCart.items}
+                        steps={cart.checkoutStep}
+                        order={cart.order!}
+                        items={cart.items}
                     />
                 </div>
                 <div className="flex-shrink-0 w-full md:w-1/3">
-                    <CheckoutSummary
-                        items={initialCart.items}
-                        order={initialCart.order!}
-                    />
+                    <CheckoutSummary items={cart.items} order={cart.order!} />
                 </div>
             </div>
         </div>
