@@ -1,11 +1,48 @@
+"use client";
+
+import { triggerCartOpen } from "@/app/lib/trigger";
 import { ProductDto } from "@/app/lib/types/definition";
 import Link from "next/link";
+import { useState } from "react";
 
 interface ProductListProps {
     products: ProductDto[];
 }
 
 export default function ProductList({ products }: ProductListProps) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
+
+    const addToCart = async (productId: number) => {
+        setLoading(true);
+        setError(null);
+        setSuccess(null);
+
+        try {
+            const id = localStorage.getItem('id');
+            const response = await fetch('/api/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productId, quantity: 1, userId:  id}), // userId는 실제 사용자 ID로 대체해야 합니다.
+            });
+
+            if (response.ok) {
+                triggerCartOpen();
+                setSuccess("장바구니에 추가되었습니다!");
+            } else {
+                const data = await response.json();
+                setError(data.error || "장바구니에 추가하는 데 실패했습니다.");
+            }
+        } catch (error) {
+            setError("네트워크 오류가 발생했습니다. 다시 시도해 주세요.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="flex flex-wrap justify-center space-x-4 p-4">
             {products.map((product) => {
@@ -16,8 +53,7 @@ export default function ProductList({ products }: ProductListProps) {
                 );
 
                 return (
-                    <Link key={product.id} href={`/product/${product.id}`}>
-                        <div className="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col m-2 transform transition-transform hover:scale-105 cursor-pointer">
+                        <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col m-2 transform transition-transform hover:scale-105 cursor-pointer">
                             <div className="relative">
                                 <div className="absolute top-2 left-2 flex flex-wrap space-x-2 z-10">
                                     {product.badgeTexts &&
@@ -38,6 +74,7 @@ export default function ProductList({ products }: ProductListProps) {
                                 />
                             </div>
                             <div className="flex flex-col justify-between flex-grow p-4">
+                                <Link href={`/product/${product.id}`}>
                                 <div>
                                     <h3 className="text-lg font-semibold">
                                         {product.name}
@@ -77,14 +114,16 @@ export default function ProductList({ products }: ProductListProps) {
                                         </span>
                                     </div>
                                 </div>
+                                </Link>
                                 <div className="mt-4">
-                                    <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-pink-700 transition">
-                                        장바구니 추가
+                                    <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-pink-700 transition"
+                                    onClick={() => addToCart(product.id)}
+                                    disabled={loading}>
+                                        {loading ? "추가 중..." : "장바구니 추가"}
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    </Link>
                 );
             })}
         </div>

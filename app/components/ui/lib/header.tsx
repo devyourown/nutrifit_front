@@ -7,45 +7,59 @@ import { useEffect, useState } from "react";
 import CartSidebar from "../cart/cart-sidebar";
 import { CiLogout } from "react-icons/ci";
 import { useRouter } from "next/navigation";
+import { Cart, CartItem } from "@/app/lib/types/definition";
+import { v4 as uuidv4 } from 'uuid';
 
-const items = [
-    {
-        id: 1,
-        name: "수비드 닭가슴살",
-        price: 2100,
-        quantity: 1,
-        imageUrl: "/sample1.jfif",
-    },
-    // Add more items if needed
-];
+export function generateUniqueId(): string {
+    return uuidv4();
+}
 
 export default function Header() {
     const [username, setUsername] = useState('');
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const router = useRouter();
     const updateUsername = () => {
         const tempUser = localStorage.getItem('username');
-        setUsername(tempUser || '');
+        setUsername(tempUser || ''); 
     };
 
     useEffect(() => {
         updateUsername();
         window.addEventListener('usernameUpdated', updateUsername);
+        
+        const updateCart = async () => {
+            let id = localStorage.getItem('id');
+            if (!id) {
+                id = generateUniqueId();
+                localStorage.setItem('id', id);
+            }
+            const response = await fetch(`/api/cart?id=${id}`);
+            const cart: Cart = await response.json() as Cart;
+            setCartItems(cart.items);
+        }
+
+        updateCart();
+
+        const handleCartUpdated = () => {
+            updateCart();
+            setIsCartOpen(true);
+        };
+        window.addEventListener('cartUpdated', handleCartUpdated);
 
         return () => {
+            window.removeEventListener('cartUpdated', handleCartUpdated);
             window.removeEventListener('usernameUpdated', updateUsername);
         };
     }, []);
-
-    const [isCartOpen, setIsCartOpen] = useState(false);
-    const [cartItems, setCartItems] = useState(items);
 
     const handleCartToggle = () => {
         setIsCartOpen(!isCartOpen);
     };
 
-    const handleQuantityChange = (itemId: number, quantity: number) => {
+    const handleQuantityChange = (itemId: string, quantity: number) => {
         setCartItems((prevItems) =>
-            prevItems.map((item) =>
+            prevItems!.map((item) =>
                 item.id === itemId ? { ...item, quantity } : item
             )
         );

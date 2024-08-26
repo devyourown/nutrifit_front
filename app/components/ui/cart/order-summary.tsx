@@ -1,17 +1,16 @@
 // components/OrderSummary.tsx
 
+import Link from "next/link";
 import React from "react";
 
 type OrderSummaryProps = {
     subtotal: number;
     shipping?: number;
-    onCheckout: () => void;
 };
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
     subtotal,
     shipping = 0,
-    onCheckout,
 }) => {
     const total = subtotal + shipping;
 
@@ -34,12 +33,11 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                     <span>총 비용</span>
                     <span>₩{total.toLocaleString()}</span>
                 </div>
-                <button
-                    onClick={onCheckout}
-                    className="w-full bg-pink-600 text-white py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors"
-                >
-                    결제하기
-                </button>
+                <Link href="/checkout">
+                    <button className="mt-4 w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors">
+                        결제하기
+                    </button>
+                </Link>
             </div>
         </div>
     );

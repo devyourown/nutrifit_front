@@ -2,31 +2,18 @@
 
 import React, { useState, useEffect } from "react";
 import OrderSummary from "./order-summary";
-import CartList, { CartItem } from "./cart-list";
+import CartList from "./cart-list";
+import { CartItem } from "@/app/lib/types/definition";
 
-const initialCartItems: CartItem[] = [
-    {
-        id: 1,
-        name: "수비드 닭가슴살",
-        image: "/sample2.jfif",
-        price: 75000,
-        quantity: 1,
-        options: "매운 커리맛",
-    },
-    {
-        id: 2,
-        name: "뉴트리핏 엽떡 닭가슴살",
-        image: "/sample1.jfif",
-        price: 120000,
-        quantity: 2,
-        options: "땡초맛",
-    },
-];
 
-export default function Cart() {
-    const [cartItems, setCartItems] = useState(initialCartItems);
+interface CartProps {
+    items: CartItem[];
+}
 
-    const handleQuantityChange = (id: number, quantity: number) => {
+export default function Cart({items}: CartProps) {
+    const [cartItems, setCartItems] = useState(items);
+
+    const handleQuantityChange = (id: string, quantity: number) => {
         setCartItems((prevItems) =>
             prevItems.map((item) =>
                 item.id === id ? { ...item, quantity } : item
@@ -34,7 +21,7 @@ export default function Cart() {
         );
     };
 
-    const handleRemoveItem = (id: number) => {
+    const handleRemoveItem = (id: string) => {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
     };
 
@@ -43,11 +30,6 @@ export default function Cart() {
             (sum, item) => sum + item.price * item.quantity,
             0
         );
-    };
-
-    const handleCheckout = () => {
-        // Implement checkout logic here
-        alert("Proceeding to checkout...");
     };
 
     return (
@@ -65,7 +47,6 @@ export default function Cart() {
                     <OrderSummary
                         subtotal={calculateSubtotal()}
                         shipping={3000}
-                        onCheckout={handleCheckout}
                     />
                 </div>
             </div>
