@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Checkout from "../components/ui/checkout/checkout";
-import { Cart, CartItem } from "../lib/types/definition";
+import { Cart } from "../lib/types/definition";
 
 export default function Page() {
     const [cart, setCart] = useState<Cart>();

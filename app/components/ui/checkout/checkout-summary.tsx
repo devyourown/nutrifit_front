@@ -50,7 +50,7 @@ export default function CheckoutSummary({
             </div>
             <div className="flex justify-between mb-2">
                 <span>배송비</span>
-                <span>₩{order.delivery}</span>
+                <span>₩{order.shipping}</span>
             </div>
             <hr className="my-4" />
             <div className="flex justify-between font-bold text-lg">

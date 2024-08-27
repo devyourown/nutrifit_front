@@ -1,11 +1,15 @@
 import { fetchProductById } from "@/app/lib/api/product";
 import { getCart, saveCart } from "@/app/lib/cache/data";
+import { makeEmptyCart } from "@/app/lib/generator";
 import { Cart, CartItem, ProductDto } from "@/app/lib/types/definition";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
     const { productId, quantity, userId } = await req.json();
-    const cart: Cart = await getCart(userId);
+    let cart: Cart = await getCart(userId);
+    if (cart === null) {
+        cart = makeEmptyCart();
+    }
     const item = cart.items.find(item => item.id === productId.toString());
     if (item) {
         // 이미 카트에 있는 경우, 수량을 증가시킵니다.

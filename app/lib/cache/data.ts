@@ -32,11 +32,3 @@ export async function getCart(id: string) {
         return null;
     }
 }
-
-
-export function makeEmptyCart(): Cart {
-    return {
-        items: [],
-        checkoutStep: 1,
-    }
-}

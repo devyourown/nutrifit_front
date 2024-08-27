@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Navbar from "./navbar";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import CartSidebar from "../cart/cart-sidebar";
 import { CiLogout } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { Cart, CartItem } from "@/app/lib/types/definition";
-import { generateUniqueId, makeEmptyCart } from "@/app/lib/generator";
+import { generateUniqueId } from "@/app/lib/generator";
 
 export default function Header() {
     const [username, setUsername] = useState('');
@@ -32,7 +31,6 @@ export default function Header() {
             }
             const response = await fetch(`/api/cart?id=${id}`);
             let cart: Cart = await response.json() as Cart;
-            if (cart === null) cart = makeEmptyCart();
             setCartItems(cart.items);
         }
 
