@@ -5,7 +5,6 @@ export default function DetailForm() {
     const openPostCode = useDaumPostcodePopup();
     function handleAddress() {
         function handleComplete(data: any) {
-            console.log(data);
             setFormData({
                 ...formData,
                 address: data.roadAddress,
@@ -31,19 +30,13 @@ export default function DetailForm() {
         });
     };
     const handleCheckboxChange = (e: any) => {
+        const isChecked = e.target.checked;
         setSameAsOrderer(e.target.checked);
-        if (sameAsOrderer) {
-            handleInputChange({
-                target: {
-                    name: "recipientName",
-                    value: formData.ordererName,
-                },
-            });
-            handleInputChange({
-                target: {
-                    name: "recipientPhone",
-                    value: formData.ordererPhone,
-                },
+        if (isChecked) {
+            setFormData({
+                ...formData,
+                recipientName: formData.ordererName,
+                recipientPhone: formData.ordererPhone,
             });
         }
     };

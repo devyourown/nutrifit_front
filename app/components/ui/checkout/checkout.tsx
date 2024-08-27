@@ -28,7 +28,7 @@ const initialCart: Cart = {
     order: {
         id: "112321213213",
         subtotal: 400,
-        delivery: 2500,
+        shipping: 2500,
         vat: 0,
         total: 2900,
     },
