@@ -135,7 +135,7 @@ export type CartItem = {
 export type Order = {
     id: string;
     subtotal: number;
-    delivery: number;
+    shipping: number;
     vat?: number;
     total: number;
 };

@@ -8,11 +8,7 @@ import CartSidebar from "../cart/cart-sidebar";
 import { CiLogout } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { Cart, CartItem } from "@/app/lib/types/definition";
-import { v4 as uuidv4 } from 'uuid';
-
-export function generateUniqueId(): string {
-    return uuidv4();
-}
+import { generateUniqueId, makeEmptyCart } from "@/app/lib/generator";
 
 export default function Header() {
     const [username, setUsername] = useState('');
@@ -35,7 +31,8 @@ export default function Header() {
                 localStorage.setItem('id', id);
             }
             const response = await fetch(`/api/cart?id=${id}`);
-            const cart: Cart = await response.json() as Cart;
+            let cart: Cart = await response.json() as Cart;
+            if (cart === null) cart = makeEmptyCart();
             setCartItems(cart.items);
         }
 
