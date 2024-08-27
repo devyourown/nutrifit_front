@@ -57,7 +57,7 @@ export default function Page() {
             }
         };
         checkUserStatus();
-    }, [jwt]);
+    }, []);
 
     
     const handleSubmit = async (event: React.FormEvent) => {
