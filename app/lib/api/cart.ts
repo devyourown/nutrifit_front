@@ -1,6 +1,3 @@
-import { axiosInstance, setAuthToken } from "./data";
-
-
 // 장바구니에 아이템 추가
 export async function addItemToCart(token: string, productId: number, quantity: number) {
     try {
