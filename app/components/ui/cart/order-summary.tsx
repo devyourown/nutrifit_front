@@ -1,6 +1,9 @@
 // components/OrderSummary.tsx
 
+import { generateUniqueId } from "@/app/lib/generator";
+import { addOrderToCart } from "@/app/lib/trigger";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type OrderSummaryProps = {
@@ -8,11 +11,31 @@ type OrderSummaryProps = {
     shipping?: number;
 };
 
-const OrderSummary: React.FC<OrderSummaryProps> = ({
+export default function OrderSummary({
     subtotal,
-    shipping = 0,
-}) => {
+    shipping = 0
+}: OrderSummaryProps) {
+    const router = useRouter();
     const total = subtotal + shipping;
+
+    const addOrder = async (subtotal: number, shipping: number, total: number) => {
+        const userId = localStorage.getItem('id');
+        if (!userId) {
+            alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            router.push('/');
+            return;
+        }
+        console.log(userId);
+        const orderId = generateUniqueId();
+        const response = await addOrderToCart(userId, {id: orderId, subtotal, shipping, total});
+        const {success} = await response.json();
+        console.log(success);
+        if (!success) {
+            alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            router.push('/');
+            return;
+        }
+    }
 
     return (
         <div className="bg-gray-50 shadow-md rounded-lg p-6">
@@ -34,7 +57,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                     <span>₩{total.toLocaleString()}</span>
                 </div>
                 <Link href="/checkout">
-                    <button className="mt-4 w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors">
+                    <button className="mt-4 w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors"
+                    onClick={() => addOrder(subtotal, shipping, total)}>
                         결제하기
                     </button>
                 </Link>
@@ -42,5 +66,3 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
         </div>
     );
 };
-
-export default OrderSummary;

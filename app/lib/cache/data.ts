@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { createClient } from "redis";
 import { Cart } from "../types/definition";
 
@@ -26,7 +25,7 @@ export async function getCart(id: string) {
         const cart = await redisClient.hGet('cart',
             id
         );
-        if (cart === null) return makeEmptyCart();
+        if (cart === null) return null;
         return JSON.parse(cart!);
     } catch (error) {
         console.error('Getting cart error: ', error);
@@ -34,7 +33,8 @@ export async function getCart(id: string) {
     }
 }
 
-function makeEmptyCart(): Cart {
+
+export function makeEmptyCart(): Cart {
     return {
         items: [],
         checkoutStep: 1,
