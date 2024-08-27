@@ -1,7 +1,17 @@
+import { addOrdererToCart } from "@/app/lib/trigger";
+import { Orderer } from "@/app/lib/types/definition";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 
-export default function DetailForm() {
+interface DetailFormProps {
+    steps: number;
+    orderer: Orderer;
+    setSteps: (steps: number) => void;
+}
+
+export default function DetailForm({steps, orderer, setSteps}: DetailFormProps) {
+    const router = useRouter();
     const openPostCode = useDaumPostcodePopup();
     function handleAddress() {
         function handleComplete(data: any) {
@@ -14,13 +24,13 @@ export default function DetailForm() {
     }
     const [sameAsOrderer, setSameAsOrderer] = useState(false);
     const [formData, setFormData] = useState({
-        ordererName: "",
-        ordererPhone: "",
-        recipientName: "",
-        recipientPhone: "",
-        address: "",
-        address2: "",
-        cautions: "",
+        ordererName: orderer && orderer.ordererName || "",
+        ordererPhone: orderer && orderer.ordererPhone || "",
+        recipientName: orderer && orderer.recipientName || "",
+        recipientPhone: orderer && orderer.recipientPhone || "",
+        address: orderer && orderer.address || "",
+        addressDetail: orderer && orderer.addressDetail || "",
+        cautions: orderer && orderer.cautions || "",
     });
 
     const handleInputChange = (e: any) => {
@@ -41,8 +51,30 @@ export default function DetailForm() {
         }
     };
 
-    const handleContinue = (e: any) => {
+    const handleContinue = async (e: any) => {
         e.preventDefault();
+        const userId = localStorage.getItem('id');
+        if (!userId) {
+            alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            router.push('/');
+            return;
+        }
+        const orderer: Orderer = {
+            ordererName: formData.ordererName,
+            ordererPhone: formData.ordererPhone,
+            recipientName: formData.recipientName,
+            recipientPhone: formData.recipientPhone,
+            address: formData.address,
+            addressDetail: formData.addressDetail,
+            cautions: formData.cautions
+        }
+        const response = await addOrdererToCart(userId, orderer);
+        if (!response.ok) {
+            alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            router.push('/');
+            return;
+        }
+        setSteps(steps+1);
     };
     return (
         <form onSubmit={handleContinue}>
@@ -124,8 +156,8 @@ export default function DetailForm() {
                 <label className="block text-gray-700">상세 주소</label>
                 <input
                     type="text"
-                    name="city"
-                    value={formData.address2}
+                    name="addressDetail"
+                    value={formData.addressDetail}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border rounded-lg"
                     placeholder="상세 주소를 입력해 주세요."

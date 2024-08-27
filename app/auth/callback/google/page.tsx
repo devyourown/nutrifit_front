@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { checkNickname } from '@/app/lib/checker';
+import { initCartWithDB } from '@/app/lib/trigger';
 
 export default function Page() {
     const router = useRouter();
@@ -37,8 +38,6 @@ export default function Page() {
                     body: JSON.stringify({ code }),
                 });
 
-                console.log(response);
-
                 if (response.ok) {
                     const data = await response.json();
                     const username: string = data.username;
@@ -46,6 +45,8 @@ export default function Page() {
                         localStorage.setItem('email', data.email);
                     } else {
                         setJwt(data.token);
+                        const userId = localStorage.getItem('id');
+                        await initCartWithDB(userId!, data.token);
                         localStorage.setItem('id', data.token);
                         localStorage.setItem('jwt', data.token);
                         localStorage.setItem('email', data.email);

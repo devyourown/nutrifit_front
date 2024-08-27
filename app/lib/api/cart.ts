@@ -4,14 +4,17 @@ import { axiosInstance, setAuthToken } from "./data";
 // 장바구니에 아이템 추가
 export async function addItemToCart(token: string, productId: number, quantity: number) {
     try {
-        setAuthToken(token);
-        const response = await axiosInstance.post('/items', {
-            productId,
-            quantity
-        });
-        return response.data;
+        const response = await fetch(`${process.env.BACKEND_URL}/cart/items`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({productId, quantity})
+        })
+        return await response.json();
     } catch (error: any) {
-        console.error('Failed to add item to cart:', error.response.data);
+        console.error('Failed to get cart items:', error.response.data);
         throw error;
     }
 };
@@ -19,9 +22,14 @@ export async function addItemToCart(token: string, productId: number, quantity: 
 // 장바구니 아이템 조회
 export async function getCartItems(token: string) {
     try {
-        setAuthToken(token);
-        const response = await axiosInstance.get('/items');
-        return response.data;
+        const response = await fetch(`${process.env.BACKEND_URL}/cart/items`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        return await response.json();
     } catch (error: any) {
         console.error('Failed to get cart items:', error.response.data);
         throw error;
@@ -31,14 +39,17 @@ export async function getCartItems(token: string) {
 // 장바구니 아이템 수량 업데이트
 export async function updateCartItemQuantity(token: string, productId: number, quantity: number) {
     try {
-        setAuthToken(token);
-        const response = await axiosInstance.put('/items', {
-            productId,
-            quantity
-        });
-        return response.data;
+        const response = await fetch(`${process.env.BACKEND_URL}/cart/items`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({productId, quantity})
+        })
+        return await response.json();
     } catch (error: any) {
-        console.error('Failed to update cart item quantity:', error.response.data);
+        console.error('Failed to get cart items:', error.response.data);
         throw error;
     }
 };
@@ -46,11 +57,16 @@ export async function updateCartItemQuantity(token: string, productId: number, q
 // 장바구니에서 아이템 제거
 export async function removeItemFromCart(token: string, productId: number) {
     try {
-        setAuthToken(token);
-        const response = await axiosInstance.delete(`/items/${productId}`);
-        return response.data;
+        const response = await fetch(`${process.env.BACKEND_URL}/cart/items/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        return await response.json();
     } catch (error: any) {
-        console.error('Failed to remove item from cart:', error.response.data);
+        console.error('Failed to get cart items:', error.response.data);
         throw error;
     }
 };
@@ -58,11 +74,16 @@ export async function removeItemFromCart(token: string, productId: number) {
 // 장바구니 비우기
 export async function clearCart(token: string) {
     try {
-        setAuthToken(token);
-        const response = await axiosInstance.delete('/items');
-        return response.data;
+        const response = await fetch(`${process.env.BACKEND_URL}/cart/items`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        return await response.json();
     } catch (error: any) {
-        console.error('Failed to clear cart:', error.response.data);
+        console.error('Failed to get cart items:', error.response.data);
         throw error;
     }
 };

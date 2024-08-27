@@ -85,6 +85,7 @@ export type UserDto = {
 };
 
 export type CartItemDto = {
+    id: string;
     name: string;
     description: string;
     price: number;
@@ -142,10 +143,10 @@ export type Order = {
 
 export type Orderer = {
     ordererName: string;
+    ordererPhone: string;
     recipientName: string;
-    address: string;
-    postalCode: string;
-    phone: string;
     recipientPhone: string;
+    address: string;
+    addressDetail: string;
     cautions: string;
 };

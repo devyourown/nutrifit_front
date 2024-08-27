@@ -11,8 +11,10 @@ interface PaymentProps {
     items: CartItem[];
 }
 
+type PaymentMethod = "CARD" | "TRANSFER" | "VIRTUAL_ACCOUNT"
+
 export default function Payment({ steps, order, items }: PaymentProps) {
-    const [selectedPayment, setSelectedPayment] = useState("creditCard");
+    const [selectedPayment, setSelectedPayment] = useState("CARD");
 
     const handlePaymentChange = (event: any) => {
         setSelectedPayment(event.target.value);
@@ -37,7 +39,7 @@ export default function Payment({ steps, order, items }: PaymentProps) {
             return alert(response.message);
         }
     };
-    return steps === 2 ? (
+    return steps === 1 ? (
         <h3 className="text-gray text-xl font-semibold mt-6 mb-4">결제 방법</h3>
     ) : (
         <>

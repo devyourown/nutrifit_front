@@ -39,6 +39,7 @@ interface CheckoutProps {
 }
 
 export default function Checkout({ cart }: CheckoutProps) {
+    const [steps, setSteps] = useState(cart.checkoutStep);
     return (
         <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row gap-6">
@@ -47,11 +48,12 @@ export default function Checkout({ cart }: CheckoutProps) {
                         결제
                     </h2>
                     <CustomerDetails
-                        steps={cart.checkoutStep}
+                        steps={steps}
                         orderer={cart.orderer!}
+                        setSteps={setSteps}
                     />
                     <Payment
-                        steps={cart.checkoutStep}
+                        steps={steps}
                         order={cart.order!}
                         items={cart.items}
                     />

@@ -1,5 +1,5 @@
 export async function existsByUsername(username: string) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/${username}`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/auth/${username}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -11,4 +11,15 @@ export async function existsByUsername(username: string) {
         return true;
     console.log(response);
     throw new Error(`Unexpected response status: ${response.status}`);
+}
+
+export async function getUserOrderer(token: string) {
+    const response = await fetch(`${process.env.BACKEND_URL}/auth/address`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
+    return await response.json();
 }
