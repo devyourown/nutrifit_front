@@ -5,34 +5,6 @@ import CheckoutSummary from "./checkout-summary";
 import CustomerDetails from "./customer-details";
 import Payment from "./payment";
 import { Cart } from "@/app/lib/types/definition";
-import CartItem from "../cart/cart-item";
-
-const initialCart: Cart = {
-    items: [
-        {
-            id: "1",
-            name: "Product 1",
-            price: 100,
-            quantity: 2,
-            imageUrl: "/sample1.jfif",
-        },
-        {
-            id: "2",
-            name: "Product 2",
-            price: 200,
-            quantity: 1,
-            imageUrl: "/sample1.jfif",
-        },
-    ],
-    checkoutStep: 1,
-    order: {
-        id: "112321213213",
-        subtotal: 400,
-        shipping: 2500,
-        vat: 0,
-        total: 2900,
-    },
-};
 
 interface CheckoutProps {
     cart: Cart;

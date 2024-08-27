@@ -10,6 +10,7 @@ type CartSidebarProps = {
     isOpen: boolean;
     onClose: () => void;
     onQuantityChange: (itemId: string, quantity: number) => void;
+    onRemoveItem: (itemId: string) => void;
 };
 
 export default function CartSidebar({
@@ -17,6 +18,7 @@ export default function CartSidebar({
     isOpen,
     onClose,
     onQuantityChange,
+    onRemoveItem
 }: CartSidebarProps) {
     const calculateSubtotal = () => {
         return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -41,7 +43,7 @@ export default function CartSidebar({
 
                 <div className="p-4 space-y-4">
                     {items.map((item) => (
-                        <div key={item.id} className="flex items-center">
+                        <div key={item.id} className="flex items-center border-b pb-4">
                             <Image
                                 src={item.imageUrl}
                                 alt={item.name}
@@ -50,12 +52,22 @@ export default function CartSidebar({
                                 className="object-cover rounded"
                             />
                             <div className="ml-4 flex-1">
+                                <div className="flex justify-between items-start">
+                                    <div>
                                 <h3 className="text-sm font-medium">
                                     {item.name}
                                 </h3>
                                 <p className="text-sm text-gray-500">
                                     {item.price.toLocaleString("ko-KR")}원
                                 </p>
+                                </div>
+                                <button
+                                        onClick={() => onRemoveItem(item.id)}
+                                        className="text-gray-500 hover:text-red-500"
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
                                 <div className="flex items-center mt-2">
                                     <button
                                         onClick={() =>

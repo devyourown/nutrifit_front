@@ -13,7 +13,11 @@ export async function POST(req: NextRequest) {
     const item = cart.items.find(item => item.id === productId.toString());
     if (item) {
         // 이미 카트에 있는 경우, 수량을 증가시킵니다.
-        item.quantity += quantity;
+        if (quantity === 1) {
+            item.quantity += 1;
+        } else {
+            item.quantity = quantity;
+        }
         cart.items.filter(item => item.quantity > 0);
     } else {
         // 카트에 없는 경우, 상품을 추가합니다.
@@ -33,4 +37,12 @@ export async function POST(req: NextRequest) {
     
     // 상태 코드와 함께 응답을 반환합니다.
     return NextResponse.json({ success: true }, { status: 201 });
+}
+
+export async function DELETE(req: NextRequest) {
+    const { userId, productId } = await req.json();
+    const cart: Cart = await getCart(userId);
+    cart.items = cart.items.filter(item => item.id !== productId.toString());
+    await saveCart(userId, cart);
+    return NextResponse.json({ success: true}, {status: 203});
 }

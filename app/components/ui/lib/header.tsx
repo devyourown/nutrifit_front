@@ -8,6 +8,7 @@ import { CiLogout } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { Cart, CartItem } from "@/app/lib/types/definition";
 import { generateUniqueId } from "@/app/lib/generator";
+import { changeItemQuantity, deleteItem } from "@/app/lib/trigger";
 
 export default function Header() {
     const [username, setUsername] = useState('');
@@ -52,12 +53,20 @@ export default function Header() {
         setIsCartOpen(!isCartOpen);
     };
 
-    const handleQuantityChange = (itemId: string, quantity: number) => {
+    const handleQuantityChange = (id: string, quantity: number) => {
         setCartItems((prevItems) =>
-            prevItems!.map((item) =>
-                item.id === itemId ? { ...item, quantity } : item
+            prevItems.map((item) =>
+                item.id === id ? { ...item, quantity } : item
             )
         );
+        const userId = localStorage.getItem('id');
+        changeItemQuantity(userId!, id, quantity);
+    };
+
+    const handleRemoveItem = (id: string) => {
+        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+        const userId = localStorage.getItem('id');
+        deleteItem(userId!, id);
     };
 
     const logout = () => {
@@ -73,6 +82,7 @@ export default function Header() {
                 isOpen={isCartOpen}
                 onClose={handleCartToggle}
                 onQuantityChange={handleQuantityChange}
+                onRemoveItem={handleRemoveItem}
             />
             <div className="bg-gray-100 py-2">
                 <div className="container mx-auto flex justify-end items-center space-x-4 text-gray-700">

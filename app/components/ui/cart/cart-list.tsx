@@ -9,11 +9,11 @@ type CartListProps = {
     onRemove: (id: string) => void;
 };
 
-const CartList: React.FC<CartListProps> = ({
+export default function CartList({
     items,
     onQuantityChange,
     onRemove,
-}) => {
+}: CartListProps) {
     return (
         <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
@@ -36,5 +36,3 @@ const CartList: React.FC<CartListProps> = ({
         </div>
     );
 };
-
-export default CartList;

@@ -14,13 +14,13 @@ interface PaymentProps {
 type PaymentMethod = "CARD" | "TRANSFER" | "VIRTUAL_ACCOUNT"
 
 export default function Payment({ steps, order, items }: PaymentProps) {
-    const [selectedPayment, setSelectedPayment] = useState("CARD");
+    const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>("CARD");
 
     const handlePaymentChange = (event: any) => {
         setSelectedPayment(event.target.value);
     };
 
-    const handleCreditPayment = async () => {
+    const handlePayment = async () => {
         const response = await PortOne.requestPayment({
             storeId: "store-e4038486-8d83-41a5-acf1-844a009e0d94",
             paymentId: order.id,
@@ -31,8 +31,7 @@ export default function Payment({ steps, order, items }: PaymentProps) {
             totalAmount: order.total,
             currency: "CURRENCY_KRW",
             channelKey: "channel-key-4ca6a942-3ee0-48fb-93ef-f4294b876d28",
-            payMethod: "CARD",
-            card: {},
+            payMethod: selectedPayment,
             redirectUrl: "https://sdk-playground.portone.io/",
         });
         if (response?.code != null) {
@@ -48,7 +47,7 @@ export default function Payment({ steps, order, items }: PaymentProps) {
                 <div className="space-y-4">
                     <label
                         className={`flex items-center p-4 border rounded-md cursor-pointer ${
-                            selectedPayment === "creditCard"
+                            selectedPayment === "CARD"
                                 ? "border-blue-500 bg-blue-50"
                                 : "border-gray-300"
                         }`}
@@ -56,10 +55,9 @@ export default function Payment({ steps, order, items }: PaymentProps) {
                         <input
                             type="radio"
                             name="paymentMethod"
-                            value="creditCard"
-                            checked={selectedPayment === "creditCard"}
+                            value="CARD"
+                            checked={selectedPayment === "CARD"}
                             onChange={handlePaymentChange}
-                            onClick={handleCreditPayment}
                             className="form-radio text-blue-500"
                         />
                         <span className="ml-2 text-gray-700">신용카드</span>
@@ -70,7 +68,7 @@ export default function Payment({ steps, order, items }: PaymentProps) {
 
                     <label
                         className={`flex items-center p-4 border rounded-md cursor-pointer ${
-                            selectedPayment === "bankTransfer"
+                            selectedPayment === "TRANSFER"
                                 ? "border-blue-500 bg-blue-50"
                                 : "border-gray-300"
                         }`}
@@ -78,8 +76,8 @@ export default function Payment({ steps, order, items }: PaymentProps) {
                         <input
                             type="radio"
                             name="paymentMethod"
-                            value="bankTransfer"
-                            checked={selectedPayment === "bankTransfer"}
+                            value="TRANSFER"
+                            checked={selectedPayment === "TRANSFER"}
                             onChange={handlePaymentChange}
                             className="form-radio text-blue-500"
                         />
@@ -91,7 +89,7 @@ export default function Payment({ steps, order, items }: PaymentProps) {
 
                     <label
                         className={`flex items-center p-4 border rounded-md cursor-pointer ${
-                            selectedPayment === "directDeposit"
+                            selectedPayment === "VIRTUAL_ACCOUNT"
                                 ? "border-blue-500 bg-blue-50"
                                 : "border-gray-300"
                         }`}
@@ -99,8 +97,8 @@ export default function Payment({ steps, order, items }: PaymentProps) {
                         <input
                             type="radio"
                             name="paymentMethod"
-                            value="directDeposit"
-                            checked={selectedPayment === "directDeposit"}
+                            value="VIRTUAL_ACCOUNT"
+                            checked={selectedPayment === "VIRTUAL_ACCOUNT"}
                             onChange={handlePaymentChange}
                             className="form-radio text-blue-500"
                         />
@@ -109,6 +107,14 @@ export default function Payment({ steps, order, items }: PaymentProps) {
                             <TbPigMoney />
                         </span>
                     </label>
+                </div>
+                <div className="mt-6">
+                    <button
+                        onClick={handlePayment}
+                        className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                    >
+                        결제하기
+                    </button>
                 </div>
             </div>
         </>
