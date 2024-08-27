@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import Checkout from "../components/ui/checkout/checkout";
 import { Cart } from "../lib/types/definition";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+    const router = useRouter();
     const [cart, setCart] = useState<Cart>();
     const [loading, setLoading] = useState(true);
     useEffect(() => {
@@ -12,6 +14,11 @@ export default function Page() {
             const userId = localStorage.getItem("id");
             const response = await fetch(`/api/cart?id=${userId}`);
             const cartData: Cart = await response.json();
+            if (cartData === null) {
+                alert("장바구니가 비었습니다. 다시 시도해 주세요.");
+                router.push('/');
+                return;
+            }
             setCart(cartData);
             setLoading(false);
         };
