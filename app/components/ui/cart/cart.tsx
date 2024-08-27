@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import OrderSummary from "./order-summary";
 import CartList from "./cart-list";
 import { CartItem } from "@/app/lib/types/definition";
+import { changeItemQuantity, deleteItem } from "@/app/lib/trigger";
 
 
 interface CartProps {
@@ -19,10 +20,14 @@ export default function Cart({items}: CartProps) {
                 item.id === id ? { ...item, quantity } : item
             )
         );
+        const userId = localStorage.getItem('id');
+        changeItemQuantity(userId!, id, quantity);
     };
 
     const handleRemoveItem = (id: string) => {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+        const userId = localStorage.getItem('id');
+        deleteItem(userId!, id);
     };
 
     const calculateSubtotal = () => {

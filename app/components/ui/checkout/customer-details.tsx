@@ -13,6 +13,5 @@ export default function CustomerDetails({
     orderer,
     setSteps
 }: CustomerDetailsProps) {
-    console.log(steps);
     return steps === 1 ? <DetailForm steps={steps} orderer={orderer} setSteps={setSteps}/> : <DetailReview steps={steps} orderer={orderer} setSteps={setSteps}/>;
 }

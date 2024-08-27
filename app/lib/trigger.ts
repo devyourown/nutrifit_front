@@ -17,6 +17,17 @@ export async function changeItemQuantity(userId: string, productId: string, quan
     return response;
 }
 
+export async function deleteItem(userId: string, productId: string) {
+    const response = await fetch('/api/cart/product', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId, userId: userId}),
+    });
+    return response;
+}
+
 export async function addOrderToCart(userId: string, order: Order) {
     const response = await fetch('/api/cart/order', {
         method: 'POST',
