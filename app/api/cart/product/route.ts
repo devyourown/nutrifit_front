@@ -13,9 +13,7 @@ export async function POST(req: NextRequest) {
     const item = cart.items.find(item => item.id === productId.toString());
     if (item) {
         // 이미 카트에 있는 경우, 수량을 증가시킵니다.
-        if (quantity === 1) {
-            item.quantity += 1;
-        } else {
+        if (quantity !== 1) {
             item.quantity = quantity;
         }
         cart.items.filter(item => item.quantity > 0);
