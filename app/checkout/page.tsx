@@ -14,7 +14,7 @@ export default function Page() {
             const userId = localStorage.getItem("id");
             const response = await fetch(`/api/cart?id=${userId}`);
             const cartData: Cart = await response.json();
-            if (cartData === null) {
+            if (cartData.items.length === 0) {
                 alert("장바구니가 비었습니다. 다시 시도해 주세요.");
                 router.push('/');
                 return;
