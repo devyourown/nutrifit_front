@@ -1,9 +1,5 @@
 import { existsByUsername } from "./api/user";
 
-export enum NicknameCheckResult {
-    NOT_MATCHED,
-    
-}
 
 export async function checkNickname(nickname: string) {
     const usernameRegex = new RegExp('^[a-zA-Z가-힣0-9]+$');

@@ -1,5 +1,5 @@
 export async function existsByUsername(username: string) {
-    const response = await fetch(`${process.env.BACKEND_URL}/auth/${username}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/${username}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -9,8 +9,7 @@ export async function existsByUsername(username: string) {
         return false;
     if (response.status === 409)
         return true;
-    console.log(response);
-    throw new Error(`Unexpected response status: ${response.status}`);
+    return false;
 }
 
 export async function getUserOrderer(token: string) {

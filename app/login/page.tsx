@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { handleOAuthLogin } from "../lib/auth";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -14,7 +15,7 @@ export default function SignupPage() {
                 router.push("/");
             } else if (event.data && event.data.code) {
                 // 받은 code를 사용해 콜백 페이지로 리디렉션
-                router.push(`/auth/callback/${event.data.provider}?code=${event.data.code}`);
+                router.push(`/auth/callback/${event.data.provider}?code=${event.data.code}${event.data.state ? '&state='+event.data.state : ''}`);
             }
         };
 
@@ -25,36 +26,6 @@ export default function SignupPage() {
         };
     }, [router]);
 
-    const handleOAuthLogin = (provider: string) => {
-        let oauthUrl = "";
-    
-        switch (provider) {
-          case "google":
-            oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=http://localhost:3000/auth/callback/google&response_type=code&scope=email profile`;
-            break;
-          case "facebook":
-            oauthUrl = `https://www.facebook.com/v11.0/dialog/oauth?client_id=YOUR_FACEBOOK_CLIENT_ID&redirect_uri=http://localhost:3000/auth/callback/facebook&response_type=code&scope=email`;
-            break;
-          case "naver":
-            oauthUrl = `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&redirect_uri=http://localhost:3000/auth/callback/naver&response_type=code&scope=email profile`;
-            break;
-          default:
-            break;
-        }
-    
-        // 팝업으로 OAuth 인증 요청
-        const popup = window.open(
-          oauthUrl,
-          "_blank",
-          "width=500,height=600"
-        );
-
-        const checkPopup = setInterval(() => {
-            if (!popup || popup.closed) {
-                clearInterval(checkPopup);
-            }
-        }, 500);
-      };
     const [showEmailForm, setShowEmailForm] = useState(false);
 
     const handleEmailSignin = () => {
@@ -87,13 +58,14 @@ export default function SignupPage() {
                             구글 로그인
                         </button>
 
-                        <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                        <button className="flex items-center justify-center w-full p-2 mb-4 bg-[#FEE500] rounded-md hover:bg-yellow-300"
+                        onClick={() => handleOAuthLogin("kakao")}>
                             <img
-                                src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                                src="/kakao_logo.png"
                                 alt="Facebook Logo"
                                 className="w-5 h-5 mr-2"
                             />
-                            페이스북 로그인
+                            카카오 로그인
                         </button>
 
                         <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-green-500 rounded-md hover:bg-green-600"

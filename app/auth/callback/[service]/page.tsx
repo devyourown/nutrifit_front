@@ -5,16 +5,18 @@ import { useRouter } from 'next/navigation';
 import { checkNickname } from '@/app/lib/checker';
 import { initCartWithDB } from '@/app/lib/trigger';
 
-export default function Page() {
+export default function Page({params}: { params: {service: string}}) {
     const router = useRouter();
     const [username, setUsername] = useState('');
-    const [jwt, setJwt] = useState(localStorage.getItem('jwt'));
+    const [jwt, setJwt] = useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
+        setJwt(localStorage.getItem('jwt')!);
         const queryParams = new URLSearchParams(window.location.search);
         const code = queryParams.get('code');
-        const provider = "google"
+        const state = queryParams.get('state');
+        const provider = params.service;
 
         // 부모 창으로 데이터를 전송
         if (!window.opener && jwt) {
@@ -24,19 +26,22 @@ export default function Page() {
             window.opener.postMessage({ jwt }, "*");
             window.close();
         } else if (window.opener) {
-            window.opener.postMessage({ code, provider }, "*");
+            window.opener.postMessage({ code, provider, state }, "*");
             window.close();  // 팝업 창을 닫음
         }
 
         const checkUserStatus = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth/google/check`, {
+                
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth/${provider}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ code }),
+                    body: JSON.stringify({ code, state }),
                 });
+
+                console.log(response);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -70,17 +75,20 @@ export default function Page() {
         }
         const email = localStorage.getItem('email');
         if (!username || !email) {
+            alert('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.')
+            router.push('/login');
             return;
         }
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth/google`, {
-                method: 'POST',
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth/username`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, username }),
             });
+
 
             if (response.ok) {
                 const data = await response.json();
