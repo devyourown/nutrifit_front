@@ -1,10 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { handleOAuthLogin } from "../lib/auth";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+    const router = useRouter();
     const [showEmailForm, setShowEmailForm] = useState(false);
+
+    useEffect(() => {
+        // 팝업 창에서 오는 메시지 처리
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data.jwt) {
+                router.push("/");
+            } else if (event.data && event.data.code) {
+                // 받은 code를 사용해 콜백 페이지로 리디렉션
+                router.push(`/auth/callback/${event.data.provider}?code=${event.data.code}${event.data.state ? '&state='+event.data.state : ''}`);
+            }
+        };
+
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        };
+    }, [router]);
 
     const handleEmailSignup = () => {
         setShowEmailForm(true);
@@ -28,31 +49,34 @@ export default function SignupPage() {
 
                 {!showEmailForm && (
                     <>
-                        <button className="flex items-center justify-center w-full p-2 mb-4 border border-gray-300 rounded-md hover:bg-gray-100">
+                        <button className="flex items-center justify-center w-full p-2 mb-4 border border-gray-300 rounded-md hover:bg-gray-100"
+                        onClick={() => handleOAuthLogin('google')}>
                             <img
                                 src="/google_logo.svg"
                                 alt="Google Logo"
                                 className="w-5 h-5 mr-2"
                             />
-                            구글로 회원가입
+                            구글 회원가입
                         </button>
 
-                        <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                        <button className="flex items-center justify-center w-full p-2 mb-4 bg-[#FEE500] rounded-md hover:bg-yellow-300"
+                        onClick={() => handleOAuthLogin("kakao")}>
                             <img
-                                src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                                src="/kakao_logo.png"
                                 alt="Facebook Logo"
                                 className="w-5 h-5 mr-2"
                             />
-                            페이스북으로 회원가입
+                            카카오 회원가입
                         </button>
 
-                        <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-green-500 rounded-md hover:bg-green-600">
+                        <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-green-500 rounded-md hover:bg-green-600"
+                        onClick={() => handleOAuthLogin("naver")}>
                             <img
                                 src="/naver_logo.png"
                                 alt="Naver Logo"
                                 className="w-5 h-5 mr-2"
                             />
-                            네이버로 회원가입
+                            네이버 회원가입
                         </button>
 
                         <div className="flex items-center justify-center my-4">
