@@ -23,7 +23,7 @@ export type Option = {
 export type OrderItemDto = {
     productId: number;
     quantity: number;
-    totalAmount: number;
+    price: number;
     name: string;
     imageUrl: string;
 };
@@ -33,6 +33,7 @@ export type OrderDto = {
     orderDate: string;
     totalAmount: number;
     orderItems: OrderItemDto[];
+    status: string;
 };
 
 export type PaymentDto = {
@@ -150,3 +151,15 @@ export type Orderer = {
     addressDetail: string;
     cautions: string;
 };
+
+export type PointDto = {
+    points: number;
+    transactions: PointTransactionDto[]
+}
+
+export type PointTransactionDto = {
+    type: "REWARD" | "USE" | "BURN";
+    description: string;
+    whenToBurn: string;
+    point: number;
+}
