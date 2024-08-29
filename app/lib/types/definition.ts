@@ -138,7 +138,6 @@ export type Order = {
     id: string;
     subtotal: number;
     shipping: number;
-    vat?: number;
     total: number;
 };
 

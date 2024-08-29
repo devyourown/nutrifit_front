@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Checkout from "../components/ui/checkout/checkout";
 import { Cart } from "../lib/types/definition";
 import { useRouter } from "next/navigation";
+import CheckoutSkeleton from "../components/skeleton/checkout/checkout";
 
 export default function Page() {
     const router = useRouter();
@@ -19,11 +20,16 @@ export default function Page() {
                 router.push('/');
                 return;
             }
+            if (!cartData.order) {
+                alert('잘못된 접근입니다. 다시 시도해 주세요.');
+                router.push('/');
+                return;
+            }
             setCart(cartData);
             setLoading(false);
         };
         setCartWithId();
     }, []);
 
-    return loading ? <p>로딩 중...</p> : <Checkout cart={cart!} />;
+    return loading ? <CheckoutSkeleton/> : <Checkout cart={cart!} />;
 }
