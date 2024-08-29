@@ -1,5 +1,7 @@
-import { CartItem, Order } from "@/app/lib/types/definition";
+import { checkPayment, completePayment } from "@/app/lib/api/payment";
+import { CartItem, Order, Orderer } from "@/app/lib/types/definition";
 import PortOne from "@portone/browser-sdk/v2";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BsCreditCardFill } from "react-icons/bs";
 import { FaMoneyCheckAlt } from "react-icons/fa";
@@ -9,11 +11,13 @@ interface PaymentProps {
     order: Order;
     steps: number;
     items: CartItem[];
+    orderer: Orderer;
 }
 
 type PaymentMethod = "CARD" | "TRANSFER" | "VIRTUAL_ACCOUNT"
 
-export default function Payment({ steps, order, items }: PaymentProps) {
+export default function Payment({ steps, order, items, orderer }: PaymentProps) {
+    const router = useRouter();
     const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>("CARD");
 
     const handlePaymentChange = (event: any) => {
@@ -21,8 +25,9 @@ export default function Payment({ steps, order, items }: PaymentProps) {
     };
 
     const handlePayment = async () => {
+        console.log(order.id)
         const response = await PortOne.requestPayment({
-            storeId: "store-e4038486-8d83-41a5-acf1-844a009e0d94",
+            storeId: "store-9218e77d-05ff-4609-ab0c-ec6b7706ed9d",
             paymentId: order.id,
             orderName: items.reduce((acc, cur, index) => {
                 if (index === 0) return cur.name;
@@ -30,12 +35,27 @@ export default function Payment({ steps, order, items }: PaymentProps) {
             }, " ")!,
             totalAmount: order.total,
             currency: "CURRENCY_KRW",
-            channelKey: "channel-key-4ca6a942-3ee0-48fb-93ef-f4294b876d28",
+            channelKey: "channel-key-35a0ddd7-5b51-49a7-81ea-e7fb5773d551",
             payMethod: selectedPayment,
-            redirectUrl: "https://sdk-playground.portone.io/",
+            redirectUrl: `http://localhost:3000/checkout/complete/${order.id}`,
         });
+        console.log(order.id);
+        console.log(response);
         if (response?.code != null) {
             return alert(response.message);
+        }
+        const result = await checkPayment({orderId: order.id, 
+            total: order.total, paymentMethod: selectedPayment,
+            paymentId: response?.paymentId!, orderItems: items, orderer: orderer,
+            subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping 
+        });
+        console.log(result);
+        if (result) {
+            //cart를 정리하고 결제 완료 페이지로 이동
+            await completePayment(items.map(item => item.id));
+            router.push(`/checkout/complete/${order.id}`);
+        } else {
+            alert('오류가 발생했습니다. 다시 시도해 주세요.');
         }
     };
     return steps === 1 ? (

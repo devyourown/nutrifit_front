@@ -51,7 +51,7 @@ export default function Cart({items}: CartProps) {
                 <div className="w-full lg:w-1/3">
                     <OrderSummary
                         subtotal={calculateSubtotal()}
-                        shipping={3000}
+                        shipping={0}
                     />
                 </div>
             </div>

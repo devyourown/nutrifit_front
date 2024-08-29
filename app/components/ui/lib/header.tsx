@@ -64,7 +64,7 @@ export default function Header() {
     };
 
     const handleRemoveItem = (id: string) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+        setCartItems((prevItems) => prevItems.filter((item) => item.id.toString() !== id));
         const userId = localStorage.getItem('id');
         deleteItem(userId!, id);
     };

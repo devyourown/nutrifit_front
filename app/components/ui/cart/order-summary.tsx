@@ -25,7 +25,7 @@ export default function OrderSummary({
             router.push('/');
             return;
         }
-        const orderId = generateUniqueId();
+        const orderId = 'payment-'+generateUniqueId();
         const response = await addOrderToCart(userId, {id: orderId, subtotal, shipping, total});
         if (!response.ok) {
             alert("오류가 발생했습니다. 다시 시도해 주세요.");

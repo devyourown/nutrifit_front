@@ -8,9 +8,10 @@ interface DetailFormProps {
     steps: number;
     orderer: Orderer;
     setSteps: (steps: number) => void;
+    setOrderer: (orderer: Orderer) => void;
 }
 
-export default function DetailForm({steps, orderer, setSteps}: DetailFormProps) {
+export default function DetailForm({steps, orderer, setSteps, setOrderer}: DetailFormProps) {
     const router = useRouter();
     const openPostCode = useDaumPostcodePopup();
     function handleAddress() {
@@ -68,6 +69,7 @@ export default function DetailForm({steps, orderer, setSteps}: DetailFormProps) 
             addressDetail: formData.addressDetail,
             cautions: formData.cautions
         }
+        setOrderer(orderer);
         const response = await addOrdererToCart(userId, orderer);
         if (!response.ok) {
             alert("오류가 발생했습니다. 다시 시도해 주세요.");
