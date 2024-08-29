@@ -37,13 +37,16 @@ export type OrderDto = {
 };
 
 export type PaymentDto = {
-    orderId: number;
-    amount: number;
+    orderId: string;
+    subtotal: number;
+    discount: number;
+    shippingFee: number;
+    total: number;
     paymentMethod: string;
-    impUid: string;
-    orderItems: OrderDto[];
-    shippingDto: ShippingDto;
-    paymentDate: String;
+    paymentId: string;
+    orderItems: CartItemDto[];
+    orderer: Orderer;
+    paymentDate?: string;
     couponId?: number;
     usedPoints?: number;
 };
@@ -88,7 +91,7 @@ export type UserDto = {
 export type CartItemDto = {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     price: number;
     imageUrl: string;
     quantity: number;

@@ -1,19 +1,11 @@
+import { getCart, saveCart } from "@/app/lib/cache/data";
+import { Cart } from "@/app/lib/types/definition";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const { paymentId, code, total } = await req.json();
-    const paymentResponse = await fetch(
-        `https://api.portone.io/payments/${paymentId}`,
-        {
-            headers: {
-                Authorization: `PortOne ${process.env.PORTONE_API_SECRET}`,
-            },
-        }
-    );
-    const payment = await paymentResponse.json();
-    if (code === null && paymentResponse.ok && total === payment.amount.total) {
-        return NextResponse.json({ success: true }, { status: 200 });
-    } else {
-        return NextResponse.json({ success: false, payment }, { status: 401 });
-    }
+    const { userId, items }: {userId: string, items: string[]} = await req.json();
+    const cart: Cart = await getCart(userId);
+    cart.items.filter((item) => !items.includes(item.id));
+    await saveCart(userId, cart);
+    return NextResponse.json({success:true});
 }

@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     if (cart === null) {
         cart = makeEmptyCart();
     }
-    const item = cart.items.find(item => item.id === productId.toString());
+    const item = cart.items.find(item => item.id === productId);
     if (item) {
         // 이미 카트에 있는 경우, 수량을 증가시킵니다.
         if (quantity !== 1) {

@@ -31,5 +31,5 @@ export default function Page() {
         setCartWithId();
     }, []);
 
-    return loading ? <CheckoutSkeleton/> : <Checkout cart={cart!} />;
+    return loading ? <CheckoutSkeleton/> :<Checkout cart={cart!} />;
 }

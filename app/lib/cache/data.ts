@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import { Cart } from "../types/definition";
+import { Cart, CartItem } from "../types/definition";
 
 const redisClient = createClient({
     socket: {
@@ -30,5 +30,13 @@ export async function getCart(id: string) {
     } catch (error) {
         console.error('Getting cart error: ', error);
         return null;
+    }
+}
+
+export async function clearCacheCart(id: string, items: CartItem[]) {
+    try {
+        await redisClient.hDel('cart', id);
+    } catch (error) {
+        console.error('failed to clear cart.');
     }
 }

@@ -1,6 +1,7 @@
 import { changeCheckoutStep } from "@/app/lib/trigger";
 import { Orderer } from "@/app/lib/types/definition";
 import { useRouter } from "next/navigation";
+import CustomerDetailsSkeleton from "../../skeleton/checkout/customer-details";
 
 interface DetailReviewProps {
     orderer: Orderer;
@@ -8,7 +9,7 @@ interface DetailReviewProps {
     setSteps: (steps: number) => void;
 }
 
-export default function DetailReview({ orderer, steps,setSteps }: DetailReviewProps) {
+export default function DetailReview({ orderer, steps, setSteps }: DetailReviewProps) {
     const router = useRouter();
     const lowerSteps = async () => {
         const userId = localStorage.getItem('id');
@@ -26,6 +27,7 @@ export default function DetailReview({ orderer, steps,setSteps }: DetailReviewPr
         setSteps(steps-1);
     }
     return (
+        !orderer ? <CustomerDetailsSkeleton /> :
         <div>
             <h3 className="text-xl font-semibold mb-4">주문 정보를 확인해 주세요.</h3>
             <p>
