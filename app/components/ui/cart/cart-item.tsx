@@ -15,7 +15,7 @@ type CartItemProps = {
     onRemove: (id: string) => void;
 };
 
-const CartItem: React.FC<CartItemProps> = ({
+export default function CartItem({
     id,
     name,
     imageUrl,
@@ -24,7 +24,7 @@ const CartItem: React.FC<CartItemProps> = ({
     options,
     onQuantityChange,
     onRemove,
-}) => {
+}: CartItemProps) {
     const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         onQuantityChange(id, parseInt(e.target.value));
     };
@@ -76,5 +76,3 @@ const CartItem: React.FC<CartItemProps> = ({
         </div>
     );
 };
-
-export default CartItem;

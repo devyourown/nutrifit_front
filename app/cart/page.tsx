@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Cart from "../components/ui/cart/cart";
 import { Cart as CartType, CartItem } from "../lib/types/definition";
+import CartSkeleton from "../components/skeleton/cart/cart";
 
 export default function Page() {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -19,5 +20,5 @@ export default function Page() {
         setCart();
     }, []);
 
-    return loading ? <p>로딩 중...</p> : <Cart items={cartItems}/>;
+    return loading ? <CartSkeleton/>: <Cart items={cartItems}/>;
 }
