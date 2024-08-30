@@ -25,7 +25,6 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
     };
 
     const handlePayment = async () => {
-        console.log(order.id)
         const response = await PortOne.requestPayment({
             storeId: "store-9218e77d-05ff-4609-ab0c-ec6b7706ed9d",
             paymentId: order.id,
@@ -39,14 +38,12 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
             payMethod: selectedPayment,
             redirectUrl: `http://localhost:3000/checkout/complete/${order.id}`,
         });
-        console.log(order.id);
-        console.log(response);
         if (response?.code != null) {
             return alert(response.message);
         }
         const result = await checkPayment({orderId: order.id, 
             total: order.total, paymentMethod: selectedPayment,
-            paymentId: response?.paymentId!, orderItems: items, orderer: orderer,
+            paymentId: response?.paymentId!, orderItems: items, ordererDto: orderer,
             subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping 
         });
         console.log(result);

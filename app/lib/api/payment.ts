@@ -16,8 +16,8 @@ export async function checkPayment(paymentDto: PaymentDto) {
             shippingFee: paymentDto.shippingFee,
             paymentMethod: paymentDto.paymentMethod,
             paymentId: paymentDto.paymentId,
-            cartItems: paymentDto.orderItems,
-            ordererDto: paymentDto.orderer,
+            orderItems: paymentDto.orderItems,
+            ordererDto: paymentDto.ordererDto,
             couponId: paymentDto.couponId,
             usedPoints: paymentDto.usedPoints 
         }),
