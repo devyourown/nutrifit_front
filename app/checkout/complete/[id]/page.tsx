@@ -38,6 +38,7 @@ export default function PaymentSuccessPage({params}: {params: {id: string}}) {
         const getPayment = async () => {
             const response = await fetchPaymentById(params.id);
             if (response) {
+                console.log(response);
                 setPayment(response);
                 setLoading(false);
             } else {

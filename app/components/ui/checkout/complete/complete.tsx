@@ -21,7 +21,7 @@ export default function Complete({payment}: CompleteProps) {
 
                 <Payment id={payment.paymentId} date={payment.paymentDate!} method={payment.paymentMethod} />
 
-                <Shipping orderer={payment.orderer}/>
+                <Shipping orderer={payment.ordererDto}/>
 
                 <div className="flex justify-between">
                     <Link href="/shop">
