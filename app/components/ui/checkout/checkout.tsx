@@ -4,15 +4,15 @@ import React, { useState } from "react";
 import CheckoutSummary from "./checkout-summary";
 import CustomerDetails from "./customer-details";
 import Payment from "./payment";
-import { Cart, Orderer } from "@/app/lib/types/definition";
+import { Checkout as CheckoutType, Orderer } from "@/app/lib/types/definition";
 
 interface CheckoutProps {
-    cart: Cart;
+    checkout: CheckoutType;
 }
 
-export default function Checkout({ cart }: CheckoutProps) {
-    const [steps, setSteps] = useState(cart.checkoutStep);
-    const [orderer, setOrderer] = useState<Orderer>(cart.orderer!);
+export default function Checkout({ checkout }: CheckoutProps) {
+    const [steps, setSteps] = useState(checkout.step);
+    const [orderer, setOrderer] = useState<Orderer>(checkout.orderer!);
     return (
         <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row gap-6">
@@ -28,13 +28,13 @@ export default function Checkout({ cart }: CheckoutProps) {
                     />
                     <Payment
                         steps={steps}
-                        order={cart.order!}
-                        items={cart.items}
+                        order={checkout.order!}
+                        items={checkout.items}
                         orderer={orderer!}
                     />
                 </div>
                 <div className="flex-shrink-0 w-full md:w-1/3">
-                    <CheckoutSummary items={cart.items} order={cart.order!} />
+                    <CheckoutSummary items={checkout.items} order={checkout.order!} />
                 </div>
             </div>
         </div>

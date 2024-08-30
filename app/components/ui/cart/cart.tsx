@@ -50,6 +50,7 @@ export default function Cart({items}: CartProps) {
                 </div>
                 <div className="w-full lg:w-1/3">
                     <OrderSummary
+                        items={cartItems}
                         subtotal={calculateSubtotal()}
                         shipping={0}
                     />

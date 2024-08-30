@@ -45,7 +45,7 @@ export type PaymentDto = {
     paymentMethod: string;
     paymentId: string;
     orderItems: CartItemDto[];
-    orderer: Orderer;
+    ordererDto: Orderer;
     paymentDate?: string;
     couponId?: number;
     usedPoints?: number;
@@ -128,6 +128,13 @@ export type Cart = {
     };
     order?: Order;
 };
+
+export type Checkout = {
+    items: CartItem[];
+    step: number;
+    orderer?: Orderer;
+    order?: Order;
+}
 
 export type CartItem = {
     id: string;
