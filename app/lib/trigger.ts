@@ -1,4 +1,4 @@
-import { Order, Orderer } from "./types/definition";
+import { CartItem, Checkout, Order, Orderer } from "./types/definition";
 
 export function triggerCartOpen() {
     const event = new CustomEvent("cartUpdated");
@@ -28,19 +28,20 @@ export async function deleteItem(userId: string, productId: string) {
     return response;
 }
 
-export async function addOrderToCart(userId: string, order: Order) {
-    const response = await fetch('/api/cart/order', {
+export async function makeCheckout(userId: string, order: Order, items: CartItem[]) {
+    const checkout: Checkout = {items, order, step:1};
+    const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ order, userId}),
+        body: JSON.stringify({ checkout, userId}),
     });
     return response;
 }
 
-export async function addOrdererToCart(userId: string, orderer: Orderer) {
-    const response = await fetch('/api/cart/orderer', {
+export async function addOrdererToCheckout(userId: string, orderer: Orderer) {
+    const response = await fetch('/api/checkout/orderer', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -51,7 +52,7 @@ export async function addOrdererToCart(userId: string, orderer: Orderer) {
 }
 
 export async function changeCheckoutStep(userId: string, step: number) {
-    const response = await fetch('/api/cart/step', {
+    const response = await fetch('/api/checkout/step', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
     const { userId, items }: {userId: string, items: string[]} = await req.json();
     const cart: Cart = await getCart(userId);
-    cart.items.filter((item) => !items.includes(item.id));
+    cart.items = cart.items.filter((item) => !items.includes(item.id));
     await saveCart(userId, cart);
     return NextResponse.json({success:true});
 }

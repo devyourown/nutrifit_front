@@ -1,17 +1,20 @@
 // components/OrderSummary.tsx
 
 import { generateUniqueId } from "@/app/lib/generator";
-import { addOrderToCart } from "@/app/lib/trigger";
+import { makeCheckout } from "@/app/lib/trigger";
+import { CartItem, Order } from "@/app/lib/types/definition";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 type OrderSummaryProps = {
+    items: CartItem[];
     subtotal: number;
     shipping?: number;
 };
 
 export default function OrderSummary({
+    items,
     subtotal,
     shipping = 0
 }: OrderSummaryProps) {
@@ -25,8 +28,9 @@ export default function OrderSummary({
             router.push('/');
             return;
         }
-        const orderId = 'payment-'+generateUniqueId();
-        const response = await addOrderToCart(userId, {id: orderId, subtotal, shipping, total});
+        const orderId = 'order-'+generateUniqueId();
+        const order: Order = {id: orderId, subtotal, shipping, total};
+        const response = await makeCheckout(userId, order, items);
         if (!response.ok) {
             alert("오류가 발생했습니다. 다시 시도해 주세요.");
             router.push('/');

@@ -1,4 +1,4 @@
-import { addOrdererToCart } from "@/app/lib/trigger";
+import { addOrdererToCheckout } from "@/app/lib/trigger";
 import { Orderer } from "@/app/lib/types/definition";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -70,7 +70,7 @@ export default function DetailForm({steps, orderer, setSteps, setOrderer}: Detai
             cautions: formData.cautions
         }
         setOrderer(orderer);
-        const response = await addOrdererToCart(userId, orderer);
+        const response = await addOrdererToCheckout(userId, orderer);
         if (!response.ok) {
             alert("오류가 발생했습니다. 다시 시도해 주세요.");
             router.push('/');
