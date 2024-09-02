@@ -41,8 +41,6 @@ export default function Page({params}: { params: {service: string}}) {
                     body: JSON.stringify({ code, state }),
                 });
 
-                console.log(response);
-
                 if (response.ok) {
                     const data = await response.json();
                     const username: string = data.username;

@@ -9,8 +9,8 @@ type CartSidebarProps = {
     items: CartItem[];
     isOpen: boolean;
     onClose: () => void;
-    onQuantityChange: (itemId: string, quantity: number) => void;
-    onRemoveItem: (itemId: string) => void;
+    onQuantityChange: (itemId: number, quantity: number) => void;
+    onRemoveItem: (itemId: number) => void;
 };
 
 export default function CartSidebar({

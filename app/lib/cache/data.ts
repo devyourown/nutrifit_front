@@ -42,7 +42,6 @@ export async function clearCacheCart(id: string, items: CartItem[]) {
 }
 
 export async function saveCheckout(id: string, checkout: Checkout) {
-    console.log(checkout);
     await redisClient.hSet(
         "checkout",
         id,

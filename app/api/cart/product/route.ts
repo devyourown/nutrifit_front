@@ -16,12 +16,12 @@ export async function POST(req: NextRequest) {
         if (quantity !== 1) {
             item.quantity = quantity;
         }
-        cart.items.filter(item => item.quantity > 0);
+        cart.items = cart.items.filter(item => item.quantity > 0);
     } else {
         // 카트에 없는 경우, 상품을 추가합니다.
         const product: ProductDto = await fetchProductById(productId);
         const cartItem: CartItem = {
-            id: product.id.toString(),
+            id: product.id,
             name: product.name,
             price: product.discountedPrice,
             quantity: quantity,

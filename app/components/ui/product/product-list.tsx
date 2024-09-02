@@ -15,7 +15,7 @@ export default function ProductList({ products }: ProductListProps) {
     const addToCart = async (productId: number) => {
         setLoading(true);
         const id = localStorage.getItem("id");
-        const response = await changeItemQuantity(id!, productId.toString(), 1);
+        const response = await changeItemQuantity(id!, productId, 1);
         if (response.ok) {
             triggerCartOpen();
         }

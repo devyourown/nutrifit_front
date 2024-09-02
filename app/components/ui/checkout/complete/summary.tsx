@@ -1,4 +1,4 @@
-import { CartItem, PaymentDto } from "@/app/lib/types/definition";
+import { CartItem } from "@/app/lib/types/definition";
 import Image from "next/image";
 import { FaCheckCircle } from "react-icons/fa";
 

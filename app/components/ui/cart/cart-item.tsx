@@ -5,14 +5,14 @@ import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 type CartItemProps = {
-    id: string;
+    id: number;
     name: string;
     imageUrl: string;
     price: number;
     quantity: number;
     options?: string;
-    onQuantityChange: (id: string, quantity: number) => void;
-    onRemove: (id: string) => void;
+    onQuantityChange: (id: number, quantity: number) => void;
+    onRemove: (id: number) => void;
 };
 
 export default function CartItem({

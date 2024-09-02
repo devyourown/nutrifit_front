@@ -28,14 +28,15 @@ export async function checkPayment(paymentDto: PaymentDto) {
     return false;
 }
 
-export async function completePayment(items: string[]) {
+export async function completePayment(items: number[]) {
     const userId = localStorage.getItem('id');
+    const token = localStorage.getItem('token');
     const response = await fetch('/api/payment', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({userId, items})
+        body: JSON.stringify({userId, items, token})
     });
     const result = await response.json();
     return result;

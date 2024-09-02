@@ -1,3 +1,5 @@
+import { CartItemDto } from "../types/definition";
+
 // 장바구니에 아이템 추가
 export async function addItemToCart(token: string, productId: number, quantity: number) {
     try {
@@ -50,6 +52,23 @@ export async function updateCartItemQuantity(token: string, productId: number, q
         throw error;
     }
 };
+
+export async function updateCart(token: string, items: CartItemDto[]) {
+    try {
+        const response = await fetch(`${process.env.BACKEND_URL}/cart`, {
+            method: 'POST',
+            headers: {
+                'Authorization:': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({items})
+        });
+        return await response.json();
+    } catch (error: any) {
+        console.error('Failed to update cart: ', error.response.data);
+        throw error;
+    }
+}
 
 // 장바구니에서 아이템 제거
 export async function removeItemFromCart(token: string, productId: number) {
