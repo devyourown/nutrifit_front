@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Cart, CartItem } from "@/app/lib/types/definition";
 import { generateUniqueId } from "@/app/lib/generator";
 import { changeItemQuantity, deleteItem } from "@/app/lib/trigger";
+import { removeItemFromCart, updateCartItemQuantity } from "@/app/lib/api/cart";
 
 export default function Header() {
     const [username, setUsername] = useState('');
@@ -53,7 +54,7 @@ export default function Header() {
         setIsCartOpen(!isCartOpen);
     };
 
-    const handleQuantityChange = (id: string, quantity: number) => {
+    const handleQuantityChange = (id: number, quantity: number) => {
         setCartItems((prevItems) =>
             prevItems.map((item) =>
                 item.id === id ? { ...item, quantity } : item
@@ -61,16 +62,25 @@ export default function Header() {
         );
         const userId = localStorage.getItem('id');
         changeItemQuantity(userId!, id, quantity);
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            updateCartItemQuantity(token, id, quantity);
+        }
     };
 
-    const handleRemoveItem = (id: string) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id.toString() !== id));
+    const handleRemoveItem = (id: number) => {
+        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
         const userId = localStorage.getItem('id');
         deleteItem(userId!, id);
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            removeItemFromCart(token, id);
+        }
     };
 
     const logout = () => {
         localStorage.clear();
+        localStorage.setItem('id', generateUniqueId());
         setUsername('');
         router.push('/');
     }

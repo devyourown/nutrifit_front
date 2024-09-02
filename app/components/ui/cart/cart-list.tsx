@@ -5,8 +5,8 @@ import { CartItem as Item } from "@/app/lib/types/definition";
 
 type CartListProps = {
     items: Item[];
-    onQuantityChange: (id: string, quantity: number) => void;
-    onRemove: (id: string) => void;
+    onQuantityChange: (id: number, quantity: number) => void;
+    onRemove: (id: number) => void;
 };
 
 export default function CartList({

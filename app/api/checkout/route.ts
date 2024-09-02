@@ -1,4 +1,5 @@
 import { getCheckout, saveCheckout } from "@/app/lib/cache/data";
+import { Checkout } from "@/app/lib/types/definition";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -14,7 +15,13 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
     const { checkout, id } = await req.json();
-    console.log(checkout);
-    await saveCheckout(id, checkout);
+    const existed: Checkout  = await getCheckout(id);
+    if (existed) {
+        existed.items = checkout.items;
+        existed.order = checkout.order;
+        await saveCheckout(id, existed);
+    } else {
+        await saveCheckout(id, checkout);
+    }
     return NextResponse.json({status: 200});
 }

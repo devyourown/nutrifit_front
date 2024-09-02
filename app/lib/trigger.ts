@@ -6,7 +6,7 @@ export function triggerCartOpen() {
 }
 
 
-export async function changeItemQuantity(userId: string, productId: string, quantity: number) {
+export async function changeItemQuantity(userId: string, productId: number, quantity: number) {
     const response = await fetch('/api/cart/product', {
         method: 'POST',
         headers: {
@@ -17,7 +17,7 @@ export async function changeItemQuantity(userId: string, productId: string, quan
     return response;
 }
 
-export async function deleteItem(userId: string, productId: string) {
+export async function deleteItem(userId: string, productId: number) {
     const response = await fetch('/api/cart/product', {
         method: 'DELETE',
         headers: {
@@ -35,7 +35,7 @@ export async function makeCheckout(userId: string, order: Order, items: CartItem
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ checkout, userId}),
+        body: JSON.stringify({ checkout, id:userId}),
     });
     return response;
 }

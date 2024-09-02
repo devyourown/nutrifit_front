@@ -89,7 +89,7 @@ export type UserDto = {
 };
 
 export type CartItemDto = {
-    id: string;
+    id: number;
     name: string;
     description?: string;
     price: number;
@@ -133,11 +133,15 @@ export type Checkout = {
     items: CartItem[];
     step: number;
     orderer?: Orderer;
+    payment?: {
+        method: string;
+        cardNumber: string;
+    };
     order?: Order;
 }
 
 export type CartItem = {
-    id: string;
+    id: number;
     name: string;
     price: number;
     quantity: number;

@@ -32,14 +32,9 @@ function convertDtoToCartItem(dto: CartItemDto): CartItem {
 export async function PUT(req: NextRequest) {
     const { userId, jwt } = await req.json();
     const dbItems: CartItemDto[] = await getCartItems(jwt);
-    const userOrderer: Orderer = await getUserOrderer(jwt);
-    const cart: Cart = await getCart(userId);
+    let cart: Cart = await getCart(userId);
     if (cart === null) {
-        return NextResponse.json({success:false}, {status:403});
-    }
-    if (userOrderer !== null) {
-        cart.orderer = userOrderer;
-        cart.checkoutStep = 2;
+        cart = makeEmptyCart();
     }
     if (dbItems) {
         const newItems = dbItems.map(convertDtoToCartItem);
