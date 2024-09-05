@@ -6,8 +6,8 @@ export default async function page({params}: { params: {id: number}}) {
     const product = await fetchProductById(params.id);
     return (
         <>
-        <ProductDetail product={product}/>
-        <ProductDescribe/>
+            <ProductDetail product={product}/>
+            <ProductDescribe/>
         </>
     )
 }
