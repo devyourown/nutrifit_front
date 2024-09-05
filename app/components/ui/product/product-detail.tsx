@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ProductImageCarousel from "./product-carousel";
 import ProductOptions from "./product-options";
 import { ProductDto } from "@/app/lib/types/definition";
+import { changeItemQuantity, triggerCartOpen } from "@/app/lib/trigger";
 
 interface ProductDetailProps {
   product: ProductDto;
@@ -11,6 +12,17 @@ interface ProductDetailProps {
 
 export default function ProductDetail({product}: ProductDetailProps) {
   const [selectedOption, setSelectedOption] = useState(product.options![0]);
+  const [loading, setLoading] = useState(false);
+
+    const addToCart = async (productId: number) => {
+        setLoading(true);
+        const id = localStorage.getItem("id");
+        const response = await changeItemQuantity(id!, productId, 1);
+        if (response.ok) {
+            triggerCartOpen();
+        }
+        setLoading(false);
+    };
 
   const handleOptionChange = (option: any) => {
     setSelectedOption(option);
@@ -39,7 +51,9 @@ export default function ProductDetail({product}: ProductDetailProps) {
           </p>
 
           <div className="mt-6 flex space-x-4">
-            <button className="bg-blue-600 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-pink-700 transition">
+            <button className="bg-blue-600 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-pink-700 transition"
+            onClick={() => addToCart(product.id)}
+            disabled={loading}>
               장바구니 추가하기
             </button>
           </div>
