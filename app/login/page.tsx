@@ -16,7 +16,7 @@ export default function SignupPage() {
             } else if (event.data && event.data.code) {
                 // 받은 code를 사용해 콜백 페이지로 리디렉션
                 router.push(
-                    `${process.env.DOMAIN}/auth/callback/${event.data.provider}?code=${event.data.code}${event.data.state ? "&state=" + event.data.state : ""}`
+                    `${process.env.NEXT_PUBLIC_DOMAIN}/auth/callback/${event.data.provider}?code=${event.data.code}${event.data.state ? "&state=" + event.data.state : ""}`
                 );
             }
         };
