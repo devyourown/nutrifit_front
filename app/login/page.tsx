@@ -15,7 +15,9 @@ export default function SignupPage() {
                 router.push("/");
             } else if (event.data && event.data.code) {
                 // 받은 code를 사용해 콜백 페이지로 리디렉션
-                router.push(`/auth/callback/${event.data.provider}?code=${event.data.code}${event.data.state ? '&state='+event.data.state : ''}`);
+                router.push(
+                    `${process.env.DOMAIN}/auth/callback/${event.data.provider}?code=${event.data.code}${event.data.state ? "&state=" + event.data.state : ""}`
+                );
             }
         };
 
@@ -48,8 +50,10 @@ export default function SignupPage() {
 
                 {!showEmailForm && (
                     <>
-                        <button className="flex items-center justify-center w-full p-2 mb-4 border border-gray-300 rounded-md hover:bg-gray-100"
-                        onClick={() => handleOAuthLogin('google')}>
+                        <button
+                            className="flex items-center justify-center w-full p-2 mb-4 border border-gray-300 rounded-md hover:bg-gray-100"
+                            onClick={() => handleOAuthLogin("google")}
+                        >
                             <img
                                 src="/google_logo.svg"
                                 alt="Google Logo"
@@ -58,8 +62,10 @@ export default function SignupPage() {
                             구글 로그인
                         </button>
 
-                        <button className="flex items-center justify-center w-full p-2 mb-4 bg-[#FEE500] rounded-md hover:bg-yellow-300"
-                        onClick={() => handleOAuthLogin("kakao")}>
+                        <button
+                            className="flex items-center justify-center w-full p-2 mb-4 bg-[#FEE500] rounded-md hover:bg-yellow-300"
+                            onClick={() => handleOAuthLogin("kakao")}
+                        >
                             <img
                                 src="/kakao_logo.png"
                                 alt="Facebook Logo"
@@ -68,8 +74,10 @@ export default function SignupPage() {
                             카카오 로그인
                         </button>
 
-                        <button className="flex items-center justify-center w-full p-2 mb-4 text-white bg-green-500 rounded-md hover:bg-green-600"
-                        onClick={() => handleOAuthLogin("naver")}>
+                        <button
+                            className="flex items-center justify-center w-full p-2 mb-4 text-white bg-green-500 rounded-md hover:bg-green-600"
+                            onClick={() => handleOAuthLogin("naver")}
+                        >
                             <img
                                 src="/naver_logo.png"
                                 alt="Naver Logo"
