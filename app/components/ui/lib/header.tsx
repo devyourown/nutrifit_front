@@ -150,16 +150,10 @@ export default function Header() {
                             subscribe
                         </Link>
                         <Link
-                            href="/gift-card"
+                            href="/about"
                             className="hover:text-gray-800 transition duration-300"
                         >
-                            gift card
-                        </Link>
-                        <Link
-                            href="/story"
-                            className="hover:text-gray-800 transition duration-300"
-                        >
-                            our story
+                            About Us
                         </Link>
                     </nav>
                 </div>
