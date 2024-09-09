@@ -141,19 +141,19 @@ export default function Header() {
                             href="/shop"
                             className="hover:text-gray-800 transition duration-300"
                         >
-                            shop all
+                            모든 상품
                         </Link>
                         <Link
                             href="/subscription"
                             className="hover:text-gray-800 transition duration-300"
                         >
-                            subscribe
+                            구독 결제
                         </Link>
                         <Link
                             href="/about"
                             className="hover:text-gray-800 transition duration-300"
                         >
-                            About Us
+                            자주 묻는 질문
                         </Link>
                     </nav>
                 </div>
