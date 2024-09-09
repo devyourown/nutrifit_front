@@ -1,5 +1,3 @@
-// components/OrderSummary.tsx
-
 import { generateUniqueId } from "@/app/lib/generator";
 import { makeCheckout } from "@/app/lib/trigger";
 import { CartItem, Order } from "@/app/lib/types/definition";

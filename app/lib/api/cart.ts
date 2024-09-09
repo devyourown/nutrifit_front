@@ -71,14 +71,13 @@ export async function updateCart(token: string, items: CartItemDto[]) {
 // 장바구니에서 아이템 제거
 export async function removeItemFromCart(token: string, productId: number) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cart/items/${productId}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cart/items/${productId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
-        })
-        return await response.json();
+        });
     } catch (error: any) {
         console.error('Failed to get cart items:', error);
         throw error;
