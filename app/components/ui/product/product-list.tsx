@@ -4,6 +4,7 @@ import { changeItemQuantity, triggerCartOpen } from "@/app/lib/trigger";
 import { ProductDto } from "@/app/lib/types/definition";
 import Link from "next/link";
 import { useState } from "react";
+import { FaShoppingCart } from "react-icons/fa";
 
 interface ProductListProps {
     products: ProductDto[];
@@ -48,6 +49,12 @@ export default function ProductList({ products }: ProductListProps) {
                                         </span>
                                     ))}
                             </div>
+                            <button
+                                    className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-lg"
+                                    onClick={() => addToCart(product.id)}
+                                >
+                                    <FaShoppingCart className="text-gray-700 hover:text-gray-500" />
+                                </button>
 
                             <img
                                 src={product.imageUrls[0]}
@@ -103,15 +110,6 @@ export default function ProductList({ products }: ProductListProps) {
                                     </div>
                                 </div>
                             </Link>
-                            <div className="mt-4">
-                                <button
-                                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-pink-700 transition"
-                                    onClick={() => addToCart(product.id)}
-                                    disabled={loading}
-                                >
-                                    {loading ? "추가 중..." : "장바구니 추가"}
-                                </button>
-                            </div>
                         </div>
                     </div>
                 );

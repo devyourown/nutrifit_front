@@ -1,9 +1,6 @@
-import { ProductDto } from "@/app/lib/types/definition";
-
-// 모든 제품을 가져오는 함수
 export async function fetchAllProducts() {
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/products`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
