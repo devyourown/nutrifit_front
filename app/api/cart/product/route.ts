@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     const { userId, productId } = await req.json();
     const cart: Cart = await getCart(userId);
-    cart.items = cart.items.filter(item => item.id !== productId.toString());
+    cart.items = cart.items.filter(item => item.id !== productId);
     await saveCart(userId, cart);
     return NextResponse.json({ success: true}, {status: 203});
 }

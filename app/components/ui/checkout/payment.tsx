@@ -1,4 +1,4 @@
-import { checkPayment, completePayment } from "@/app/lib/api/payment";
+import { checkPayment, checkPaymentWithoutMember, completePayment } from "@/app/lib/api/payment";
 import { CartItem, Order, Orderer } from "@/app/lib/types/definition";
 import PortOne from "@portone/browser-sdk/v2";
 import { useRouter } from "next/navigation";
@@ -41,11 +41,21 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
         if (response?.code != null) {
             return alert(response.message);
         }
-        const result = await checkPayment({orderId: order.id, 
-            total: order.total, paymentMethod: selectedPayment,
-            paymentId: response?.paymentId!, orderItems: items, ordererDto: orderer,
-            subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping 
-        });
+        const token = localStorage.getItem('jwt');
+        let result;
+        if (token) {
+            result = await checkPayment({orderId: order.id, 
+                total: order.total, paymentMethod: selectedPayment,
+                paymentId: response?.paymentId!, orderItems: items, ordererDto: orderer,
+                subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping 
+            }, token);
+        } else {
+            result = await checkPaymentWithoutMember({orderId: order.id, 
+                total: order.total, paymentMethod: selectedPayment,
+                paymentId: response?.paymentId!, orderItems: items, ordererDto: orderer,
+                subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping 
+            }, orderer.ordererPhone);
+        }
         console.log(result);
         if (result) {
             //cart를 정리하고 결제 완료 페이지로 이동

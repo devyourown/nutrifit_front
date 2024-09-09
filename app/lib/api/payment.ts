@@ -1,7 +1,6 @@
 import { PaymentDto } from "../types/definition";
 
-export async function checkPayment(paymentDto: PaymentDto) {
-    const token = localStorage.getItem('jwt')!;
+export async function checkPayment(paymentDto: PaymentDto, token: string) {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment`, {
         method: 'POST',
         headers: {
@@ -20,6 +19,33 @@ export async function checkPayment(paymentDto: PaymentDto) {
             ordererDto: paymentDto.ordererDto,
             couponId: paymentDto.couponId,
             usedPoints: paymentDto.usedPoints 
+        }),
+    });
+    if (response.ok) {
+        return true;
+    }
+    return false;
+}
+
+export async function checkPaymentWithoutMember(paymentDto: PaymentDto, phone: string) {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            orderId:paymentDto.orderId,
+            total: paymentDto.total,
+            subtotal: paymentDto.subtotal,
+            discount: paymentDto.discount,
+            shippingFee: paymentDto.shippingFee,
+            paymentMethod: paymentDto.paymentMethod,
+            paymentId: paymentDto.paymentId,
+            orderItems: paymentDto.orderItems,
+            ordererDto: paymentDto.ordererDto,
+            couponId: paymentDto.couponId,
+            usedPoints: paymentDto.usedPoints,
+            phoneNumber: phone
         }),
     });
     if (response.ok) {
