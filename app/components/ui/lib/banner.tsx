@@ -13,7 +13,7 @@ export default function Banner() {
           새로운 제품 출시!
         </h1>
         <p className="text-lg md:text-2xl mb-6">
-          여러분에게 맞는 제품을 발견해 보세요!
+          다이어터분들을 위한 제품을 준비했습니다
         </p>
         <Link href="/shop" className="bg-blue-600 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-pink-700 transition">
           둘러보기
