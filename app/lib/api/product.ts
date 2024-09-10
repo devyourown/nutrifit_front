@@ -1,6 +1,6 @@
-export async function fetchAllProducts() {
+export async function fetchAllProducts(page: number) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products?page=${page}&size=6`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,9 +30,9 @@ export async function fetchProductById(productId: number) {
 }
 
 // 특정 카테고리로 제품을 가져오는 함수
-export async function fetchProductsByCategory(category: string) {
+export async function fetchProductsByCategory(category: string, page: number) {
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/products/category/${category}`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/products/category/${category}?page=${page}&size=6`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

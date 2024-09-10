@@ -2,33 +2,19 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
+import { ProductDetailDto, ReviewDto } from '@/app/lib/types/definition';
+import { getProductReviews } from '@/app/lib/api/review';
 
-const product = {
-    id: 1,
-    name: 'Example Product',
-    description: 'This is a great product.',
-    price: 10000,
-    imageUrl: '/path-to-product-image.jpg',
-    detailedImages: [
-        '/path-to-detailed-image1.jpg',
-        '/path-to-detailed-image2.jpg',
-    ],
-    reviews: [
-        { id: 1, user: 'User1', rating: 5, comment: 'Great product!' },
-        { id: 2, user: 'User2', rating: 4, comment: 'Very good, but could be improved.' },
-    ],
-    qna: [
-        { id: 1, question: 'Is this product durable?', answer: 'Yes, it is made of high-quality materials.' },
-        { id: 2, question: 'Does it come in different colors?', answer: 'Currently, it is only available in the color shown.' },
-    ],
-    shippingAndStorage: {
-        shippingInfo: 'Ships within 3-5 business days.',
-        storageInfo: 'Store in a cool, dry place.',
-    },
-};
+interface ProductDetailProps {
+    id: number;
+    detail: ProductDetailDto;
+}
 
-export default function ProductDetailPage() {
+export default function ProductDetailPage({id, detail}: ProductDetailProps) {
     const [activeTab, setActiveTab] = useState('info');
+    const [reviewPage, setReviewPage] = useState(0);
+    const [reviewLoading, setReviewLoading] = useState(true);
+    const [reviews, setReviews] = useState<ReviewDto[]>();
 
     const infoRef = useRef<HTMLDivElement>(null);
     const reviewsRef = useRef<HTMLDivElement>(null);
@@ -76,6 +62,14 @@ export default function ProductDetailPage() {
             }
         };
 
+        const getReviews = async (id: number) => {
+            console.log(id);
+            const response = await getProductReviews(id, 0);
+            console.log(response);
+            setReviews(response.content);
+        }
+
+        getReviews(id);
         window.addEventListener('scroll', handleScroll);
 
         return () => {
@@ -127,7 +121,7 @@ export default function ProductDetailPage() {
                     <div ref={infoRef}>
                         <h3 className="text-2xl text-center font-semibold mb-4">상품 정보</h3>
                         <div className="space-y-4">
-                            {product.detailedImages.map((image, index) => (
+                            {detail.detailImageUrls.map((image, index) => (
                                 <Image
                                     key={index}
                                     src={image}
@@ -143,9 +137,9 @@ export default function ProductDetailPage() {
                     <div ref={reviewsRef}>
                         <h3 className="text-2xl font-semibold mb-4">리뷰</h3>
                         <div className="space-y-4">
-                            {product.reviews.map((review) => (
+                            {reviews && reviews.map((review) => (
                                 <div key={review.id} className="p-4 border rounded-lg">
-                                    <h4 className="font-semibold">{review.user}</h4>
+                                    <h4 className="font-semibold">{review.username}</h4>
                                     <p>{'⭐'.repeat(review.rating)}</p>
                                     <p>{review.comment}</p>
                                 </div>
@@ -156,8 +150,8 @@ export default function ProductDetailPage() {
                     <div ref={qnaRef}>
                         <h3 className="text-2xl font-semibold mb-4">Q&A</h3>
                         <div className="space-y-4">
-                            {product.qna.map((item) => (
-                                <div key={item.id} className="p-4 border rounded-lg">
+                            {detail.qnas.map((item) => (
+                                <div key={item.questionDate + item.question} className="p-4 border rounded-lg">
                                     <h4 className="font-semibold">Q: {item.question}</h4>
                                     <p>A: {item.answer}</p>
                                 </div>
@@ -169,9 +163,9 @@ export default function ProductDetailPage() {
                         <h3 className="text-2xl font-semibold mb-4">배송/보관</h3>
                         <div className="p-4 border rounded-lg">
                             <h4 className="font-semibold mb-2">배송 정보</h4>
-                            <p>{product.shippingAndStorage.shippingInfo}</p>
+                            <p>{detail.shippingMethod}</p>
                             <h4 className="font-semibold mt-4 mb-2">보관 정보</h4>
-                            <p>{product.shippingAndStorage.storageInfo}</p>
+                            <p>{detail.shippingDuration}</p>
                         </div>
                     </div>
                 </div>
