@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ProductDetailDto, ReviewDto } from '@/app/lib/types/definition';
+import { ProductDetailDto } from '@/app/lib/types/definition';
 import Review from './review/review';
 
 interface ProductDetailProps {
