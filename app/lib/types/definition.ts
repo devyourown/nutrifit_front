@@ -12,7 +12,27 @@ export type ProductDto = {
     reviewRating: number;
     reviewCount: number;
     options?: Option[];
+    productDetailDto?: ProductDetailDto;
 };
+
+export type ProductDetailDto = {
+    detailImageUrls: string[];
+    qnas: ProductQnADto[];
+    shippingMethod: string;
+    bundleShippingAvailability: string;
+    shippingFee: string;
+    shippingDuration: string;
+    exchangeAndReturnPolicy: string;
+    exchangeAndReturnFee: string;
+    exchangeAndReturnPeriod: string;
+}
+
+export type ProductQnADto = {
+    question: string;
+    answer: string;
+    questionDate: string;
+    answerDate: string;
+}
 
 export type Option = {
     price: number;

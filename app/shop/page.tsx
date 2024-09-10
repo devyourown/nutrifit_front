@@ -6,24 +6,36 @@ import ProductList from "../components/ui/product/product-list";
 import { fetchAllProducts, fetchProductsByCategory } from "../lib/api/product";
 import { ProductDto } from "@/app/lib/types/definition";
 import ProductSkeleton from "../components/skeleton/product/products";
+import Pagination from "../components/ui/lib/pagination";
 
 export default function Page() {
     const [products, setProducts] = useState<ProductDto[]>();
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+
+    const fetchProducts = async (page: number) => {
+        const response = await fetchAllProducts(page);
+        setProducts(response.content);
+        setTotalPages(response.totalPages);
+        setLoading(false);
+    }
 
     useEffect(() => {
-        const getInitialProducts = async () => {
-            const response = await fetchAllProducts();
-            setProducts(response);
-            setLoading(false);
-        }
-        getInitialProducts();
-    }, []);
+        setLoading(true);
+        fetchProducts(page);
+    }, [page]);
     
     const handleFilterChange = async (category: string) => {
-        const filteredProducts = await fetchProductsByCategory(category);
+        const filteredProducts = await fetchProductsByCategory(category, page);
         setProducts(filteredProducts);
     };
+
+    const handlePageChange = (newPage: number) => {
+        if (newPage >= 0 && newPage < totalPages) {
+            setPage(newPage);
+        }
+    }
 
     return (
         loading ? <ProductSkeleton/> :
@@ -33,6 +45,11 @@ export default function Page() {
             </div>
             <div className="w-3/4 flex flex-wrap justify-center">
             <ProductList products={products!} />
+            <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            />
             </div>
         </div>
     );
