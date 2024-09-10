@@ -136,6 +136,7 @@ export type ReviewDto = {
     rating: number;
     comment: string;
     createdAt: string;
+    imageUrls: string[];
 };
 
 export type Cart = {
