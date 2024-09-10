@@ -1,6 +1,6 @@
 export async function getProductReviews(productId: number, page: number) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/reviews/product/${productId}?page=${page}&size=6`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/reviews/product/${productId}?page=${page}&size=60`);
         return await response.json();
     } catch (e) {
         console.error('Failed to fetch reviews : ', e);

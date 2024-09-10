@@ -3,18 +3,17 @@
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ProductDetailDto, ReviewDto } from '@/app/lib/types/definition';
-import { getProductReviews } from '@/app/lib/api/review';
+import Review from './review/review';
 
 interface ProductDetailProps {
     id: number;
     detail: ProductDetailDto;
+    rating: number;
+    numOfReviews: number;
 }
 
-export default function ProductDetailPage({id, detail}: ProductDetailProps) {
+export default function ProductDetailPage({id, detail, rating, numOfReviews}: ProductDetailProps) {
     const [activeTab, setActiveTab] = useState('info');
-    const [reviewPage, setReviewPage] = useState(0);
-    const [reviewLoading, setReviewLoading] = useState(true);
-    const [reviews, setReviews] = useState<ReviewDto[]>();
 
     const infoRef = useRef<HTMLDivElement>(null);
     const reviewsRef = useRef<HTMLDivElement>(null);
@@ -62,14 +61,6 @@ export default function ProductDetailPage({id, detail}: ProductDetailProps) {
             }
         };
 
-        const getReviews = async (id: number) => {
-            console.log(id);
-            const response = await getProductReviews(id, 0);
-            console.log(response);
-            setReviews(response.content);
-        }
-
-        getReviews(id);
         window.addEventListener('scroll', handleScroll);
 
         return () => {
@@ -80,7 +71,7 @@ export default function ProductDetailPage({id, detail}: ProductDetailProps) {
     return (
         <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-                <div className="sticky top-0 bg-white z-10 border-b border-gray-300">
+                <div className="sticky top-0 bg-white z-30 border-b border-gray-300">
                     <nav className="flex px-4 justify-between py-4 text-xl">
                         <button
                             onClick={() => handleScrollToSection('info')}
@@ -136,15 +127,7 @@ export default function ProductDetailPage({id, detail}: ProductDetailProps) {
 
                     <div ref={reviewsRef}>
                         <h3 className="text-2xl font-semibold mb-4">리뷰</h3>
-                        <div className="space-y-4">
-                            {reviews && reviews.map((review) => (
-                                <div key={review.id} className="p-4 border rounded-lg">
-                                    <h4 className="font-semibold">{review.username}</h4>
-                                    <p>{'⭐'.repeat(review.rating)}</p>
-                                    <p>{review.comment}</p>
-                                </div>
-                            ))}
-                        </div>
+                        <Review id={id} numOfReviews={numOfReviews} rating={rating}/>
                     </div>
 
                     <div ref={qnaRef}>
