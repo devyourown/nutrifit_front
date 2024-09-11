@@ -34,6 +34,7 @@ export default function OrderSummary({
             router.push('/');
             return;
         }
+        router.push('/checkout')
     }
 
     return (
@@ -55,12 +56,10 @@ export default function OrderSummary({
                     <span>총 비용</span>
                     <span>₩{total.toLocaleString()}</span>
                 </div>
-                <Link href="/checkout">
                     <button className="mt-4 w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-pink-700 transition-colors"
                     onClick={() => addOrder(subtotal, shipping, total)}>
                         결제하기
                     </button>
-                </Link>
             </div>
         </div>
     );
