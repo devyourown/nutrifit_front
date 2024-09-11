@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { IoArrowBack, IoArrowForward } from "react-icons/io5";
 
 interface PaginationProps {
@@ -22,6 +23,24 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
         }
     };
 
+    const pageNumbers = useMemo(() => {
+        const pages = [];
+        for (let i = 0; i < totalPages; i++) {
+            pages.push(
+                <button
+                    key={i}
+                    onClick={() => onPageChange(i)}
+                    className={`px-2 py-1 text-sm font-semibold rounded-md 
+                                ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-white hover:bg-blue-200'}
+                                focus:outline-none transition`}
+                >
+                    {i + 1}
+                </button>
+            );
+        }
+        return pages;
+    }, [currentPage, totalPages, onPageChange]);
+
     return (
         <div className="flex justify-center items-center mt-6 space-x-4">
             <button
@@ -34,9 +53,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
                 <IoArrowBack/>
             </button>
 
-            <span className="text-gray-700 font-medium">
-                {currentPage + 1}
-            </span>
+            {pageNumbers}
 
             <button
                 onClick={handleNext}
