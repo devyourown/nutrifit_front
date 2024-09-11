@@ -56,14 +56,15 @@ export default function ProductList({ products }: ProductListProps) {
                                     <FaShoppingCart className="text-gray-700 hover:text-gray-500" />
                                 </button>
 
+
+                        </div>
+                        <div className="flex flex-col justify-between flex-grow p-4">
+                            <Link href={`/product/${product.id}`}>
                             <img
                                 src={product.imageUrls[0]}
                                 alt={product.name}
                                 className="w-full h-60 object-cover"
                             />
-                        </div>
-                        <div className="flex flex-col justify-between flex-grow p-4">
-                            <Link href={`/product/${product.id}`}>
                                 <div>
                                     <h3 className="text-lg font-semibold">
                                         {product.name}
