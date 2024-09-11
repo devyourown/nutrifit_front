@@ -5,15 +5,15 @@ export const handleOAuthLogin = (provider: string) => {
 
     switch (provider) {
         case "google":
-            oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=https://nutrifit-front.vercel.app/auth/callback/google&response_type=code&scope=email profile`;
+            oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_DOMAIN}/auth/callback/google&response_type=code&scope=email profile`;
             break;
         case "naver":
             const randomState = generateUniqueId();
             const encodedState = encodeURIComponent(randomState);
-            oauthUrl = `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&state=${encodedState}&redirect_uri=https://nutrifit-front.vercel.app/auth/callback/naver&response_type=code&scope=email profile`;
+            oauthUrl = `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&state=${encodedState}&redirect_uri=${process.env.NEXT_PUBLIC_DOMAIN}/auth/callback/naver&response_type=code&scope=email profile`;
             break;
         case "kakao":
-            oauthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=https://nutrifit-front.vercel.app/auth/callback/kakao&response_type=code`;
+            oauthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_DOMAIN}/auth/callback/kakao&response_type=code`;
             break;
         default:
             break;
