@@ -19,7 +19,6 @@ export default function Page({params}: { params: {service: string}}) {
         const provider = params.service;
         const replace = queryParams.get('replace');
 
-        console.log(window.opener);
         // 부모 창으로 데이터를 전송
         if (!window.opener && jwt) {
             window.dispatchEvent(new Event('usernameUpdated'));

@@ -16,7 +16,6 @@ export default function Page() {
 
     const fetchProducts = async (page: number) => {
         const response = await fetchAllProducts(page);
-        console.log(response);
         setProducts(response.content);
         setTotalPages(response.page.totalPages);
         setLoading(false);
