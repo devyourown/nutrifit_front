@@ -18,13 +18,8 @@ export type ProductDto = {
 export type ProductDetailDto = {
     detailImageUrls: string[];
     qnas: ProductQnADto[];
-    shippingMethod: string;
-    bundleShippingAvailability: string;
-    shippingFee: string;
-    shippingDuration: string;
-    exchangeAndReturnPolicy: string;
-    exchangeAndReturnFee: string;
-    exchangeAndReturnPeriod: string;
+    shippingDetails: string[];
+    exchangeAndReturns: string[];
 }
 
 export type ProductQnADto = {

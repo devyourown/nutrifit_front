@@ -11,16 +11,13 @@ interface ProductListProps {
 }
 
 export default function ProductList({ products }: ProductListProps) {
-    const [loading, setLoading] = useState(false);
 
     const addToCart = async (productId: number) => {
-        setLoading(true);
         const id = localStorage.getItem("id");
         const response = await changeItemQuantity(id!, productId, 1);
         if (response.ok) {
             triggerCartOpen();
         }
-        setLoading(false);
     };
 
     return (
@@ -55,8 +52,6 @@ export default function ProductList({ products }: ProductListProps) {
                                 >
                                     <FaShoppingCart className="text-gray-700 hover:text-gray-500" />
                                 </button>
-
-
                         </div>
                         <div className="flex flex-col justify-between flex-grow p-4">
                             <Link href={`/product/${product.id}`}>
