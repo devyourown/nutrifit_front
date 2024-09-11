@@ -14,7 +14,7 @@ export default function ProductImageCarousel({
     <div className="w-full flex flex-col items-center">
       <div className="w-full md:w-3/4 lg:w-1/2">
         <Image
-          src={process.env.NEXT_PUBLIC_DOMAIN + selectedImage}
+          src={selectedImage}
           alt="Product Image"
           width={500}
           height={500}

@@ -3,7 +3,6 @@
 import { changeItemQuantity, triggerCartOpen } from "@/app/lib/trigger";
 import { ProductDto } from "@/app/lib/types/definition";
 import Link from "next/link";
-import { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 
 interface ProductListProps {

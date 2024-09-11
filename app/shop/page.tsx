@@ -44,13 +44,14 @@ export default function Page() {
             <div className="w-1/4 ml-4">
             <ProductFilter onFilterChange={handleFilterChange}/>
             </div>
-            <div className="w-3/4 flex flex-wrap justify-center">
-            <ProductList products={products!} />
-            <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            />
+            <div className="w-3/4 flex flex-col flex-wrap justify-center">
+
+                <ProductList products={products!} />
+                <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                />
             </div>
         </div>
     );
