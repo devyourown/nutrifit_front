@@ -6,6 +6,7 @@ import { ProductDetailDto } from '@/app/lib/types/definition';
 import Review from './review/review';
 import QnA from './qna/qna';
 import { AuthProvider } from '@/app/lib/use-auth';
+import Shipping from './shipping/shipping';
 
 interface ProductDetailProps {
     id: number;
@@ -140,13 +141,8 @@ export default function ProductDetailPage({id, detail, rating, numOfReviews, pro
                     </div>
 
                     <div ref={shippingRef}>
-                        <h3 className="text-2xl font-semibold mb-4">배송/보관</h3>
-                        <div className="p-4 border rounded-lg">
-                            <h4 className="font-semibold mb-2">배송 정보</h4>
-                            <p>{detail.shippingMethod}</p>
-                            <h4 className="font-semibold mt-4 mb-2">보관 정보</h4>
-                            <p>{detail.shippingDuration}</p>
-                        </div>
+                        <Shipping shippingDetails={detail.shippingDetails}
+                        exchangeAndReturns={detail.exchangeAndReturns}/>
                     </div>
                 </div>
             </div>
