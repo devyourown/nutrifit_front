@@ -1,6 +1,7 @@
 import { ReviewDto } from "@/app/lib/types/definition";
 import { useState } from "react";
 import Modal from "./modal";
+import { makeDate } from "@/app/lib/generator";
 
 interface ReviewDetailProps {
     review: ReviewDto
@@ -9,17 +10,13 @@ interface ReviewDetailProps {
 export default function ReviewDetail({review}: ReviewDetailProps) {
     const [selectedReview, setSelectedReview] = useState<ReviewDto | null>(null);
     const [mainImage, setMainImage] = useState<string>();
-    const date = new Date(review.createdAt);
-    const formattedDate = `${date.getFullYear()+'.'
-        +String(date.getMonth()+1).padStart(2, '0')+'.'
-        +String(date.getDate()).padStart(2, '0')}`
 
   return (
     <div className="p-4 bg-white shadow rounded-lg">
       <div className="flex items-center mb-4">
         <div>
           <div className="text-lg font-semibold">{review.username}</div>
-          <div className="text-gray-500">{formattedDate}</div>
+          <div className="text-gray-500">{makeDate(review.createdAt)}</div>
         </div>
       </div>
       <div className="text-yellow-400 text-sm mb-2">

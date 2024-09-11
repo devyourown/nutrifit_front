@@ -15,8 +15,10 @@ export default function SignupPage() {
                 router.push("/");
             } else if (event.data && event.data.code) {
                 // 받은 code를 사용해 콜백 페이지로 리디렉션
+                const queryParams = new URLSearchParams(window.location.search);
+                const replace = queryParams.get('replace');
                 router.push(
-                    `/auth/callback/${event.data.provider}?code=${event.data.code}${event.data.state ? "&state=" + event.data.state : ""}`
+                    `/auth/callback/${event.data.provider}?replace=${replace}&code=${event.data.code}${event.data.state ? "&state=" + event.data.state : ""}`
                 );
             }
         };

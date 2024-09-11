@@ -4,15 +4,18 @@ import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ProductDetailDto } from '@/app/lib/types/definition';
 import Review from './review/review';
+import QnA from './qna/qna';
+import { AuthProvider } from '@/app/lib/use-auth';
 
 interface ProductDetailProps {
     id: number;
     detail: ProductDetailDto;
     rating: number;
     numOfReviews: number;
+    productName: string;
 }
 
-export default function ProductDetailPage({id, detail, rating, numOfReviews}: ProductDetailProps) {
+export default function ProductDetailPage({id, detail, rating, numOfReviews, productName}: ProductDetailProps) {
     const [activeTab, setActiveTab] = useState('info');
 
     const infoRef = useRef<HTMLDivElement>(null);
@@ -131,15 +134,9 @@ export default function ProductDetailPage({id, detail, rating, numOfReviews}: Pr
                     </div>
 
                     <div ref={qnaRef}>
-                        <h3 className="text-2xl font-semibold mb-4">Q&A</h3>
-                        <div className="space-y-4">
-                            {detail.qnas.map((item) => (
-                                <div key={item.questionDate + item.question} className="p-4 border rounded-lg">
-                                    <h4 className="font-semibold">Q: {item.question}</h4>
-                                    <p>A: {item.answer}</p>
-                                </div>
-                            ))}
-                        </div>
+                        <AuthProvider>
+                        <QnA qnas={detail.qnas} productId={id} productName={productName}/>
+                        </AuthProvider>
                     </div>
 
                     <div ref={shippingRef}>

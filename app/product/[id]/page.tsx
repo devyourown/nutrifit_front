@@ -9,8 +9,11 @@ export default async function page({params}: { params: {id: number}}) {
         <>
             <ProductDetail id={product.id} options={product.options!} imageUrls={product.imageUrls}
             name={product.name} description={product.description!}/>
-            <ProductDescribe id={product.id} detail={product.productDetailDto!} rating={product.reviewRating}
-            numOfReviews={product.reviewCount}/>
+            <ProductDescribe id={product.id} 
+            detail={product.productDetailDto!} 
+            rating={product.reviewRating}
+            numOfReviews={product.reviewCount}
+            productName={product.name}/>
         </>
     )
 }

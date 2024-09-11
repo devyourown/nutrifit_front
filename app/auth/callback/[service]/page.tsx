@@ -17,11 +17,12 @@ export default function Page({params}: { params: {service: string}}) {
         const code = queryParams.get('code');
         const state = queryParams.get('state');
         const provider = params.service;
+        const replace = queryParams.get('replace');
 
         // 부모 창으로 데이터를 전송
         if (!window.opener && jwt) {
             window.dispatchEvent(new Event('usernameUpdated'));
-            router.replace('/');
+            router.replace(replace || '/');
         } else if (window.opener && jwt) {
             window.opener.postMessage({ jwt }, "*");
             window.close();
