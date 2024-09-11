@@ -24,10 +24,10 @@ export default function Page({params}: { params: {service: string}}) {
             window.dispatchEvent(new Event('usernameUpdated'));
             router.replace(replace || '/');
         } else if (window.opener && jwt) {
-            window.opener.postMessage({ jwt }, "*");
+            window.opener.postMessage({ jwt }, `${process.env.NEXT_PUBLIC_DOMAIN}`);
             window.close();
         } else if (window.opener) {
-            window.opener.postMessage({ code, provider, state }, "*");
+            window.opener.postMessage({ code, provider, state }, `${process.env.NEXT_PUBLIC_DOMAIN}`);
             window.close();  // 팝업 창을 닫음
         }
 
