@@ -9,18 +9,8 @@ export default function Footer() {
           <h3 className="font-bold mb-4 tracking-widest">고객 서비스 </h3>
           <ul className="space-y-2">
             <li>
-              <Link href="/payment" className="hover:underline">
-                결제 조회
-              </Link>
-            </li>
-            <li>
-              <Link href="/shipping" className="hover:underline">
-                주문 조회
-              </Link>
-            </li>
-            <li>
-              <Link href="/returns" className="hover:underline">
-                반품
+              <Link href="/nonmember/order" className="hover:underline">
+                비회원 주문 조회
               </Link>
             </li>
           </ul>
