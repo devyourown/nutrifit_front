@@ -57,7 +57,12 @@ export default function Page({params}: { params: {service: string}}) {
                         localStorage.setItem('jwt', data.token);
                         localStorage.setItem('email', data.email);
                         localStorage.setItem('username', data.username);
-                        router.push(replace || '/');
+                        if (replace) {
+                            router.push(replace);
+                        } else {
+                            console.log('dd');
+                            router.push('/');
+                        }
                     }
                 }
             } catch (error) {
