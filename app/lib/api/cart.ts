@@ -37,14 +37,13 @@ export async function getCartItems(token: string) {
 // 장바구니 아이템 수량 업데이트
 export async function updateCartItemQuantity(token: string, productId: number, quantity: number) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cart/items?productId=${productId}&quantity=${quantity}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cart/items?productId=${productId}&quantity=${quantity}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
-        })
-        return await response.json();
+        });
     } catch (error: any) {
         console.error('Failed to get cart items:', error);
         throw error;

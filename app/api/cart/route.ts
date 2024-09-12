@@ -1,8 +1,7 @@
 import { getCartItems } from "@/app/lib/api/cart";
-import { getUserOrderer } from "@/app/lib/api/user";
 import { getCart, saveCart } from "@/app/lib/cache/data";
 import { makeEmptyCart } from "@/app/lib/generator";
-import { Cart, CartItem, CartItemDto, Orderer } from "@/app/lib/types/definition";
+import { Cart, CartItem, CartItemDto } from "@/app/lib/types/definition";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

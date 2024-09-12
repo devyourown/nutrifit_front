@@ -16,12 +16,12 @@ export default function CheckoutSummary({
             </h3>
             {items.map((item) => {
                 return (
-                    <div key={item.id} className="flex justify-between mb-2">
+                    <div key={item.name} className="flex justify-between mb-2">
                         <div>
                             <img
                                 src={item.imageUrl}
-                                alt="Moonlit Scenic Snowshoe"
-                                className="w-16 h-16 object-cover mr-2 inline-block"
+                                alt={item.name}
+                                className="w-24 h-24 object-cover mr-2 inline-block"
                             />
                             <div>
                                 <span>{item.name}</span>

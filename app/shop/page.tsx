@@ -15,6 +15,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(0);
 
     const fetchProducts = async (page: number) => {
+        setLoading(true);
         const response = await fetchAllProducts(page);
         setProducts(response.content);
         setTotalPages(response.page.totalPages);
@@ -22,7 +23,6 @@ export default function Page() {
     }
 
     useEffect(() => {
-        setLoading(true);
         fetchProducts(page);
     }, [page]);
     

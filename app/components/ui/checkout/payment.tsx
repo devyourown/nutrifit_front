@@ -56,7 +56,6 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
                 subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping 
             }, orderer.ordererPhone);
         }
-        console.log(result);
         if (result) {
             //cart를 정리하고 결제 완료 페이지로 이동
             await completePayment(items.map(item => item.id));

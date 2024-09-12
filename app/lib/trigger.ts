@@ -1,29 +1,71 @@
+import { removeItemFromCart, updateCartItemQuantity } from "./api/cart";
 import { CartItem, Checkout, Order, Orderer } from "./types/definition";
 
 export function triggerCartOpen() {
-    const event = new CustomEvent("cartUpdated");
-    window.dispatchEvent(event);
+    const updateEvent = new CustomEvent("cartUpdated");
+    const openEvent = new CustomEvent('cartOpen');
+    window.dispatchEvent(updateEvent);
+    window.dispatchEvent(openEvent);
 }
 
+export const handleQuantityChange = async (id:number, description: string, quantity: number, setCartItems: (value: React.SetStateAction<CartItem[]>) => void) => {
+    setCartItems((prevItems) =>
+        prevItems.map((item) =>
+            item.name === description ? { ...item, quantity } : item
+        )
+    );
+    const userId = localStorage.getItem('id');
+    await changeItemQuantity(userId!, description, quantity);
+    const token = localStorage.getItem('jwt');
+    if (token) {
+        updateCartItemQuantity(token, id, quantity);
+    }
+    const updateEvent = new CustomEvent("cartUpdated");
+    window.dispatchEvent(updateEvent);
+};
 
-export async function changeItemQuantity(userId: string, productId: number, quantity: number) {
+export const handleRemoveItem = async (id: number, description: string, setCartItems:(value: React.SetStateAction<CartItem[]>) => void) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.name !== description));
+    const userId = localStorage.getItem('id');
+    await deleteItem(userId!, description);
+    const token = localStorage.getItem('jwt');
+    if (token) {
+        removeItemFromCart(token, id);
+    }
+    const updateEvent = new CustomEvent("cartUpdated");
+    window.dispatchEvent(updateEvent);
+};
+
+export async function putItemInCart(userId: string, productId: number, price: number, description: string) {
     const response = await fetch('/api/cart/product', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productId, quantity: quantity, userId: userId}),
+        body: JSON.stringify({ userId: userId, productId, price: price, description: description}),
     });
     return response;
 }
 
-export async function deleteItem(userId: string, productId: number) {
+
+export async function changeItemQuantity(userId: string, description: string, quantity: number) {
+    const response = await fetch('/api/cart/product', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ description, quantity: quantity, userId: userId}),
+    });
+    return response;
+}
+
+export async function deleteItem(userId: string, description: string) {
     const response = await fetch('/api/cart/product', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productId, userId: userId}),
+        body: JSON.stringify({ description, userId: userId}),
     });
     return response;
 }

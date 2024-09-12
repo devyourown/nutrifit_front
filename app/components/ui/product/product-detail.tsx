@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ProductImageCarousel from "./product-carousel";
 import ProductOptions from "./product-options";
 import { Option } from "@/app/lib/types/definition";
-import { changeItemQuantity, triggerCartOpen } from "@/app/lib/trigger";
+import { putItemInCart, triggerCartOpen } from "@/app/lib/trigger";
 
 interface ProductDetailProps {
   imageUrls: string[];
@@ -21,7 +21,7 @@ export default function ProductDetail({imageUrls, name, description, options, id
     const addToCart = async (productId: number) => {
         setLoading(true);
         const id = localStorage.getItem("id");
-        const response = await changeItemQuantity(id!, productId, 1);
+        const response = await putItemInCart(id!, productId, selectedOption.price, name + "(" + selectedOption.description + ")");
         if (response.ok) {
             triggerCartOpen();
         }

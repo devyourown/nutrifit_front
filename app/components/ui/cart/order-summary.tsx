@@ -1,7 +1,6 @@
 import { generateUniqueId } from "@/app/lib/generator";
 import { makeCheckout } from "@/app/lib/trigger";
 import { CartItem, Order } from "@/app/lib/types/definition";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 

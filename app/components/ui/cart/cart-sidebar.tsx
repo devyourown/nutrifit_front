@@ -3,22 +3,21 @@ import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import Link from "next/link";
 import { CartItem } from "@/app/lib/types/definition";
+import { handleQuantityChange, handleRemoveItem } from "@/app/lib/trigger";
 
 
 type CartSidebarProps = {
     items: CartItem[];
     isOpen: boolean;
     onClose: () => void;
-    onQuantityChange: (itemId: number, quantity: number) => void;
-    onRemoveItem: (itemId: number) => void;
+    setCartItems: (value: React.SetStateAction<CartItem[]>) => void;
 };
 
 export default function CartSidebar({
     items,
     isOpen,
     onClose,
-    onQuantityChange,
-    onRemoveItem
+    setCartItems
 }: CartSidebarProps) {
     const calculateSubtotal = () => {
         return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -43,7 +42,7 @@ export default function CartSidebar({
 
                 <div className="p-4 space-y-4">
                     {items.map((item) => (
-                        <div key={item.id} className="flex items-center border-b pb-4">
+                        <div key={item.name} className="flex items-center border-b pb-4">
                             <Image
                                 src={item.imageUrl}
                                 alt={item.name}
@@ -62,7 +61,7 @@ export default function CartSidebar({
                                 </p>
                                 </div>
                                 <button
-                                        onClick={() => onRemoveItem(item.id)}
+                                        onClick={() => handleRemoveItem(item.id, item.name, setCartItems)}
                                         className="text-gray-500 hover:text-red-500"
                                     >
                                         &times;
@@ -71,9 +70,11 @@ export default function CartSidebar({
                                 <div className="flex items-center mt-2">
                                     <button
                                         onClick={() =>
-                                            onQuantityChange(
+                                            handleQuantityChange(
                                                 item.id,
-                                                Math.max(1, item.quantity - 1)
+                                                item.name,
+                                                Math.max(1, item.quantity - 1),
+                                                setCartItems
                                             )
                                         }
                                         className="p-1 border border-gray-300 text-gray-600"
@@ -85,9 +86,11 @@ export default function CartSidebar({
                                     </span>
                                     <button
                                         onClick={() =>
-                                            onQuantityChange(
+                                            handleQuantityChange(
                                                 item.id,
-                                                item.quantity + 1
+                                                item.name,
+                                                item.quantity + 1,
+                                                setCartItems
                                             )
                                         }
                                         className="p-1 border border-gray-300 text-gray-600"
