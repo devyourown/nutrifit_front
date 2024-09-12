@@ -28,7 +28,7 @@ export async function checkPayment(paymentDto: PaymentDto, token: string) {
 }
 
 export async function checkPaymentWithoutMember(paymentDto: PaymentDto, phone: string) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment/nonmember`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
