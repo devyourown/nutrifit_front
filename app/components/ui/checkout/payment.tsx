@@ -36,7 +36,7 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
             currency: "CURRENCY_KRW",
             channelKey: `${process.env.PORTONE_CHANNEL_KEY}`,
             payMethod: selectedPayment,
-            redirectUrl: `${process.env.NEXT_PUBLIC_BACKEND}/checkout/complete/${order.id}`,
+            redirectUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/checkout/complete/${order.id}`,
         });
         if (response?.code != null) {
             return alert(response.message);
