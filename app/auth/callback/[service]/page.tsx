@@ -44,6 +44,7 @@ export default function Page({params}: { params: {service: string}}) {
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log(data);
                     const username: string = data.username;
                     if (username.startsWith("temporary")) {
                         localStorage.setItem('email', data.email);
