@@ -5,6 +5,7 @@ import Checkout from "../components/ui/checkout/checkout";
 import { Checkout as CheckoutType } from "../lib/types/definition";
 import { useRouter } from "next/navigation";
 import CheckoutSkeleton from "../components/skeleton/checkout/checkout";
+import { AuthProvider } from "../lib/use-auth";
 
 export default function Page() {
     const router = useRouter();
@@ -31,5 +32,6 @@ export default function Page() {
         setCartWithId();
     }, []);
 
-    return loading ? <CheckoutSkeleton/> :<Checkout checkout={checkout!} />;
+    return loading ? <CheckoutSkeleton/> :
+    <AuthProvider><Checkout checkout={checkout!} /></AuthProvider>;
 }
