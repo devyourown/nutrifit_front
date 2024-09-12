@@ -20,7 +20,7 @@ export async function addItemToCart(token: string, productId: number, quantity: 
 // 장바구니 아이템 조회
 export async function getCartItems(token: string) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cart/items`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/cart/items`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
