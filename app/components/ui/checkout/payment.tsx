@@ -43,7 +43,6 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
         if (response?.code != null) {
             return alert(response.message);
         }
-        console.log(isLoggedIn);
         let result;
         if (isLoggedIn && token) {
             result = await checkPayment({orderId: order.id, 
