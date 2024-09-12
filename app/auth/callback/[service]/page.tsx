@@ -8,11 +8,10 @@ import { initCartWithDB } from '@/app/lib/trigger';
 export default function Page({params}: { params: {service: string}}) {
     const router = useRouter();
     const [username, setUsername] = useState('');
-    const [jwt, setJwt] = useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
-        setJwt(localStorage.getItem('jwt')!);
+        const jwt = localStorage.getItem('jwt')!;
         const queryParams = new URLSearchParams(window.location.search);
         const code = queryParams.get('code');
         const state = queryParams.get('state');
@@ -33,7 +32,6 @@ export default function Page({params}: { params: {service: string}}) {
 
         const checkUserStatus = async () => {
             try {
-                
                 const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth/${provider}`, {
                     method: 'POST',
                     headers: {
@@ -49,22 +47,12 @@ export default function Page({params}: { params: {service: string}}) {
                     if (username.startsWith("temporary")) {
                         localStorage.setItem('email', data.email);
                     } else {
-                        setJwt(data.token);
-                        console.log(replace);
                         const userId = localStorage.getItem('id');
-                        console.log(userId, data.token);
                         await initCartWithDB(userId!, data.token);
                         localStorage.setItem('id', data.token);
                         localStorage.setItem('jwt', data.token);
                         localStorage.setItem('email', data.email);
                         localStorage.setItem('username', data.username);
-                        if (replace != null) {
-                            console.log('?');
-                            router.push(replace);
-                        } else {
-                            console.log('dd');
-                            router.push('/');
-                        }
                     }
                 }
             } catch (error) {
@@ -113,7 +101,7 @@ export default function Page({params}: { params: {service: string}}) {
         }
     };
 
-    return ( !jwt &&
+    return ( !localStorage.getItem('jwt') &&
         <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h2 className="text-3xl font-bold text-center mb-6">닉네임 설정</h2>
