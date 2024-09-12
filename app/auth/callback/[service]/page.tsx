@@ -52,12 +52,14 @@ export default function Page({params}: { params: {service: string}}) {
                         setJwt(data.token);
                         console.log(replace);
                         const userId = localStorage.getItem('id');
+                        console.log(userId, data.token);
                         await initCartWithDB(userId!, data.token);
                         localStorage.setItem('id', data.token);
                         localStorage.setItem('jwt', data.token);
                         localStorage.setItem('email', data.email);
                         localStorage.setItem('username', data.username);
-                        if (replace !== null) {
+                        if (replace != null) {
+                            console.log('?');
                             router.push(replace);
                         } else {
                             console.log('dd');
