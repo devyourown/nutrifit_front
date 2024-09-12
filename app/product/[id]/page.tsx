@@ -2,9 +2,12 @@ import ProductDescribe from "@/app/components/ui/product/product-describe";
 import ProductDetail from "@/app/components/ui/product/product-detail";
 import { fetchProductById } from "@/app/lib/api/product";
 import { ProductDto } from "@/app/lib/types/definition";
+import { revalidatePath } from "next/cache";
 
 export default async function page({params}: { params: {id: number}}) {
     const product: ProductDto = await fetchProductById(params.id);
+    revalidatePath('/product/2');
+    revalidatePath('/product/3');
     return (
         <>
             <ProductDetail id={product.id} options={product.options!} imageUrls={product.imageUrls}

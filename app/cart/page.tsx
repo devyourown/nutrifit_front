@@ -20,5 +20,5 @@ export default function Page() {
         setCart();
     }, []);
 
-    return loading ? <CartSkeleton/>: <Cart items={cartItems}/>;
+    return loading ? <CartSkeleton/>: <Cart items={cartItems} setCartItems={setCartItems}/>;
 }

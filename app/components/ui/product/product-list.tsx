@@ -1,6 +1,6 @@
 "use client";
 
-import { changeItemQuantity, triggerCartOpen } from "@/app/lib/trigger";
+import { changeItemQuantity, putItemInCart, triggerCartOpen } from "@/app/lib/trigger";
 import { ProductDto } from "@/app/lib/types/definition";
 import Link from "next/link";
 import { FaShoppingCart } from "react-icons/fa";
@@ -11,9 +11,9 @@ interface ProductListProps {
 
 export default function ProductList({ products }: ProductListProps) {
 
-    const addToCart = async (productId: number) => {
+    const addToCart = async (productId: number, price: number, description: string) => {
         const id = localStorage.getItem("id");
-        const response = await changeItemQuantity(id!, productId, 1);
+        const response = await putItemInCart(id!, productId, price, description);
         if (response.ok) {
             triggerCartOpen();
         }
@@ -45,12 +45,12 @@ export default function ProductList({ products }: ProductListProps) {
                                         </span>
                                     ))}
                             </div>
-                            <button
+                            {/*<button
                                     className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-lg"
-                                    onClick={() => addToCart(product.id)}
+                                    onClick={() => addToCart(product.id, product.discountedPrice, product.description!)}
                                 >
                                     <FaShoppingCart className="text-gray-700 hover:text-gray-500" />
-                                </button>
+                                </button>*/}
                         </div>
                         <div className="flex flex-col justify-between flex-grow p-4">
                             <Link href={`/product/${product.id}`}>

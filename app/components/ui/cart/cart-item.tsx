@@ -3,6 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { CartItem as Item} from "@/app/lib/types/definition";
+import { handleQuantityChange, handleRemoveItem } from "@/app/lib/trigger";
 
 type CartItemProps = {
     id: number;
@@ -11,8 +13,7 @@ type CartItemProps = {
     price: number;
     quantity: number;
     options?: string;
-    onQuantityChange: (id: number, quantity: number) => void;
-    onRemove: (id: number) => void;
+    setCartItems: (value: React.SetStateAction<Item[]>) => void
 };
 
 export default function CartItem({
@@ -22,11 +23,10 @@ export default function CartItem({
     price,
     quantity,
     options,
-    onQuantityChange,
-    onRemove,
+    setCartItems
 }: CartItemProps) {
-    const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        onQuantityChange(id, parseInt(e.target.value));
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        handleQuantityChange(id, name, parseInt(e.target.value), setCartItems);
     };
 
     return (
@@ -54,7 +54,7 @@ export default function CartItem({
             <div className="flex items-center">
                 <select
                     value={quantity}
-                    onChange={handleQuantityChange}
+                    onChange={handleChange}
                     className="mr-4 border border-gray-300 rounded-md text-gray-700"
                 >
                     {[...Array(10)].map((_, i) => (
@@ -67,7 +67,7 @@ export default function CartItem({
                     ₩{(price * quantity).toLocaleString()}
                 </p>
                 <button
-                    onClick={() => onRemove(id)}
+                    onClick={() => handleRemoveItem(id, name, setCartItems)}
                     className="ml-4 text-gray-500 hover:text-red-500"
                 >
                     <XMarkIcon className="h-6 w-6" />

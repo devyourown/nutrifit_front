@@ -8,8 +8,6 @@ import { CiLogout } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { Cart, CartItem } from "@/app/lib/types/definition";
 import { generateUniqueId } from "@/app/lib/generator";
-import { changeItemQuantity, deleteItem } from "@/app/lib/trigger";
-import { removeItemFromCart, updateCartItemQuantity } from "@/app/lib/api/cart";
 
 export default function Header() {
     const [username, setUsername] = useState('');
@@ -21,61 +19,35 @@ export default function Header() {
         setUsername(tempUser || ''); 
     };
 
+    const updateCart = async () => {
+        let id = localStorage.getItem('id');
+        if (!id) {
+            id = generateUniqueId();
+            localStorage.setItem('id', id);
+        }
+        const response = await fetch(`/api/cart?id=${id}`);
+        let cart: Cart = await response.json() as Cart;
+        setCartItems(cart.items);
+    }
+
     useEffect(() => {
         updateUsername();
         window.addEventListener('usernameUpdated', updateUsername);
-        
-        const updateCart = async () => {
-            let id = localStorage.getItem('id');
-            if (!id) {
-                id = generateUniqueId();
-                localStorage.setItem('id', id);
-            }
-            const response = await fetch(`/api/cart?id=${id}`);
-            let cart: Cart = await response.json() as Cart;
-            setCartItems(cart.items);
-        }
 
         updateCart();
-
-        const handleCartUpdated = () => {
-            updateCart();
-            setIsCartOpen(true);
-        };
-        window.addEventListener('cartUpdated', handleCartUpdated);
+        const openCart = () => setIsCartOpen(true);
+        window.addEventListener('cartUpdated', updateCart);
+        window.addEventListener('cartOpen', openCart);
 
         return () => {
-            window.removeEventListener('cartUpdated', handleCartUpdated);
+            window.removeEventListener('cartUpdated', updateCart);
             window.removeEventListener('usernameUpdated', updateUsername);
+            window.removeEventListener('cartOpen', openCart)
         };
     }, []);
 
     const handleCartToggle = () => {
         setIsCartOpen(!isCartOpen);
-    };
-
-    const handleQuantityChange = (id: number, quantity: number) => {
-        setCartItems((prevItems) =>
-            prevItems.map((item) =>
-                item.id === id ? { ...item, quantity } : item
-            )
-        );
-        const userId = localStorage.getItem('id');
-        changeItemQuantity(userId!, id, quantity);
-        const token = localStorage.getItem('jwt');
-        if (token) {
-            updateCartItemQuantity(token, id, quantity);
-        }
-    };
-
-    const handleRemoveItem = (id: number) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-        const userId = localStorage.getItem('id');
-        deleteItem(userId!, id);
-        const token = localStorage.getItem('jwt');
-        if (token) {
-            removeItemFromCart(token, id);
-        }
     };
 
     const logout = () => {
@@ -91,8 +63,7 @@ export default function Header() {
                 items={cartItems}
                 isOpen={isCartOpen}
                 onClose={handleCartToggle}
-                onQuantityChange={handleQuantityChange}
-                onRemoveItem={handleRemoveItem}
+                setCartItems={setCartItems}
             />
             <div className="bg-gray-100 py-2">
                 <div className="container mx-auto flex justify-end items-center space-x-4 text-gray-700">

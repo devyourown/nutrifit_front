@@ -5,14 +5,12 @@ import { CartItem as Item } from "@/app/lib/types/definition";
 
 type CartListProps = {
     items: Item[];
-    onQuantityChange: (id: number, quantity: number) => void;
-    onRemove: (id: number) => void;
+    setCartItems: (value: React.SetStateAction<Item[]>) => void
 };
 
 export default function CartList({
     items,
-    onQuantityChange,
-    onRemove,
+    setCartItems
 }: CartListProps) {
     return (
         <div className="bg-white shadow-md rounded-lg p-6">
@@ -22,10 +20,9 @@ export default function CartList({
                 <div className="space-y-4">
                     {items.map((item) => (
                         <CartItem
-                            key={item.id}
+                            key={item.name}
                             {...item}
-                            onQuantityChange={onQuantityChange}
-                            onRemove={onRemove}
+                            setCartItems={setCartItems}
                         />
                     ))}
                 </div>
