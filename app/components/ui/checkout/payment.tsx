@@ -1,5 +1,6 @@
 import { checkPayment, checkPaymentWithoutMember, completePayment } from "@/app/lib/api/payment";
 import { CartItem, Order, Orderer } from "@/app/lib/types/definition";
+import { useAuth } from "@/app/lib/use-auth";
 import PortOne from "@portone/browser-sdk/v2";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,6 +19,7 @@ type PaymentMethod = "CARD" | "TRANSFER" | "VIRTUAL_ACCOUNT"
 
 export default function Payment({ steps, order, items, orderer }: PaymentProps) {
     const router = useRouter();
+    const { isLoggedIn, token } = useAuth();
     const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>("CARD");
 
     const handlePaymentChange = (event: any) => {
@@ -41,9 +43,9 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
         if (response?.code != null) {
             return alert(response.message);
         }
-        const token = localStorage.getItem('jwt');
+        console.log(isLoggedIn);
         let result;
-        if (token) {
+        if (isLoggedIn && token) {
             result = await checkPayment({orderId: order.id, 
                 total: order.total, paymentMethod: selectedPayment,
                 paymentId: response?.paymentId!, orderItems: items, ordererDto: orderer,
