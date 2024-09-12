@@ -6,8 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export default async function page({params}: { params: {id: number}}) {
     const product: ProductDto = await fetchProductById(params.id);
-    revalidatePath('/product/2');
-    revalidatePath('/product/3');
+    revalidatePath('/product/1');
     return (
         <>
             <ProductDetail id={product.id} options={product.options!} imageUrls={product.imageUrls}
