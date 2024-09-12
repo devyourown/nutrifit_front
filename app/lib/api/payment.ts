@@ -69,12 +69,10 @@ export async function completePayment(items: number[]) {
 }
 
 export async function fetchPaymentById(id: string) {
-    const token = localStorage.getItem('jwt');
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment/${id}`, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json'
         }
     });
     if (response.ok) {
