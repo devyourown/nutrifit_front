@@ -4,6 +4,7 @@ import CompleteSkeleton from '@/app/components/skeleton/checkout/complete/comple
 import Complete from '@/app/components/ui/checkout/complete/complete';
 import { fetchPaymentById } from '@/app/lib/api/payment';
 import { PaymentDto } from '@/app/lib/types/definition';
+import { AuthProvider } from '@/app/lib/use-auth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -26,6 +27,6 @@ export default function PaymentSuccessPage({params}: {params: {id: string}}) {
         getPayment();
     }, []);
     return (
-        loading ? <CompleteSkeleton/> : <Complete payment={payment!} />
+        loading ? <CompleteSkeleton/> : <AuthProvider><Complete payment={payment!} /></AuthProvider>
     );
 }

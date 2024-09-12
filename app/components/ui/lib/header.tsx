@@ -8,8 +8,10 @@ import { CiLogout } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { Cart, CartItem } from "@/app/lib/types/definition";
 import { generateUniqueId } from "@/app/lib/generator";
+import { useAuth } from "@/app/lib/use-auth";
 
 export default function Header() {
+    const {logout} = useAuth();
     const [username, setUsername] = useState('');
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -50,7 +52,8 @@ export default function Header() {
         setIsCartOpen(!isCartOpen);
     };
 
-    const logout = () => {
+    const logoutHeader = () => {
+        logout();
         localStorage.clear();
         localStorage.setItem('id', generateUniqueId());
         setUsername('');
@@ -81,7 +84,7 @@ export default function Header() {
                     {<span>{username}님 안녕하세요!</span>}
                 </Link> 
                 <button 
-                onClick={() => logout()} 
+                onClick={() => logoutHeader()} 
                 className="px-2"
             >
                 로그아웃

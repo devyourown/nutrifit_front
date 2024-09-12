@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface WelcomeProps {
     profileImage: string;
     name: string;
