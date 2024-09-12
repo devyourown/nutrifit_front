@@ -26,7 +26,7 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
 
     const handlePayment = async () => {
         const response = await PortOne.requestPayment({
-            storeId: `${process.env.PORTONE_STORE_ID}`,
+            storeId: `${process.env.NEXT_PUBLIC_PORTONE_STORE_ID}`,
             paymentId: order.id,
             orderName: items.reduce((acc, cur, index) => {
                 if (index === 0) return cur.name;
@@ -34,7 +34,7 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
             }, " ")!,
             totalAmount: order.total,
             currency: "CURRENCY_KRW",
-            channelKey: `${process.env.PORTONE_CHANNEL_KEY}`,
+            channelKey: `${process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY}`,
             payMethod: selectedPayment,
             redirectUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/checkout/complete/${order.id}`,
         });
