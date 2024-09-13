@@ -10,7 +10,7 @@ import { useAuth } from '@/app/lib/use-auth';
 
 export default function User() {
     const router = useRouter();
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, authLoading } = useAuth();
     const [selectedTab, setSelectedTab] = useState('orders');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -18,6 +18,9 @@ export default function User() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (authLoading) {
+            return;
+        }
         if (!isLoggedIn) {
             alert('접근할 수 없습니다. 로그인이 필요합니다.');
             router.push('/');
@@ -30,7 +33,7 @@ export default function User() {
             setLoading(false);
         }
         setUser();
-    }, []);
+    }, [authLoading]);
 
     return (
         loading ? <div>로딩중</div> : <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
