@@ -11,7 +11,7 @@ import { generateUniqueId } from "@/app/lib/generator";
 import { useAuth } from "@/app/lib/use-auth";
 
 export default function Header() {
-    const {logout, isLoggedIn, token} = useAuth();
+    const {logout, isLoggedIn, authLoading} = useAuth();
     const [username, setUsername] = useState('');
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -33,7 +33,9 @@ export default function Header() {
     }
 
     useEffect(() => {
-        console.log(isLoggedIn)
+        if (authLoading) {
+            return;
+        }
         updateUsername();
         window.addEventListener('usernameUpdated', updateUsername);
 
@@ -47,7 +49,7 @@ export default function Header() {
             window.removeEventListener('usernameUpdated', updateUsername);
             window.removeEventListener('cartOpen', openCart)
         };
-    }, []);
+    }, [authLoading]);
 
     const handleCartToggle = () => {
         setIsCartOpen(!isCartOpen);
@@ -78,7 +80,6 @@ export default function Header() {
                     </button>
                     {isLoggedIn ? 
                     <>
-                    {console.log(isLoggedIn, token)}
                         <Link href="/user" className="flex items-center space-x-2">
                             <FaUser />
                             {<span>{username}님 안녕하세요!</span>}
