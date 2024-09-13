@@ -28,24 +28,3 @@ export const handleOAuthLogin = (provider: string) => {
         }
     }, 500);
 };
-
-export const revokeGoogleToken = async (accessToken: string) => {
-    if (accessToken === null) return;
-    try {
-        const response = await fetch('https://oauth2.googleapis.com/revoke', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `token=${accessToken}`,  // Google에서 받은 access token
-        });
-
-        if (response.ok) {
-            console.log('Google access token successfully revoked.');
-        } else {
-            console.error('Failed to revoke token:', await response.text());
-        }
-    } catch (error) {
-        console.error('Error revoking token:', error);
-    }
-};
