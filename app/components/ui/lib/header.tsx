@@ -11,7 +11,7 @@ import { generateUniqueId } from "@/app/lib/generator";
 import { useAuth } from "@/app/lib/use-auth";
 
 export default function Header() {
-    const {logout} = useAuth();
+    const {logout, isLoggedIn, token} = useAuth();
     const [username, setUsername] = useState('');
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -33,6 +33,7 @@ export default function Header() {
     }
 
     useEffect(() => {
+        console.log(isLoggedIn)
         updateUsername();
         window.addEventListener('usernameUpdated', updateUsername);
 
@@ -54,8 +55,6 @@ export default function Header() {
 
     const logoutHeader = () => {
         logout();
-        localStorage.clear();
-        localStorage.setItem('id', generateUniqueId());
         setUsername('');
         router.push('/');
     }
@@ -77,24 +76,25 @@ export default function Header() {
                         <FaShoppingCart />
                         <span>cart</span>
                     </button>
-                    {username ? 
+                    {isLoggedIn ? 
                     <>
-                    <Link href="/user" className="flex items-center space-x-2">
-                    <FaUser />
-                    {<span>{username}님 안녕하세요!</span>}
-                </Link> 
-                <button 
-                onClick={() => logoutHeader()} 
-                className="px-2"
-            >
-                로그아웃
-            </button>
-            <CiLogout/>
-            </>:
-                <Link href="/login" className="flex items-center space-x-2">
-                <FaUser />
-                <span>login</span>
-            </Link>}
+                    {console.log(isLoggedIn, token)}
+                        <Link href="/user" className="flex items-center space-x-2">
+                            <FaUser />
+                            {<span>{username}님 안녕하세요!</span>}
+                        </Link> 
+                    <button 
+                    onClick={() => logoutHeader()} 
+                    className="px-2"
+                    >
+                        로그아웃
+                    </button>
+                    <CiLogout/>
+                    </> :
+                    <Link href="/login" className="flex items-center space-x-2">
+                        <FaUser />
+                        <span>login</span>
+                    </Link>}
                 </div>
             </div>
 

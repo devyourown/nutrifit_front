@@ -1,137 +1,21 @@
 "use client";
 
+
+import Callback from '@/app/components/ui/auth/callback';
+import { AuthProvider } from '@/app/lib/use-auth';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { checkNickname } from '@/app/lib/checker';
-import { initCartWithDB } from '@/app/lib/trigger';
 
 export default function Page({params}: { params: {service: string}}) {
-    const router = useRouter();
-    const [username, setUsername] = useState('');
-    const [error, setError] = useState('');
-
+    const [code, setCode] = useState('');
+    const [state, setState] = useState('');
+    const [replace, setReplace] = useState('');
     useEffect(() => {
-        const jwt = localStorage.getItem('jwt')!;
         const queryParams = new URLSearchParams(window.location.search);
-        const code = queryParams.get('code');
-        const state = queryParams.get('state');
-        const provider = params.service;
-        const replace = queryParams.get('replace');
-
-        // 부모 창으로 데이터를 전송
-        if (!window.opener && jwt) {
-            window.dispatchEvent(new Event('usernameUpdated'));
-            router.replace(replace || '/');
-        } else if (window.opener && jwt) {
-            window.opener.postMessage({ jwt }, `${process.env.NEXT_PUBLIC_DOMAIN}`);
-            window.close();
-        } else if (window.opener) {
-            window.opener.postMessage({ code, provider, state }, `${process.env.NEXT_PUBLIC_DOMAIN}`);
-            window.close();  // 팝업 창을 닫음
-        }
-
-        const checkUserStatus = async () => {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth/${provider}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ code, state }),
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log(data);
-                    const username: string = data.username;
-                    if (username.startsWith("temporary")) {
-                        localStorage.setItem('email', data.email);
-                    } else {
-                        const userId = localStorage.getItem('id');
-                        await initCartWithDB(userId!, data.token);
-                        localStorage.setItem('id', data.token);
-                        localStorage.setItem('jwt', data.token);
-                        localStorage.setItem('email', data.email);
-                        localStorage.setItem('username', data.username);
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking user status:', error);
-            }
-        };
-        checkUserStatus();
+        setCode(queryParams.get('code')!);
+        setState(queryParams.get('state')!);
+        setReplace(queryParams.get('replace')!);
     }, []);
-
-    
-    const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-        const checker = await checkNickname(username);
-        if (checker !== '') {
-            setError(checker);
-            return;
-        }
-        const email = localStorage.getItem('email');
-        if (!username || !email) {
-            alert('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.')
-            router.push('/login');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth/username`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, username }),
-            });
-
-
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('jwt', data.token);
-                localStorage.setItem('username', data.username);
-                window.dispatchEvent(new Event('usernameUpdated'));
-                router.replace('/');  // 닉네임 설정 후 대시보드로 이동
-            } else {
-                console.error('Failed to set nickname');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    return ( !localStorage.getItem('jwt') &&
-        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-                <h2 className="text-3xl font-bold text-center mb-6">닉네임 설정</h2>
-                <p className="text-center text-gray-600 mb-4">
-                    닉네임을 설정해주세요. 이 닉네임은 다른 사용자에게 표시됩니다.
-                </p>
-
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="nickname" className="block text-gray-700">
-                            닉네임
-                        </label>
-                        <input
-                            id="nickname"
-                            type="text"
-                            className="w-full px-3 py-2 border rounded-lg"
-                            placeholder="밥상엔닭가슴살 | 뉴트리피잇"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                    </div>
-                    {error && <p className='text-red-400'>{error}</p>}
-                    <button 
-                        type="submit"
-                        className="w-full bg-gray-800 text-white py-2 rounded-lg font-semibold hover:bg-gray-900"
-                    >
-                        닉네임 짓기
-                    </button>
-                </form>
-            </div>
-        </div>);
+    return code && <AuthProvider><Callback service={params.service} code={code}
+    state={state}
+    replace={replace}/></AuthProvider>
 }
