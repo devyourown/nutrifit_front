@@ -9,7 +9,17 @@ export async function fetchUserOrders(token: string, page: number) {
         })
         return await response.json();
     } catch (error: any) {
-        console.error('포인트를 가져오는데 실패했습니다.', error.response.data);
+        console.error('주문을 가져오는데 실패했습니다.', error.response.data);
         throw error;
     }
 };
+
+export async function fetchNonMemberOrder(paymentId: string) {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${paymentId}`);
+        return await response.json();
+    } catch (error: any) {
+        console.error('주문을 가져오는데 실패했습니다.', error.response.data);
+        throw error;
+    }
+}

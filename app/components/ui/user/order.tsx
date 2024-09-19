@@ -22,7 +22,7 @@ export default function UserOrder({token}: UserOrderProps) {
         }
         getOrders();
         if (orders) {
-            setFilteredOrders(orders.filter( (order) => status === 'all' || order.status === status));
+            setFilteredOrders(orders.filter( (order) => status === 'all' || order.fulfillment === status));
         }
     }, [])
 
@@ -61,10 +61,10 @@ export default function UserOrder({token}: UserOrderProps) {
                                 주문번호: {order.id}
                             </h3>
                             <p className="text-sm text-gray-500">
-                                주문일자: {order.orderDate} | 상태: {order.status}
+                                주문일자: {order.orderDate} | 상태: {order.fulfillment}
                             </p>
                             <div className="mt-2 space-y-2">
-                                {order.orderItems.map((item) => (
+                                {order.orderItems!.map((item) => (
                                     <div key={item.productId} className="flex justify-between">
                                         <span>{item.name} x {item.quantity}</span>
                                         <span>{(item.price * item.quantity).toLocaleString('ko-KR')}원</span>
