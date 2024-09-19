@@ -6,12 +6,10 @@ import Setting from "./setting";
 interface TabProps {
     token: string
     selectedTab: string;
-    name: string;
-    email: string;
     profileImage: string;
 }
 
-export default function Tab({token, selectedTab, name, email, profileImage}: TabProps) {
+export default function Tab({token, selectedTab, profileImage}: TabProps) {
     switch (selectedTab) {
             case 'orders':
                 return <UserOrder token={token} />;
@@ -20,7 +18,7 @@ export default function Tab({token, selectedTab, name, email, profileImage}: Tab
             case 'coupons':
                 return <Coupon token={token}/>
             case 'settings':
-                return <Setting name={name} email={email} profileImage={profileImage}/>
+                return <Setting profileImage={profileImage}/>
             default:
                 return null;
     }

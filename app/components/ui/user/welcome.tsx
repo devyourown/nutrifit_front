@@ -1,10 +1,9 @@
 interface WelcomeProps {
     profileImage: string;
     name: string;
-    email: string;
 }
 
-export default function Welcome({profileImage, name, email}: WelcomeProps) {
+export default function Welcome({profileImage, name}: WelcomeProps) {
     return (
         <div className="flex justify-center items-center mb-6">
                     <img
@@ -16,7 +15,6 @@ export default function Welcome({profileImage, name, email}: WelcomeProps) {
                     />
                     <div>
                         <h1 className="text-2xl font-bold">안녕하세요, {name}님!</h1>
-                        <p className="text-gray-600">{email}</p>
                     </div>
                 </div>
     )

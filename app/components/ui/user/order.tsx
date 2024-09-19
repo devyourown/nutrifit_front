@@ -1,6 +1,7 @@
 import { fetchUserOrders } from "@/app/lib/api/order";
 import { OrderDto } from "@/app/lib/types/definition";
 import { useEffect, useState } from "react";
+import Pagination from "../lib/pagination";
 
 interface UserOrderProps {
     token: string;
@@ -10,10 +11,14 @@ export default function UserOrder({token}: UserOrderProps) {
     const [orders, setOrders] = useState<OrderDto[]>([]);
     const [filteredOrders, setFilteredOrders] = useState<OrderDto[]>([]);
     const [status, setStatus] = useState('all');
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
         const getOrders = async () => {
-            const result = await fetchUserOrders(token);
-            setOrders(result);  
+            const result = await fetchUserOrders(token, currentPage);
+            setOrders(result.content);
+            setTotalPages(result.totalPages);  
         }
         getOrders();
         if (orders) {
@@ -69,6 +74,11 @@ export default function UserOrder({token}: UserOrderProps) {
                         </div>
                     ))}
                 </div>
+                <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                />
             </div>
         );
 

@@ -14,7 +14,8 @@ export default function Page() {
     useEffect(() => {
         const setCartWithId = async () => {
             const userId = localStorage.getItem("id");
-            const response = await fetch(`/api/checkout?id=${userId}`);
+            const jwt = localStorage.getItem('jwt');
+            const response = await fetch(`/api/checkout?id=${userId}&jwt=${jwt}`);
             const checkout: CheckoutType = await response.json();
             if (checkout.items.length === 0) {
                 alert("장바구니가 비었습니다. 다시 시도해 주세요.");
