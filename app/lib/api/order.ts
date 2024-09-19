@@ -1,6 +1,6 @@
-export async function fetchUserOrders(token: string) {
+export async function fetchUserOrders(token: string, page: number) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/orders?page=${page}&pageSize=5`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

@@ -13,7 +13,6 @@ export default function User() {
     const { isLoggedIn, authLoading } = useAuth();
     const [selectedTab, setSelectedTab] = useState('orders');
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
     const [jwt, setJwt] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -28,7 +27,6 @@ export default function User() {
         }
         const setUser = async () => {
             setUsername(localStorage.getItem('username')!);
-            setEmail(localStorage.getItem('email')!);
             setJwt(localStorage.getItem('jwt')!);
             setLoading(false);
         }
@@ -38,7 +36,7 @@ export default function User() {
     return (
         loading ? <div>로딩중</div> : <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-                <Welcome name={username} email={email} profileImage={''} />
+                <Welcome name={username} profileImage={''} />
 
                 <div className="flex space-x-4 mb-6">
                     <button
@@ -71,7 +69,7 @@ export default function User() {
                     </button>
                 </div>
 
-                <Tab name={username} email={email} profileImage='' token={jwt} selectedTab={selectedTab} />
+                <Tab profileImage='' token={jwt} selectedTab={selectedTab} />
             </div>
         </div>
     );
