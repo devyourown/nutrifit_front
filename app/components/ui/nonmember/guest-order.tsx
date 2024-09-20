@@ -3,22 +3,22 @@
 import { fetchNonMemberOrder } from '@/app/lib/api/order';
 import { OrderDto } from '@/app/lib/types/definition';
 import { useState } from 'react';
+import OrderItem from '../user/order-item';
 
-const GuestOrder = () => {
+export default function GuestOrder() {
   const [orderNumber, setOrderNumber] = useState<string>('');
-  const [orders, setOrders] = useState<OrderDto[] | null>(null);
+  const [orders, setOrders] = useState<OrderDto[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!orderNumber) {
-      setError('Order number is required.');
+      setError('주문번호를 입력해 주세요.');
       return;
     }
     setError(null);
 
     const order: OrderDto[] = await fetchNonMemberOrder(orderNumber);
-    console.log(order);
     setOrders(order);
   };
 
@@ -50,36 +50,17 @@ const GuestOrder = () => {
         </form>
 
         {/* 주문 정보가 있을 경우에만 보여줍니다. */}
-        {orders &&
-            orders.map((order, index) => {
-                return (
-                    <div className="mt-8 bg-gray-50 p-4 rounded-md shadow-md" key={index}>
-            <h2 className="text-lg font-semibold text-gray-800">주문 상세</h2>
-            <p className="text-gray-700">
-              <strong>주문번호: </strong> {order.id}
-            </p>
-            <p className="text-gray-700">
-              <strong>주문날짜: </strong> {order.orderDate}
-            </p>
-            <p className="text-gray-700">
-              <strong>주문상태:</strong> {order.fulfillment}
-            </p>
-            <p className="text-gray-700">
-              <strong>운송장번호:</strong> {order.trackingNumber}
-            </p>
-            <p className="text-gray-700">
-              <strong>상품이름:</strong> {order.productName}
-            </p>
-            <p className="text-gray-700">
-              <strong>총 가격:</strong> {order.totalAmount}
-            </p>
-          </div>
-                )
-            })
-        }
+        {orders.map((order, index) => (
+              <OrderItem key={index} 
+              productId={order.productId}
+              title={order.productName!} 
+              price={order.totalAmount!}
+              quantity={order.quantity}
+              imageUrl={order.imageUrl}
+              fulfillment={order.fulfillment}
+              orderDate={order.orderDate}/>
+        ))}
       </div>
     </div>
   );
 };
-
-export default GuestOrder;

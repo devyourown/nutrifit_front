@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { FaBoxOpen, FaTicketAlt, FaCoins, FaUserEdit } from 'react-icons/fa';
+import { FaBoxOpen, FaTicketAlt, FaCoins } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';
 import Welcome from './welcome';
 import Tab from './tab';
 import { useAuth } from '@/app/lib/use-auth';
+import UserSkeleton from '../../skeleton/user/user';
 
 export default function User() {
     const router = useRouter();
@@ -34,7 +35,7 @@ export default function User() {
     }, [authLoading]);
 
     return (
-        loading ? <div>로딩중</div> : <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
+        loading ? <div><UserSkeleton/></div> : <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
                 <Welcome name={username} profileImage={''} />
 
@@ -69,7 +70,7 @@ export default function User() {
                     </button>
                 </div>
 
-                <Tab profileImage='' token={jwt} selectedTab={selectedTab} />
+                <Tab profileImage='/chili_chicken1.jpg' token={jwt} selectedTab={selectedTab} />
             </div>
         </div>
     );

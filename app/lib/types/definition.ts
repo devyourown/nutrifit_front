@@ -45,13 +45,15 @@ export type OrderItemDto = {
 
 export type OrderDto = {
     id: number;
+    productId: number;
     orderDate: string;
     totalAmount?: number;
-    orderItems?: OrderItemDto[];
     fulfillment: string;
     username?: string;
     productName?: string;
     trackingNumber: string;
+    quantity: number;
+    imageUrl: string;
 };
 
 export type PaymentDto = {
