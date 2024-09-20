@@ -4,35 +4,31 @@ import { useEffect, useState } from "react";
 import Pagination from "../lib/pagination";
 import OrderItem from "./order-item";
 import OrderListSkeleton from "../../skeleton/user/order-item";
+import useSWR from "swr";
 
 interface UserOrderProps {
     token: string;
 }
 
 export default function UserOrder({token}: UserOrderProps) {
-    const [orders, setOrders] = useState<OrderDto[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(1);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const getOrders = async () => {
-            const result = await fetchUserOrders(token, currentPage);
-            setOrders(result.content);
-            setTotalPages(result.page.totalPages);
-            setLoading(false);
-        }
-        getOrders();
-    }, [currentPage])
+    const { data: ordersResponse, error } = useSWR([token, currentPage], async () => fetchUserOrders(token, currentPage));
+    const orders = ordersResponse?.content;
+    const page = ordersResponse?.page;
 
-    if (loading) {
+    if (!ordersResponse && !error) {
         return <div><OrderListSkeleton/></div>
+    }
+
+    if (error) {
+        return <div>주문을 불러오는 중 오류가 발생했습니다.</div>
     }
 
         return (
             <div>
                 <div className="space-y-4">
-                    {orders.map((order, index) => (
+                    {orders.map((order: OrderDto, index: number) => (
                         <OrderItem key={index} 
                         token={token}
                         productId={order.productId}
@@ -46,7 +42,7 @@ export default function UserOrder({token}: UserOrderProps) {
                 </div>
                 <Pagination
                 currentPage={currentPage}
-                totalPages={totalPages}
+                totalPages={page.totalPages}
                 onPageChange={setCurrentPage}
                 />
             </div>
