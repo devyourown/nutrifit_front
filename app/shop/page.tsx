@@ -1,34 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProductFilter from "../components/ui/product/filter";
 import ProductList from "../components/ui/product/product-list";
 import { fetchAllProducts, fetchProductsByCategory } from "../lib/api/product";
-import { ProductDto } from "@/app/lib/types/definition";
 import ProductSkeleton from "../components/skeleton/product/products";
 import Pagination from "../components/ui/lib/pagination";
+import useSWR from "swr";
 
 export default function Page() {
-    const [products, setProducts] = useState<ProductDto[]>();
-    const [loading, setLoading] = useState(true);
+    const [category, setCategory] = useState<string | null>(null);
     const [page, setPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
 
-    const fetchProducts = async (page: number) => {
-        setLoading(true);
-        const response = await fetchAllProducts(page);
-        setProducts(response.content);
-        setTotalPages(response.page.totalPages);
-        setLoading(false);
-    }
+    const { data: productsResponse, error } = useSWR([category, page], async () => {
+        if (category) {
+            return fetchProductsByCategory(category, page);
+        }
+        return fetchAllProducts(page);
+    })
 
-    useEffect(() => {
-        fetchProducts(page);
-    }, [page]);
+    const products = productsResponse?.content;
+    const totalPages = productsResponse?.page?.totalPages || 0;
     
-    const handleFilterChange = async (category: string) => {
-        const filteredProducts = await fetchProductsByCategory(category, page);
-        setProducts(filteredProducts);
+    const handleFilterChange = (category: string) => {
+        setCategory(category);
+        setPage(0);
     };
 
     const handlePageChange = (newPage: number) => {
@@ -37,8 +33,10 @@ export default function Page() {
         }
     }
 
+    if (error) return <div>상품을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>
+
     return (
-        loading ? <ProductSkeleton/> :
+        !products ? <ProductSkeleton/> :
         <div className="flex">
             <div className="w-1/4 ml-4">
             <ProductFilter onFilterChange={handleFilterChange}/>

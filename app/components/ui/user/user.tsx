@@ -16,6 +16,7 @@ export default function User() {
     const [username, setUsername] = useState('');
     const [jwt, setJwt] = useState('');
     const [loading, setLoading] = useState(true);
+    const [profile, setProfile] = useState('');
 
     useEffect(() => {
         if (authLoading) {
@@ -30,6 +31,7 @@ export default function User() {
             setUsername(localStorage.getItem('username')!);
             setJwt(localStorage.getItem('jwt')!);
             setLoading(false);
+            setProfile(localStorage.getItem('profile')!);
         }
         setUser();
     }, [authLoading]);
@@ -37,7 +39,7 @@ export default function User() {
     return (
         loading ? <div><UserSkeleton/></div> : <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-                <Welcome name={username} profileImage={''} />
+                <Welcome name={username} profileImage={profile} />
 
                 <div className="flex space-x-4 mb-6">
                     <button
@@ -70,7 +72,7 @@ export default function User() {
                     </button>
                 </div>
 
-                <Tab profileImage='/chili_chicken1.jpg' token={jwt} selectedTab={selectedTab} />
+                <Tab profileImage={profile} token={jwt} selectedTab={selectedTab} />
             </div>
         </div>
     );
