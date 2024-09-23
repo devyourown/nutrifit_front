@@ -1,6 +1,6 @@
 import { fetchUserOrders } from "@/app/lib/api/order";
 import { OrderDto } from "@/app/lib/types/definition";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Pagination from "../lib/pagination";
 import OrderItem from "./order-item";
 import OrderListSkeleton from "../../skeleton/user/order-item";
@@ -13,7 +13,10 @@ interface UserOrderProps {
 export default function UserOrder({token}: UserOrderProps) {
     const [currentPage, setCurrentPage] = useState(0);
 
-    const { data: ordersResponse, error } = useSWR([token, currentPage], async () => fetchUserOrders(token, currentPage));
+    const { data: ordersResponse, error } = useSWR(
+        token ? [`/orders/${token}`, 'orders', currentPage] : null,  // 고유한 SWR 키 사용
+        () => fetchUserOrders(token, currentPage)
+    );
     const orders = ordersResponse?.content;
     const page = ordersResponse?.page;
 

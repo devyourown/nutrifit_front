@@ -41,7 +41,6 @@ export default function Callback({service, code, state, replace}: CallbackProps)
                 if (response.ok) {
                     const data = await response.json();
                     const username: string = data.username;
-                    localStorage.setItem('accessToken', data.oauthToken);
                     if (username.startsWith("temporary")) {
                         localStorage.setItem('email', data.email);
                     } else {
@@ -50,9 +49,9 @@ export default function Callback({service, code, state, replace}: CallbackProps)
                         localStorage.setItem('id', data.token);
                         localStorage.setItem('email', data.email);
                         localStorage.setItem('username', data.username);
-                        return data.token;
+                        login(data.token);
+                        router.push('/');
                     }
-                    return null;
                 } else {
                     alert('로그인 중 에러가 발생했습니다. 잠시 후 다시 로그인해주세요.');
                     router.push('/login');
@@ -60,14 +59,9 @@ export default function Callback({service, code, state, replace}: CallbackProps)
             } catch (error) {
                 console.error('Error checking user status:', error);
             }
+            return null;
         };
-        checkUserStatus().then((res) => {
-            if (res) {
-                login(res);
-                window.dispatchEvent(new Event('usernameUpdated'));
-                router.push('/');
-            }
-        });
+        checkUserStatus();
     }, []);
 
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { FaBoxOpen, FaTicketAlt, FaCoins } from 'react-icons/fa';
+import { FaBoxOpen, FaTicketAlt, FaCoins, FaStar, FaCommentDots } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';
 import Welcome from './welcome';
@@ -69,6 +69,21 @@ export default function User() {
                     >
                         <IoSettingsOutline className="mr-2" />
                         프로필 설정
+                    </button>
+                    <button
+                        className={`flex items-center px-4 py-2 rounded-lg transition ${selectedTab === 'reviews' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                        onClick={() => setSelectedTab('reviews')}
+                    >
+                        <FaStar className="mr-2" />
+                        나의 리뷰
+                    </button>
+                    {/* Q&A 탭 */}
+                    <button
+                        className={`flex items-center px-4 py-2 rounded-lg transition ${selectedTab === 'qna' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                        onClick={() => setSelectedTab('qna')}
+                    >
+                        <FaCommentDots className="mr-2" />
+                        나의 Q&A
                     </button>
                 </div>
 

@@ -21,6 +21,21 @@ export async function getUserReviews(token: string, page: number) {
     }
 }
 
+export async function deleteReview(token: string, reviewId: number) {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/reviews/${reviewId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+        return await response.text();
+    } catch (e) {
+        console.error('Failed to delete reviews : ', e);
+    }
+}
+
 export async function makeReview(token: string, productId: number, comment: string, imageUrls: string[], rating: number) {
     try {
         const response = await fetch(`${process.env.BACKEND_URL}/reviews`, {

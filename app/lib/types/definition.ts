@@ -23,6 +23,8 @@ export type ProductDetailDto = {
 }
 
 export type ProductQnADto = {
+    id: number;
+    productName: string;
     question: string;
     answer: string;
     questionDate: string;
