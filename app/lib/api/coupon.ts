@@ -20,11 +20,11 @@ export async function assignUserCoupon(token: string, code: string) {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
+                'Content-Type': 'text/plain',
             },
-            body: JSON.stringify({ code }),
+            body: code,
         });
-        return await response.json();
+        return response.text();
     } catch (error: any) {
         console.error('쿠폰을 만드는데 실패했습니다.', error);
         throw error;

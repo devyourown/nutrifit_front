@@ -13,7 +13,6 @@ export default function Point({token}: PointProps) {
     if (error) return <div>포인트 정보를 불러오는 중 오류가 발생했습니다.</div>
 
     if (!points) return <div><PointSkeleton/></div>
-    console.log(points);
     return (
         points ? <div>
             <h2 className="text-xl font-semibold mb-4">포인트</h2>

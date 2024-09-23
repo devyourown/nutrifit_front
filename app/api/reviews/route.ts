@@ -48,7 +48,17 @@ export async function POST(req: NextRequest) {
     try {
         const formData = await req.formData();
         const files = formData.getAll('files') as File[];
-        if (files.length === 0) return;
+        const token = formData.get('token') as string;
+        const productId = formData.get('productId') as string;
+        const review = formData.get('review') as string;
+        const rating = formData.get('rating') as string;
+        if (files.length === 0) {
+            const response: any = await makeReview(token, Number(productId), review, [], Number(rating));
+            if (response.ok) {
+                return NextResponse.json({message: 'review uploaded successfully', success:true});
+            }
+            return NextResponse.json({ error: 'Review creation failed.' }, { status: 500 }); 
+        }
 
         const uploadedUrls = [];
         for (const key in files) {
@@ -56,10 +66,6 @@ export async function POST(req: NextRequest) {
             const url = await uploadToS3(file);
             uploadedUrls.push(url);
         }
-        const token = formData.get('token') as string;
-        const productId = formData.get('productId') as string;
-        const review = formData.get('review') as string;
-        const rating = formData.get('rating') as string;
         const response: any = await makeReview(token, Number(productId), review, uploadedUrls, Number(rating));
         if (!response.ok) {
             await Promise.all(uploadedUrls.map((url) => deleteFileFromS3(url)));
