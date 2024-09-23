@@ -17,7 +17,7 @@ export async function checkPayment(paymentDto: PaymentDto, token: string) {
             paymentId: paymentDto.paymentId,
             orderItems: paymentDto.orderItems,
             ordererDto: paymentDto.ordererDto,
-            couponId: paymentDto.couponId,
+            couponCode: paymentDto.couponCode,
             usedPoints: paymentDto.usedPoints 
         }),
     });
@@ -43,7 +43,7 @@ export async function checkPaymentWithoutMember(paymentDto: PaymentDto, phone: s
             paymentId: paymentDto.paymentId,
             orderItems: paymentDto.orderItems,
             ordererDto: paymentDto.ordererDto,
-            couponId: paymentDto.couponId,
+            couponCode: paymentDto.couponCode,
             usedPoints: paymentDto.usedPoints,
             phoneNumber: phone
         }),

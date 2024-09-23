@@ -69,7 +69,7 @@ export type PaymentDto = {
     orderItems: CartItemDto[];
     ordererDto: Orderer;
     paymentDate?: string;
-    couponId?: number;
+    couponCode?: string;
     usedPoints?: number;
 };
 
@@ -176,6 +176,10 @@ export type Order = {
     subtotal: number;
     shipping: number;
     total: number;
+    availableCoupons: CouponDto[];
+    availablePoints: number;
+    usedCouponCode: string;
+    usedPoints: number;
 };
 
 export type Orderer = {
