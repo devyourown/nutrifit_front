@@ -13,12 +13,16 @@ export async function existsByUsername(username: string) {
 }
 
 export async function getUserOrderer(token: string) {
-    const response = await fetch(`${process.env.BACKEND_URL}/auth/address`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        }
-    });
-    return await response.json();
+    try {
+        const response = await fetch(`${process.env.BACKEND_URL}/auth/address`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+        return await response.json();
+    } catch (error) {
+        return null;
+    }
 }

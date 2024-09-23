@@ -50,7 +50,7 @@ export default function Callback({service, code, state, replace}: CallbackProps)
                         localStorage.setItem('email', data.email);
                         localStorage.setItem('username', data.username);
                         login(data.token);
-                        router.push('/');
+                        router.replace('/');
                     }
                 } else {
                     alert('로그인 중 에러가 발생했습니다. 잠시 후 다시 로그인해주세요.');

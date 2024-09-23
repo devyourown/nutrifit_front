@@ -38,7 +38,6 @@ export default function Header() {
         }
         updateUsername();
         window.addEventListener('usernameUpdated', updateUsername);
-        console.log('등록');
 
         updateCart();
         const openCart = () => setIsCartOpen(true);

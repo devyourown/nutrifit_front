@@ -48,13 +48,15 @@ export default function Payment({ steps, order, items, orderer }: PaymentProps) 
             result = await checkPayment({orderId: order.id, 
                 total: order.total, paymentMethod: selectedPayment,
                 paymentId: response?.paymentId!, orderItems: items, ordererDto: orderer,
-                subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping 
+                subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping,
+                couponCode: order.usedCouponCode, usedPoints: order.usedPoints,
             }, token);
         } else {
             result = await checkPaymentWithoutMember({orderId: order.id, 
                 total: order.total, paymentMethod: selectedPayment,
                 paymentId: response?.paymentId!, orderItems: items, ordererDto: orderer,
-                subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping 
+                subtotal: order.subtotal, discount: order.subtotal - order.total, shippingFee: order.shipping,
+                couponCode: order.usedCouponCode, usedPoints: order.usedPoints,
             }, orderer.ordererPhone);
         }
         if (result) {
