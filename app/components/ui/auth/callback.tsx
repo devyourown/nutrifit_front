@@ -49,8 +49,9 @@ export default function Callback({service, code, state, replace}: CallbackProps)
                         localStorage.setItem('id', data.token);
                         localStorage.setItem('email', data.email);
                         localStorage.setItem('username', data.username);
+                        window.dispatchEvent(new Event('usernameUpdated'));
                         login(data.token);
-                        router.replace('/');
+                        router.push('/');
                     }
                 } else {
                     alert('로그인 중 에러가 발생했습니다. 잠시 후 다시 로그인해주세요.');

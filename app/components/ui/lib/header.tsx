@@ -18,7 +18,7 @@ export default function Header() {
     const router = useRouter();
     const updateUsername = () => {
         const tempUser = localStorage.getItem('username');
-        setUsername(tempUser || ''); 
+        setUsername(tempUser || '');
     };
 
     const updateCart = async () => {
@@ -49,7 +49,7 @@ export default function Header() {
             window.removeEventListener('usernameUpdated', updateUsername);
             window.removeEventListener('cartOpen', openCart)
         };
-    }, [authLoading]);
+    }, [authLoading, isLoggedIn]);
 
     const handleCartToggle = () => {
         setIsCartOpen(!isCartOpen);
@@ -78,7 +78,7 @@ export default function Header() {
                         <FaShoppingCart />
                         <span>cart</span>
                     </button>
-                    {isLoggedIn ? 
+                    {username ? 
                     <>
                         <Link href="/user" className="flex items-center space-x-2">
                             <FaUser />

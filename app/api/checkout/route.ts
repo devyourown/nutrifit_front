@@ -13,8 +13,8 @@ export async function GET(req: NextRequest) {
     if (!id) {
         return NextResponse.json({error: "Missing key parameter"}, {status: 400});
     }
-    const checkout = await getCheckout(id); 
-    if (jwt) {
+    const checkout = await getCheckout(id);
+    if (jwt && jwt !== 'null') {
         const coupons = await fetchUserCoupon(jwt);
         const points = await fetchUserPoint(jwt);
         checkout.order.availableCoupons = coupons;
