@@ -22,7 +22,6 @@ export default function UseCouponPointModal({
     const [inputPoints, setInputPoints] = useState<number>();
 
     const handleCouponChange = (code: string, minimumOrderAmount: number) => {
-        console.log(availableCoupons);
         if (orderTotal >= minimumOrderAmount) {
             setSelectedCoupon(code);
         } else {

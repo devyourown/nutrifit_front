@@ -71,6 +71,7 @@ export type PaymentDto = {
     paymentDate?: string;
     couponCode?: string;
     usedPoints?: number;
+    earnPoints?: number;
 };
 
 export type ShippingDto = {

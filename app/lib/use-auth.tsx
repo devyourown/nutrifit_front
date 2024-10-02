@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const login = (token: string) => {
         localStorage.setItem('jwt', token);
-        window.dispatchEvent(new Event('usernameUpdated'));
         setToken(token);
     }
 

@@ -36,7 +36,6 @@ export default function CheckoutSummary({
         setDiscount(order.total - totalAfterDiscount);
 
         try {
-            // Redis에 쿠폰 및 포인트 사용 정보 저장
             const response = await fetch(`/api/checkout`, {
                 method: "PUT",
                 headers: {

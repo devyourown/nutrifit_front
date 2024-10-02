@@ -19,9 +19,10 @@ export default function Complete({payment}: CompleteProps) {
                 total={payment.total}
                 discount={payment.discount}
                 shippingFee={payment.shippingFee}
-                usedPoints={payment.usedPoints || 0}/>
+                usedPoints={payment.usedPoints || 0}
+                earnPoints={payment.earnPoints || 0}/>
 
-                <Payment id={payment.paymentId} date={payment.paymentDate!} method={payment.paymentMethod} />
+                <Payment date={payment.paymentDate!} method={payment.paymentMethod} />
 
                 <Shipping orderer={payment.ordererDto}/>
 

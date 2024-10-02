@@ -10,9 +10,10 @@ interface PaymentSummaryProps {
     discount: number;
     usedPoints: number;
     total: number;
+    earnPoints: number;
 }
 
-export default function PaymentSummary({orderId, items, subtotal, shippingFee, discount, usedPoints, total}: PaymentSummaryProps) {
+export default function PaymentSummary({orderId, items, subtotal, shippingFee, discount, usedPoints, total, earnPoints}: PaymentSummaryProps) {
     return (
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
                 <div className="flex flex-col items-center mb-6">
@@ -69,12 +70,20 @@ export default function PaymentSummary({orderId, items, subtotal, shippingFee, d
                         <span>-{usedPoints!.toLocaleString('ko-KR')}원</span>
                     </div>
 
+
                     <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-300">
                         <span className="text-xl font-semibold">총 결제 금액</span>
                         <span className="text-2xl font-bold text-gray-800">
                             {total.toLocaleString('ko-KR')}원
                         </span>
                     </div>
+
+                    <div className="flex justify-between items-center mt-4">
+                    <span className="text-sm font-medium">적립된 포인트</span>
+                    <span className="text-lg font-semibold text-green-500">
+                        +{earnPoints.toLocaleString('ko-KR')}포인트
+                    </span>
+                </div>
                 </div>
             </div>
     )
