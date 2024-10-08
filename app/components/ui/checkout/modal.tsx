@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CouponDto } from "@/app/lib/types/definition";
+import { fetchUserCoupon } from "@/app/lib/api/coupon";
+import { fetchUserPoint } from "@/app/lib/api/point";
 
 interface UseCouponPointModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onApply: (appliedCoupons: string, points: number) => void;
-    availableCoupons: CouponDto[];
-    availablePoints: number;
+    onApply: (appliedCoupons: CouponDto, points: number) => void;
     orderTotal: number;
 }
 
@@ -14,28 +14,41 @@ export default function UseCouponPointModal({
     isOpen,
     onClose,
     onApply,
-    availableCoupons,
-    availablePoints,
     orderTotal,
 }: UseCouponPointModalProps) {
-    const [selectedCoupon, setSelectedCoupon] = useState<string>('');
+    const [selectedCoupon, setSelectedCoupon] = useState<CouponDto | null>(null);
     const [inputPoints, setInputPoints] = useState<number>();
+    const [coupons, setCoupons] = useState<CouponDto[]>([]);
+    const [couponPage, setCouponPage] = useState(0);
+    const [point, setPoint] = useState(0);
 
-    const handleCouponChange = (code: string, minimumOrderAmount: number) => {
+    async function fetchCouponsAndPoint(page: number) {
+        const token = localStorage.getItem('jwt')!;
+        const response_coupons = await fetchUserCoupon(token, page);
+        const response_point = await fetchUserPoint(token);
+        setCoupons(response_coupons);
+        setPoint(response_point);
+    }
+    
+    useEffect(() => {
+        fetchCouponsAndPoint(couponPage);
+    }, [couponPage]);
+
+    const handleCouponChange = (coupon: CouponDto, minimumOrderAmount: number) => {
         if (orderTotal >= minimumOrderAmount) {
-            setSelectedCoupon(code);
+            setSelectedCoupon(coupon);
         } else {
             alert(`이 쿠폰을 사용하려면 최소 주문 금액이 ${minimumOrderAmount}원 이상이어야 합니다.`);
         }
     };
 
     const handleApply = () => {
-        onApply(selectedCoupon, inputPoints!);
+        onApply(selectedCoupon!, inputPoints!);
         onClose();
     };
 
     const handlePointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const points = Math.min(Number(e.target.value), availablePoints, orderTotal);
+        const points = Math.min(Number(e.target.value), point, orderTotal);
         setInputPoints(points);
     };
 
@@ -46,8 +59,8 @@ export default function UseCouponPointModal({
 
                 <div className="mb-4">
                     <h4 className="font-semibold mb-2">사용 가능한 쿠폰</h4>
-                    {availableCoupons.length > 0 ? (
-                        availableCoupons.map((coupon) => (
+                    {coupons.length > 0 ? (
+                        coupons.map((coupon) => (
                             <div key={coupon.code} className="flex items-center justify-between mb-2 p-2 border rounded-md">
                                 <div>
                                     <h5 className="font-bold">{coupon.description}</h5>
@@ -61,8 +74,8 @@ export default function UseCouponPointModal({
                                 <input
                                     type="checkbox"
                                     disabled={orderTotal < coupon.minimumOrderAmount}
-                                    checked={selectedCoupon === coupon.code}
-                                    onChange={() => handleCouponChange(coupon.code, coupon.minimumOrderAmount)}
+                                    checked={selectedCoupon!.code === coupon.code}
+                                    onChange={() => handleCouponChange(coupon, coupon.minimumOrderAmount)}
                                     className="form-checkbox h-5 w-5 text-blue-600"
                                 />
                             </div>
@@ -73,14 +86,14 @@ export default function UseCouponPointModal({
                 </div>
 
                 <div className="mb-4">
-                    <h4 className="font-semibold mb-2">포인트 사용 (최대 {availablePoints}점)</h4>
+                    <h4 className="font-semibold mb-2">포인트 사용 (최대 {point}점)</h4>
                     <input
                         type="number"
                         className="w-full p-2 border border-gray-300 rounded-md"
                         onChange={handlePointsChange}
                         placeholder="사용할 포인트 입력"
                         min={0}
-                        max={availablePoints}
+                        max={point}
                     />
                 </div>
 

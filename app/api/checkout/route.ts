@@ -1,5 +1,3 @@
-import { fetchUserCoupon } from "@/app/lib/api/coupon";
-import { fetchUserPoint } from "@/app/lib/api/point";
 import { getUserOrderer } from "@/app/lib/api/user";
 import { getCheckout, saveCheckout } from "@/app/lib/cache/data";
 import { Checkout } from "@/app/lib/types/definition";
@@ -15,10 +13,6 @@ export async function GET(req: NextRequest) {
     }
     const checkout = await getCheckout(id);
     if (jwt && jwt !== 'null') {
-        const coupons = await fetchUserCoupon(jwt);
-        const points = await fetchUserPoint(jwt);
-        checkout.order.availableCoupons = coupons;
-        checkout.order.availablePoints = points.points;
         const orderer = await getUserOrderer(jwt);
         if (orderer) {
             checkout.orderer = orderer;

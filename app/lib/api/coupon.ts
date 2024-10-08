@@ -1,6 +1,6 @@
-export async function fetchUserCoupon(token: string) {
+export async function fetchUserCoupon(token: string, page: number) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/coupon`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/coupon?page=${page}&size=10`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

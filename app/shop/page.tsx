@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ProductFilter from "../components/ui/product/filter";
 import ProductList from "../components/ui/product/product-list";
-import { fetchAllProducts, fetchProductsByCategory } from "../lib/api/product";
+import { fetchProductsByCategory, fetchReleasedProducts } from "../lib/api/product";
 import ProductSkeleton from "../components/skeleton/product/products";
 import Pagination from "../components/ui/lib/pagination";
 import useSWR from "swr";
@@ -16,7 +16,7 @@ export default function Page() {
         if (category) {
             return fetchProductsByCategory(category, page);
         }
-        return fetchAllProducts(page);
+        return fetchReleasedProducts(page);
     })
 
     const products = productsResponse?.content;
