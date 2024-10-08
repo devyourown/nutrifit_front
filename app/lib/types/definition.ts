@@ -177,8 +177,6 @@ export type Order = {
     subtotal: number;
     shipping: number;
     total: number;
-    availableCoupons: CouponDto[];
-    availablePoints: number;
     usedCouponCode: string;
     usedPoints: number;
 };

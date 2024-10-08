@@ -1,9 +1,8 @@
 "use client";
 
-import { changeItemQuantity, putItemInCart, triggerCartOpen } from "@/app/lib/trigger";
+import { putItemInCart, triggerCartOpen } from "@/app/lib/trigger";
 import { ProductDto } from "@/app/lib/types/definition";
 import Link from "next/link";
-import { FaShoppingCart } from "react-icons/fa";
 
 interface ProductListProps {
     products: ProductDto[];
@@ -90,17 +89,16 @@ export default function ProductList({ products }: ProductListProps) {
                                             ★{" "}
                                         </i>
                                         <span className="text-sm">
-                                            {(
+                                            {isNaN(
                                                 product.reviewRating /
                                                 product.reviewCount
-                                            ).toFixed(1)}
+                                            ) ? ('첫 리뷰어가 되어 주세요') : (product.reviewRating /
+                                                product.reviewCount).toFixed(1)}
                                         </span>
                                         <span className="text-gray-700 ml-2">
-                                            (
-                                            {product.reviewCount.toLocaleString(
+                                            {product.reviewCount === 0 ? '' : '(' + product.reviewCount.toLocaleString(
                                                 "ko-KR"
-                                            )}
-                                            )
+                                            ) + ')'}
                                         </span>
                                     </div>
                                 </div>

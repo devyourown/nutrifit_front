@@ -1,6 +1,8 @@
-import { Cart, CartItem, Order } from "@/app/lib/types/definition";
+import { Cart, CartItem, CouponDto, Order } from "@/app/lib/types/definition";
 import UseCouponPointModal from "./modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchUserCoupon } from "@/app/lib/api/coupon";
+import { fetchUserPoint } from "@/app/lib/api/point";
 
 interface CheckoutSummaryProps {
     items: CartItem[];
@@ -18,10 +20,8 @@ export default function CheckoutSummary({
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const handleApplyCouponPoint = async (couponCode: string, points: number) => {
+    const handleApplyCouponPoint = async (coupon: CouponDto, points: number) => {
         let totalAfterDiscount = order.total;
-
-        const coupon = order.availableCoupons.find((c) => c.code === couponCode);
         if (coupon) {
             if (coupon.discountType === "PERCENTAGE") {
                 totalAfterDiscount -= Math.min(
@@ -118,8 +118,6 @@ export default function CheckoutSummary({
                 isOpen={isModalOpen}
                 onClose={closeModal}
                 onApply={handleApplyCouponPoint}
-                availableCoupons={order.availableCoupons}
-                availablePoints={order.availablePoints}
                 orderTotal={order.total}
                 />
             )}

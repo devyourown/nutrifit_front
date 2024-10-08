@@ -1,6 +1,6 @@
-export async function fetchAllProducts(page: number) {
+export async function fetchReleasedProducts(page: number) {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products?page=${page}&size=6`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/released?page=${page}&size=6`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
