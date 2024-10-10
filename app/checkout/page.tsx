@@ -31,7 +31,7 @@ export default function Page() {
             setLoading(false);
         };
         setCartWithId();
-    }, []);
+    }, [router]);
 
     return loading ? <CheckoutSkeleton/> :
     <AuthProvider><Checkout checkout={checkout!} /></AuthProvider>;
