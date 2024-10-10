@@ -3,14 +3,18 @@ import { CouponDto } from "@/app/lib/types/definition";
 import useSWR from "swr";
 import CouponSkeleton from "../../skeleton/user/coupon";
 import { useState } from "react";
+import Pagination from "../lib/pagination";
 
 interface CouponProps {
     token: string;
 }
 
 export default function Coupon({token}: CouponProps) {
-    const { data: coupons, error, mutate } = useSWR(token ? `/coupon/${token}` : null, () => fetchUserCoupon(token));
+    const [page, setPage] = useState(0);
+    const { data: couponResponse, error, mutate } = useSWR(token ? `/coupon/${token}` : null, () => fetchUserCoupon(token, page));
 
+    const coupons = couponResponse.content;
+    const totalPages = couponResponse.page.totalPages;
     const [couponCode, setCouponCode] = useState("");
     const [addError, setAddError] = useState<string | null>(null);
     const [adding, setAdding] = useState(false);
@@ -81,6 +85,11 @@ export default function Coupon({token}: CouponProps) {
     </div>
 )) : <div>보유 중인 쿠폰이 없네요...</div>}
             </div>
+            <Pagination 
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(page) => setPage(page)}
+            />
         </div>
     );
 }

@@ -1,9 +1,9 @@
 import Banner from "./components/ui/lib/banner";
 import ProductList from "./components/ui/product/product-list";
-import { fetchAllProducts } from "./lib/api/product";
+import { fetchReleasedProducts } from "./lib/api/product";
 
 export default async function Home() {
-    const products = await fetchAllProducts(0);
+    const products = await fetchReleasedProducts(0);
     return (
         <>
             <Banner />
