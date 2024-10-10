@@ -15,7 +15,7 @@ interface ProductDetailProps {
 }
 
 export default function ProductDetail({imageUrls, name, description, options, id}: ProductDetailProps) {
-  const [selectedOption, setSelectedOption] = useState(options![0]);
+  const [selectedOption, setSelectedOption] = useState(options[0]);
   const [loading, setLoading] = useState(false);
 
     const addToCart = async (productId: number) => {
