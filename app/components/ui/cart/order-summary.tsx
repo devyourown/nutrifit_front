@@ -26,7 +26,7 @@ export default function OrderSummary({
             return;
         }
         const orderId = 'order-'+generateUniqueId();
-        const order: Order = {id: orderId, subtotal, shipping, total, availableCoupons: [], availablePoints: 0, usedCouponCode: '', usedPoints: 0};
+        const order: Order = {id: orderId, subtotal, shipping, total, usedCouponCode: '', usedPoints: 0};
         const response = await makeCheckout(userId, order, items);
         if (!response.ok) {
             alert("오류가 발생했습니다. 다시 시도해 주세요.");
