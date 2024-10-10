@@ -9,7 +9,7 @@ export default async function Home() {
             <Banner />
             <div className="flex flex-col">
                 <div className="text-4xl px-4 py-4 text-center font-bold">인기 상품</div>
-                {products && <ProductList products={products.content}/>}
+                {products.content && <ProductList products={products.content}/>}
             </div>
         </>
     );

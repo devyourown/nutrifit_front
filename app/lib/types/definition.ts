@@ -118,6 +118,17 @@ export type CartItemDto = {
     price: number;
     imageUrl: string;
     quantity: number;
+    productId: number;
+};
+
+export type CartItem = {
+    id: number;
+    name: string;
+    description?: string;
+    price: number;
+    imageUrl: string;
+    quantity: number;
+    productId: number;
 };
 
 export type CouponDto = {
@@ -163,14 +174,6 @@ export type Checkout = {
     };
     order?: Order;
 }
-
-export type CartItem = {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-    imageUrl: string;
-};
 
 export type Order = {
     id: string;

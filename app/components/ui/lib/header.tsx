@@ -43,11 +43,13 @@ export default function Header() {
         const openCart = () => setIsCartOpen(true);
         window.addEventListener('cartUpdated', updateCart);
         window.addEventListener('cartOpen', openCart);
+        window.addEventListener('beforeunload', logoutHeader);
 
         return () => {
             window.removeEventListener('cartUpdated', updateCart);
             window.removeEventListener('usernameUpdated', updateUsername);
             window.removeEventListener('cartOpen', openCart)
+            window.removeEventListener('beforeunload', logoutHeader);
         };
     }, [authLoading, isLoggedIn]);
 
@@ -55,7 +57,19 @@ export default function Header() {
         setIsCartOpen(!isCartOpen);
     };
 
-    const logoutHeader = () => {
+    const logoutHeader = async () => {
+        const userId = localStorage.getItem('id'); 
+        const jwt = localStorage.getItem('jwt');
+        if (!jwt) {
+            return;
+        }
+        await fetch(`/api/logout`, {
+            method:'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({jwt: jwt, userId: userId})
+        });
         logout();
         setUsername('');
         router.push('/');

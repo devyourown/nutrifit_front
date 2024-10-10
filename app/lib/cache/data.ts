@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import { Cart, CartItem, Checkout } from "../types/definition";
+import { Cart, Checkout } from "../types/definition";
 
 const redisClient = createClient({
     socket: {
@@ -28,12 +28,8 @@ export async function getCart(id: string) {
     }
 }
 
-export async function clearCacheCart(id: string, items: CartItem[]) {
-    try {
-        await redisClient.hDel("cart", id);
-    } catch (error) {
-        console.error("failed to clear cart.");
-    }
+export async function clearCart(id: string) {
+    await redisClient.hDel("cart", id);
 }
 
 export async function saveCheckout(id: string, checkout: Checkout) {
@@ -49,4 +45,8 @@ export async function getCheckout(id: string) {
         console.error("Getting checkout error: ", error);
         return null;
     }
+}
+
+export async function clearCheckout(id: string) {
+    await redisClient.hDel("checkout", id);
 }

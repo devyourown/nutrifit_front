@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
             price: price,
             quantity: 1,
             imageUrl: product.imageUrls[0],
+            productId: productId
         }
         cart.items.push({ ...cartItem });
     }

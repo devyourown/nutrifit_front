@@ -1,4 +1,3 @@
-import { removeItemFromCart, updateCartItemQuantity } from "./api/cart";
 import { CartItem, Checkout, Order, Orderer } from "./types/definition";
 
 export function triggerCartOpen() {
@@ -16,10 +15,6 @@ export const handleQuantityChange = async (id:number, description: string, quant
     );
     const userId = localStorage.getItem('id');
     await changeItemQuantity(userId!, description, quantity);
-    const token = localStorage.getItem('jwt');
-    if (token) {
-        updateCartItemQuantity(token, id, quantity);
-    }
     const updateEvent = new CustomEvent("cartUpdated");
     window.dispatchEvent(updateEvent);
 };
@@ -28,10 +23,6 @@ export const handleRemoveItem = async (id: number, description: string, setCartI
     setCartItems((prevItems) => prevItems.filter((item) => item.name !== description));
     const userId = localStorage.getItem('id');
     await deleteItem(userId!, description);
-    const token = localStorage.getItem('jwt');
-    if (token) {
-        removeItemFromCart(token, id);
-    }
     const updateEvent = new CustomEvent("cartUpdated");
     window.dispatchEvent(updateEvent);
 };

@@ -9,15 +9,6 @@ interface ProductListProps {
 }
 
 export default function ProductList({ products }: ProductListProps) {
-
-    const addToCart = async (productId: number, price: number, description: string) => {
-        const id = localStorage.getItem("id");
-        const response = await putItemInCart(id!, productId, price, description);
-        if (response.ok) {
-            triggerCartOpen();
-        }
-    };
-
     return (
         <div className="flex flex-wrap justify-center space-x-4 p-4">
             {products.map((product) => {
@@ -44,12 +35,6 @@ export default function ProductList({ products }: ProductListProps) {
                                         </span>
                                     ))}
                             </div>
-                            {/*<button
-                                    className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-lg"
-                                    onClick={() => addToCart(product.id, product.discountedPrice, product.description!)}
-                                >
-                                    <FaShoppingCart className="text-gray-700 hover:text-gray-500" />
-                                </button>*/}
                         </div>
                         <div className="flex flex-col justify-between flex-grow p-4">
                             <Link href={`/product/${product.id}`}>

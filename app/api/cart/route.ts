@@ -25,6 +25,7 @@ function convertDtoToCartItem(dto: CartItemDto): CartItem {
         price: dto.price,
         imageUrl: dto.imageUrl,
         quantity: dto.quantity,
+        productId: dto.productId
     }
 }
 
