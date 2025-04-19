@@ -113,7 +113,7 @@ JWT는 localStorage에 저장되어 API 요청 시 헤더에 자동 포함
 
 | 메인 페이지                          | 상품 상세                               | 장바구니                                 | 결제 페이지                              |
 | ------------------------------------ | --------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| ![메인](public/screenshots/main.png) | ![상품](public/screenshots/product.png) | ![장바구니](public/screenshots/cart.png) | ![결제](public/screenshots/checkout.png) |
+| ![메인](public/screenshots/main.PNG) | ![상품](public/screenshots/product.PNG) | ![장바구니](public/screenshots/cart.PNG) | ![결제](public/screenshots/checkout.PNG) |
 
 ## 🙋 문의사항
 
