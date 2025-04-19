@@ -34,11 +34,13 @@ export default function ReviewImages({
                     if (!review.imageUrls || review.imageUrls.length === 0)
                         return null;
                     return (
-                        <img
+                        <Image
                             key={review.id}
                             src={review.imageUrls[0]}
                             alt={review.comment}
-                            className="w-40 h-40 object-cover rounded-md"
+                            width={40}
+                            height={40}
+                            className="w-[40px] h-[40px] object-cover rounded-md"
                             onClick={() => setSelectedReview(review)}
                         />
                     );

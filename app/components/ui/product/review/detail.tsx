@@ -2,6 +2,7 @@ import { ReviewDto } from "@/app/lib/types/definition";
 import { useState } from "react";
 import Modal from "./modal";
 import { makeDate } from "@/app/lib/generator";
+import Image from "next/image";
 
 interface ReviewDetailProps {
     review: ReviewDto;
@@ -32,7 +33,7 @@ export default function ReviewDetail({ review }: ReviewDetailProps) {
             <div className="flex overflow-x-auto mb-4">
                 {review.imageUrls &&
                     review.imageUrls.map((image, index) => (
-                        <img
+                        <Image
                             key={index}
                             src={image}
                             alt={`Review ${index}`}

@@ -11,43 +11,43 @@ import { generateUniqueId } from "@/app/lib/generator";
 import { useAuth } from "@/app/lib/use-auth";
 
 export default function Header() {
-    const {logout, isLoggedIn, authLoading} = useAuth();
-    const [username, setUsername] = useState('');
+    const { logout, isLoggedIn, authLoading } = useAuth();
+    const [username, setUsername] = useState("");
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const router = useRouter();
     const updateUsername = () => {
-        const tempUser = localStorage.getItem('username');
-        setUsername(tempUser || '');
+        const tempUser = localStorage.getItem("username");
+        setUsername(tempUser || "");
     };
 
     const updateCart = async () => {
-        let id = localStorage.getItem('id');
+        let id = localStorage.getItem("id");
         if (!id) {
             id = generateUniqueId();
-            localStorage.setItem('id', id);
+            localStorage.setItem("id", id);
         }
         const response = await fetch(`/api/cart?id=${id}`);
-        let cart: Cart = await response.json() as Cart;
+        let cart: Cart = (await response.json()) as Cart;
         setCartItems(cart.items);
-    }
+    };
 
     useEffect(() => {
         if (authLoading) {
             return;
         }
         updateUsername();
-        window.addEventListener('usernameUpdated', updateUsername);
+        window.addEventListener("usernameUpdated", updateUsername);
 
         updateCart();
         const openCart = () => setIsCartOpen(true);
-        window.addEventListener('cartUpdated', updateCart);
-        window.addEventListener('cartOpen', openCart);
+        window.addEventListener("cartUpdated", updateCart);
+        window.addEventListener("cartOpen", openCart);
 
         return () => {
-            window.removeEventListener('cartUpdated', updateCart);
-            window.removeEventListener('usernameUpdated', updateUsername);
-            window.removeEventListener('cartOpen', openCart)
+            window.removeEventListener("cartUpdated", updateCart);
+            window.removeEventListener("usernameUpdated", updateUsername);
+            window.removeEventListener("cartOpen", openCart);
         };
     }, [authLoading, isLoggedIn]);
 
@@ -57,9 +57,9 @@ export default function Header() {
 
     const logoutHeader = () => {
         logout();
-        setUsername('');
-        router.push('/');
-    }
+        setUsername("");
+        router.push("/");
+    };
     return (
         <header className="w-full">
             {/* Top Bar */}
@@ -78,24 +78,32 @@ export default function Header() {
                         <FaShoppingCart />
                         <span>cart</span>
                     </button>
-                    {username ? 
-                    <>
-                        <Link href="/user" className="flex items-center space-x-2">
+                    {username ? (
+                        <>
+                            <Link
+                                href="/user"
+                                className="flex items-center space-x-2"
+                            >
+                                <FaUser />
+                                {<span>{username}님 안녕하세요!</span>}
+                            </Link>
+                            <button
+                                onClick={() => logoutHeader()}
+                                className="px-2"
+                            >
+                                로그아웃
+                            </button>
+                            <CiLogout />
+                        </>
+                    ) : (
+                        <Link
+                            href="/login"
+                            className="flex items-center space-x-2"
+                        >
                             <FaUser />
-                            {<span>{username}님 안녕하세요!</span>}
-                        </Link> 
-                    <button 
-                    onClick={() => logoutHeader()} 
-                    className="px-2"
-                    >
-                        로그아웃
-                    </button>
-                    <CiLogout/>
-                    </> :
-                    <Link href="/login" className="flex items-center space-x-2">
-                        <FaUser />
-                        <span>login</span>
-                    </Link>}
+                            <span>login</span>
+                        </Link>
+                    )}
                 </div>
             </div>
 
@@ -117,12 +125,6 @@ export default function Header() {
                             className="hover:text-gray-800 transition duration-300"
                         >
                             모든 상품
-                        </Link>
-                        <Link
-                            href="/subscription"
-                            className="hover:text-gray-800 transition duration-300"
-                        >
-                            구독 결제
                         </Link>
                         <Link
                             href="/about"
